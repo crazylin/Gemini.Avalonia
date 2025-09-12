@@ -1,0 +1,53 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Gemini.Avalonia.Modules.Properties.ViewModels"
+             x:Class="Gemini.Avalonia.Demo.Views.PropertyItemView"
+             x:DataType="vm:PropertyItem">
+
+  <Border BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+          BorderThickness="0,0,0,1"
+          Padding="0">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" MinWidth="80" />
+        <ColumnDefinition Width="2*" MinWidth="100" />
+      </Grid.ColumnDefinitions>
+      
+      <!-- 属性名 -->
+      <Border Grid.Column="0"
+              Background="{DynamicResource SystemControlBackgroundAltMediumLowBrush}"
+              BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+              BorderThickness="0,0,1,0"
+              Padding="8,4">
+        <TextBlock Text="{Binding Name}"
+                   VerticalAlignment="Center"
+                   FontWeight="Medium"
+                   ToolTip.Tip="{Binding Type, StringFormat='类型: {0}'}" />
+      </Border>
+      
+      <!-- 属性值 -->
+      <Border Grid.Column="1"
+              Padding="8,4">
+        <TextBox Text="{Binding Value}"
+                 IsReadOnly="{Binding IsReadOnly}"
+                 Background="Transparent"
+                 BorderThickness="0"
+                 Padding="0"
+                 VerticalAlignment="Center"
+                 VerticalContentAlignment="Center">
+          <TextBox.Styles>
+            <Style Selector="TextBox:readonly">
+              <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+              <Setter Property="Background" Value="Transparent" />
+            </Style>
+            <Style Selector="TextBox:focus">
+              <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+              <Setter Property="BorderBrush" Value="{DynamicResource SystemControlHighlightAccentBrush}" />
+              <Setter Property="BorderThickness" Value="1" />
+            </Style>
+          </TextBox.Styles>
+        </TextBox>
+      </Border>
+    </Grid>
+  </Border>
+</UserControl>

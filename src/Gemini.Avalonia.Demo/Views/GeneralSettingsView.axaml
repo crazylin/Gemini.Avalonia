@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Gemini.Avalonia.Demo.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
+             x:Class="Gemini.Avalonia.Demo.Views.GeneralSettingsView"
+             x:DataType="vm:GeneralSettingsViewModel">
+  <ScrollViewer>
+    <StackPanel Margin="20" Spacing="15">
+      <TextBlock Text="{DynamicResource GeneralSettings.Title}" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+      
+      <CheckBox IsChecked="{Binding ConfirmExit}" Content="退出时确认"/>
+      
+      <CheckBox IsChecked="{Binding ShowWelcomeScreen}" Content="启动时显示欢迎屏幕"/>
+      
+      <StackPanel Spacing="5">
+        <CheckBox IsChecked="{Binding AutoSave}" Content="自动保存"/>
+        <StackPanel Orientation="Horizontal" Spacing="10" IsEnabled="{Binding AutoSave}">
+          <TextBlock Text="{DynamicResource GeneralSettings.Interval}" VerticalAlignment="Center"/>
+          <NumericUpDown Value="{Binding AutoSaveInterval}" Minimum="1" Maximum="60" Width="80"/>
+        </StackPanel>
+      </StackPanel>
+      
+      <CheckBox IsChecked="{Binding EnableDebugMode}" Content="启用调试模式"/>
+      
+      <StackPanel Spacing="5">
+        <TextBlock Text="{DynamicResource GeneralSettings.MaxRecentFiles}"/>
+        <NumericUpDown Value="{Binding MaxRecentFiles}" Minimum="5" Maximum="50" Width="80" HorizontalAlignment="Left"/>
+      </StackPanel>
+      
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
