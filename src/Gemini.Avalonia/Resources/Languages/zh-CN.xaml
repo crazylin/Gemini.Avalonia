@@ -1,0 +1,166 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    
+    <!-- 语言资源标记，用于识别语言资源字典 -->
+    <system:Boolean x:Key="LanguageResourceMarker">True</system:Boolean>
+    
+    <!-- 主菜单 -->
+    <system:String x:Key="Menu.File">文件(_F)</system:String>
+    <system:String x:Key="Menu.Edit">编辑(_E)</system:String>
+    <system:String x:Key="Menu.View">视图(_V)</system:String>
+    <system:String x:Key="Menu.Tools">工具(_T)</system:String>
+    <system:String x:Key="Menu.Window">窗口(_W)</system:String>
+    <system:String x:Key="Menu.Help">帮助(_H)</system:String>
+    
+    <!-- 文件菜单项 -->
+    <system:String x:Key="NewFile">新建</system:String>
+    <system:String x:Key="OpenFile">打开</system:String>
+    <system:String x:Key="SaveFile">保存</system:String>
+    <system:String x:Key="SaveAsFile">另存为</system:String>
+    <system:String x:Key="ExitApplication">退出</system:String>
+    
+    <!-- 编辑菜单项 -->
+    <system:String x:Key="UndoAction">撤销</system:String>
+    <system:String x:Key="RedoAction">重做</system:String>
+    <system:String x:Key="CutText">剪切</system:String>
+    <system:String x:Key="CopyText">复制</system:String>
+    <system:String x:Key="PasteText">粘贴</system:String>
+    
+    <!-- 视图菜单项 -->
+    <system:String x:Key="ShowProjectExplorer">项目资源管理器</system:String>
+    <system:String x:Key="ShowProperties">属性</system:String>
+    <system:String x:Key="ShowOutput">输出</system:String>
+    
+    <!-- 工具菜单项 -->
+    <system:String x:Key="OptionsSettings">选项</system:String>
+    <system:String x:Key="Tools.Options">选项(_O)</system:String>
+    <system:String x:Key="Tools.Options.ToolTip">打开选项设置对话框</system:String>
+    
+    <!-- 设置 -->
+    <system:String x:Key="SettingsTitle">设置</system:String>
+    <system:String x:Key="Settings.Title">设置</system:String>
+    <system:String x:Key="GeneralSettings">常规</system:String>
+    <system:String x:Key="LanguageLabel">语言：</system:String>
+    <system:String x:Key="ThemeLabel">主题：</system:String>
+    
+    <!-- 项目资源管理器 -->
+    <system:String x:Key="ProjectExplorer.Title">项目资源管理器</system:String>
+    <system:String x:Key="ProjectExplorer.SearchWatermark">搜索项目文件...</system:String>
+    <system:String x:Key="SearchWatermark">搜索文件...</system:String>
+    <system:String x:Key="RefreshText">刷新</system:String>
+    <system:String x:Key="NewProjectText">新建项目</system:String>
+    <system:String x:Key="OpenProjectText">打开项目</system:String>
+    <system:String x:Key="CloseProjectText">关闭项目</system:String>
+    <system:String x:Key="AddFileText">添加文件</system:String>
+    <system:String x:Key="AddFolderText">添加文件夹</system:String>
+    <system:String x:Key="DeleteText">删除</system:String>
+    <system:String x:Key="RenameText">重命名</system:String>
+    <system:String x:Key="RefreshTooltipText">刷新项目</system:String>
+    <system:String x:Key="NewProjectTooltipText">创建新项目</system:String>
+    <system:String x:Key="OpenProjectTooltipText">打开项目</system:String>
+    <system:String x:Key="CloseProjectTooltipText">关闭项目</system:String>
+    <system:String x:Key="AddFileTooltipText">添加文件</system:String>
+    <system:String x:Key="AddFolderTooltipText">添加文件夹</system:String>
+    <system:String x:Key="DeleteTooltipText">删除项目</system:String>
+    
+    <!-- 属性面板 -->
+    <system:String x:Key="Properties.Title">属性</system:String>
+    <system:String x:Key="Properties.NoObjectSelected">未选择对象</system:String>
+    <system:String x:Key="Properties.SelectObjectHint">选择一个文档或工具以查看其属性</system:String>
+    <system:String x:Key="PropertiesTitle">属性</system:String>
+    <system:String x:Key="NoObjectSelectedText">未选择对象</system:String>
+    <system:String x:Key="SelectObjectHintText">选择一个对象以查看其属性</system:String>
+    
+    <!-- 命令文本 -->
+    <system:String x:Key="Command.ShowProjectExplorer">项目管理器(_P)</system:String>
+    <system:String x:Key="Command.ShowProjectExplorer.ToolTip">显示或隐藏项目管理器</system:String>
+    <system:String x:Key="Command.ShowOutput">输出(_O)</system:String>
+    <system:String x:Key="Command.ShowOutput.ToolTip">显示或隐藏输出窗口</system:String>
+    <system:String x:Key="Command.ShowProperties">属性(_R)</system:String>
+    <system:String x:Key="Command.ShowProperties.ToolTip">显示或隐藏属性窗口</system:String>
+    
+    <!-- 设置页面 -->
+    <system:String x:Key="Settings.Language">语言</system:String>
+    <system:String x:Key="Settings.LanguageRestartNote">更改语言需要重启应用程序</system:String>
+    <system:String x:Key="Settings.Theme">主题</system:String>
+    <system:String x:Key="Settings.Font">字体</system:String>
+    <system:String x:Key="Settings.UIElements">界面元素显示</system:String>
+    <system:String x:Key="Settings.ShowMenuBar">显示菜单栏</system:String>
+    <system:String x:Key="Settings.ShowToolbar">显示工具栏</system:String>
+    <system:String x:Key="Settings.ShowStatusBar">显示状态栏</system:String>
+    <system:String x:Key="Theme.Default">默认</system:String>
+    <system:String x:Key="Theme.Dark">深色</system:String>
+    <system:String x:Key="Theme.Light">浅色</system:String>
+    <system:String x:Key="Language.Chinese">中文</system:String>
+    <system:String x:Key="Language.English">English</system:String>
+    <!-- 新增：设置页签名称与路径 -->
+    <system:String x:Key="Settings.Page.Application">应用程序</system:String>
+    <system:String x:Key="Settings.Page.System">系统</system:String>
+    
+    <!-- 默认文件和文件夹名称 -->
+    <system:String x:Key="DefaultFileName">新文件.txt</system:String>
+    <system:String x:Key="DefaultFolderName">新文件夹</system:String>
+    
+    <!-- 视图菜单 -->
+    <system:String x:Key="View.ProjectExplorer">项目资源管理器(_P)</system:String>
+    <system:String x:Key="View.ProjectExplorer.ToolTip">显示或隐藏项目资源管理器</system:String>
+    <system:String x:Key="View.Output">输出(_O)</system:String>
+    <system:String x:Key="View.Output.ToolTip">显示或隐藏输出窗口</system:String>
+    <system:String x:Key="View.Properties">属性(_P)</system:String>
+    <system:String x:Key="View.Properties.ToolTip">显示或隐藏属性窗口</system:String>
+    
+    <!-- 输出窗口 -->
+    <system:String x:Key="Output.Title">输出</system:String>
+    
+    <!-- 通用 -->
+    <system:String x:Key="Common.OK">确定</system:String>
+    <system:String x:Key="Common.Cancel">取消</system:String>
+    <system:String x:Key="OkButton">确定</system:String>
+    <system:String x:Key="CancelButton">取消</system:String>
+    <system:String x:Key="ApplyButton">应用</system:String>
+    <system:String x:Key="CloseButton">关闭</system:String>
+    
+    <!-- 文档相关 -->
+    <system:String x:Key="Document.Path">路径: {0}</system:String>
+    <system:String x:Key="Document.Modified">已修改</system:String>
+    <system:String x:Key="Document.Saved">已保存</system:String>
+    <system:String x:Key="Document.CharacterCount">字符数: {0}</system:String>
+    <system:String x:Key="Document.TextDocument">文本文档</system:String>
+    
+    <!-- 输出窗口 -->
+    <system:String x:Key="Output.ShowSource">显示输出来源:</system:String>
+    <system:String x:Key="Output.NoOutput">暂无输出</system:String>
+    <system:String x:Key="Output.NoMessages">当前类别 {0} 中没有消息</system:String>
+    <system:String x:Key="Output.Clear">清空</system:String>
+    <system:String x:Key="Output.Copy">复制</system:String>
+    <system:String x:Key="Output.ClearTooltip">清空输出窗口</system:String>
+    <system:String x:Key="Output.CopyTooltip">复制输出内容到剪贴板</system:String>
+    
+    <!-- 设置页面详细 -->
+    <system:String x:Key="Settings.ApplicationTitle">应用程序标题:</system:String>
+    <system:String x:Key="Settings.UIOptions">界面选项:</system:String>
+    <system:String x:Key="Settings.AutoSaveInterval">自动保存间隔 (分钟):</system:String>
+    <system:String x:Key="Settings.RestartNote">这些设置将在下次启动应用程序时生效。某些更改可能需要重新启动应用程序才能完全应用。</system:String>
+    
+    <!-- 常规设置 -->
+    <system:String x:Key="GeneralSettings.Title">常规设置</system:String>
+    <system:String x:Key="GeneralSettings.Interval">间隔(分钟):</system:String>
+    <system:String x:Key="GeneralSettings.MaxRecentFiles">最大最近文件数:</system:String>
+    
+    <!-- 编辑器设置 -->
+    <system:String x:Key="EditorSettings.Title">编辑器设置</system:String>
+    <system:String x:Key="EditorSettings.DisplayOptions">显示选项</system:String>
+    <system:String x:Key="EditorSettings.IndentSettings">缩进设置</system:String>
+    <system:String x:Key="EditorSettings.TabSize">制表符大小:</system:String>
+    <system:String x:Key="EditorSettings.FontSettings">字体设置</system:String>
+    <system:String x:Key="EditorSettings.Font">字体:</system:String>
+    <system:String x:Key="EditorSettings.FontSize">字体大小:</system:String>
+    
+    <!-- 外观设置 -->
+    <system:String x:Key="AppearanceSettings.Title">外观设置</system:String>
+    <system:String x:Key="AppearanceSettings.ColorScheme">配色方案:</system:String>
+    <system:String x:Key="AppearanceSettings.WindowOpacity">窗口透明度:</system:String>
+    <system:String x:Key="AppearanceSettings.CustomCssPath">自定义CSS路径:</system:String>
+    
+</ResourceDictionary>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <linearGradient id="imageFileGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#66BB6A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#388E3C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- 文件主体 -->
+  <path d="M3 2c-0.6 0-1 0.4-1 1v10c0 0.6 0.4 1 1 1h8c0.6 0 1-0.4 1-1V5.5L9.5 2H3z" fill="url(#imageFileGrad)" stroke="#2E7D32" stroke-width="0.5" rx="0.5"/>
+  <!-- 文件折角 -->
+  <path d="M9.5 2v3.5H13L9.5 2z" fill="#A5D6A7" stroke="#2E7D32" stroke-width="0.3"/>
+  <!-- 图片预览区域 -->
+  <rect x="4" y="6" width="6" height="4.5" fill="#FFFFFF" stroke="#2E7D32" stroke-width="0.3" rx="0.3" opacity="0.95"/>
+  <!-- 山峰图标 -->
+  <path d="M5 9.5l1.5-1.5 1 1 1.5-2L11 9.5v1H5v-1z" fill="#81C784"/>
+  <!-- 太阳图标 -->
+  <circle cx="8.5" cy="7.5" r="0.8" fill="#FFD54F" stroke="#FFA000" stroke-width="0.2"/>
+  <!-- 云朵装饰 -->
+  <path d="M6.5 7.8c0-0.3 0.2-0.5 0.5-0.5s0.5 0.2 0.5 0.5c0.2 0 0.3 0.1 0.3 0.3s-0.1 0.3-0.3 0.3H6.8c-0.2 0-0.3-0.1-0.3-0.3s0.1-0.3 0.3-0.3c-0.1-0.1-0.3-0.2-0.3-0.3z" fill="#E1F5FE" stroke="#81D4FA" stroke-width="0.1" opacity="0.8"/>
+  <!-- 装饰元素 -->
+  <rect x="4.5" y="4.5" width="2.5" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
+  <!-- 图片标识点 -->
+  <circle cx="10.5" cy="12" r="0.4" fill="#A5D6A7" opacity="0.6"/>
+  <circle cx="11.5" cy="12" r="0.4" fill="#A5D6A7" opacity="0.6"/>
+</svg>

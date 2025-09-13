@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <linearGradient id="editGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFA726;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F57C00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- 铅笔主体 -->
+  <path d="M2 14l2.5-2.5L12 4c0.4-0.4 1-0.4 1.4 0l0.6 0.6c0.4 0.4 0.4 1 0 1.4L6.5 13.5L2 14z" fill="url(#editGrad)" stroke="#E65100" stroke-width="0.4"/>
+  <!-- 铅笔尖端 -->
+  <path d="M12 4l2 2 0.8-0.8c0.2-0.2 0.2-0.5 0-0.7l-1.1-1.1c-0.2-0.2-0.5-0.2-0.7 0L12 4z" fill="#FFB74D" stroke="#E65100" stroke-width="0.3"/>
+  <!-- 铅笔笔身装饰 -->
+  <rect x="8.5" y="6.5" width="4" height="0.8" fill="#FFFFFF" opacity="0.6" rx="0.2" transform="rotate(45 10.5 6.9)"/>
+  <rect x="7.5" y="7.5" width="4" height="0.8" fill="#FFFFFF" opacity="0.6" rx="0.2" transform="rotate(45 9.5 7.9)"/>
+  <!-- 编辑轨迹 -->
+  <path d="M4.5 11.5L12 4" stroke="#FFD54F" stroke-width="0.4" stroke-dasharray="1,0.8" opacity="0.7"/>
+  <!-- 纸张背景 -->
+  <rect x="1.5" y="11.5" width="5" height="3" fill="#FFF3E0" stroke="#F57C00" stroke-width="0.3" rx="0.3" opacity="0.9"/>
+  <!-- 编辑点 -->
+  <circle cx="2.5" cy="13.5" r="0.4" fill="#FFA726"/>
+  <!-- 铅笔握柄 -->
+  <rect x="5" y="9" width="1.5" height="3" fill="#FFCC80" stroke="#E65100" stroke-width="0.2" rx="0.3" transform="rotate(45 5.75 10.5)"/>
+</svg>

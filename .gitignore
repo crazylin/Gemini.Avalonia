@@ -338,7 +338,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Avalonia specific
-*.avalonia
+.avalonia/
 
 # JetBrains Rider
 .idea/

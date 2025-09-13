@@ -1,0 +1,72 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  
+  <!-- 浅色主题颜色定义 -->
+  <Color x:Key="ThemePrimaryColor">#FF0078D4</Color>
+  <Color x:Key="ThemeSecondaryColor">#FF106EBE</Color>
+  <Color x:Key="ThemeAccentColor">#FF0078D4</Color>
+  
+  <!-- 背景颜色 -->
+  <Color x:Key="ThemeBackgroundColor">#FFFFFFFF</Color>
+  <Color x:Key="ThemeSecondaryBackgroundColor">#FFF8F8F8</Color>
+  <Color x:Key="ThemeTertiaryBackgroundColor">#FFF0F0F0</Color>
+  
+  <!-- 前景颜色 -->
+  <Color x:Key="ThemeForegroundColor">#FF000000</Color>
+  <Color x:Key="ThemeSecondaryForegroundColor">#FF666666</Color>
+  <Color x:Key="ThemeTertiaryForegroundColor">#FF999999</Color>
+  
+  <!-- 边框颜色 -->
+  <Color x:Key="ThemeBorderColor">#FFD0D0D0</Color>
+  <Color x:Key="ThemeSecondaryBorderColor">#FFE0E0E0</Color>
+  
+  <!-- 悬停和选中状态 -->
+  <Color x:Key="ThemeHoverColor">#FFF0F0F0</Color>
+  <Color x:Key="ThemeSelectedColor">#FFE3F2FD</Color>
+  <Color x:Key="ThemePressedColor">#FFE0E0E0</Color>
+  
+  <!-- 画刷定义 -->
+  <SolidColorBrush x:Key="ThemePrimaryBrush" Color="{StaticResource ThemePrimaryColor}" />
+  <SolidColorBrush x:Key="ThemeSecondaryBrush" Color="{StaticResource ThemeSecondaryColor}" />
+  <SolidColorBrush x:Key="ThemeAccentBrush" Color="{StaticResource ThemeAccentColor}" />
+  
+  <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="{StaticResource ThemeBackgroundColor}" />
+  <SolidColorBrush x:Key="ThemeSecondaryBackgroundBrush" Color="{StaticResource ThemeSecondaryBackgroundColor}" />
+  <SolidColorBrush x:Key="ThemeTertiaryBackgroundBrush" Color="{StaticResource ThemeTertiaryBackgroundColor}" />
+  
+  <SolidColorBrush x:Key="ThemeForegroundBrush" Color="{StaticResource ThemeForegroundColor}" />
+  <SolidColorBrush x:Key="ThemeSecondaryForegroundBrush" Color="{StaticResource ThemeSecondaryForegroundColor}" />
+  <SolidColorBrush x:Key="ThemeTertiaryForegroundBrush" Color="{StaticResource ThemeTertiaryForegroundColor}" />
+  
+  <SolidColorBrush x:Key="ThemeBorderBrush" Color="{StaticResource ThemeBorderColor}" />
+  <SolidColorBrush x:Key="ThemeSecondaryBorderBrush" Color="{StaticResource ThemeSecondaryBorderColor}" />
+  
+  <SolidColorBrush x:Key="ThemeHoverBrush" Color="{StaticResource ThemeHoverColor}" />
+  <SolidColorBrush x:Key="ThemeSelectedBrush" Color="{StaticResource ThemeSelectedColor}" />
+  <SolidColorBrush x:Key="ThemePressedBrush" Color="{StaticResource ThemePressedColor}" />
+  
+  <!-- 悬停状态 -->
+  <SolidColorBrush x:Key="ThemeHoverBackgroundBrush" Color="#E5E5E5" />
+  <SolidColorBrush x:Key="ThemeHoverForegroundBrush" Color="#000000" />
+  
+  <!-- 选中状态 -->
+  <SolidColorBrush x:Key="ThemeSelectedBackgroundBrush" Color="#0078D4" />
+  <SolidColorBrush x:Key="ThemeSelectedForegroundBrush" Color="#FFFFFF" />
+  
+  <!-- 工具栏样式 -->
+  <SolidColorBrush x:Key="ToolBarBackgroundBrush" Color="#F0F0F0" />
+  <SolidColorBrush x:Key="ToolBarBorderBrush" Color="#D0D0D0" />
+  
+  <!-- 按钮样式 -->
+  <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="ButtonHoverBackgroundBrush" Color="#E5F3FF" />
+  <SolidColorBrush x:Key="ButtonPressedBackgroundBrush" Color="#CCE4F7" />
+  
+  <!-- 菜单样式 -->
+  <SolidColorBrush x:Key="MenuBackgroundBrush" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="MenuItemHoverBackgroundBrush" Color="#E5F3FF" />
+  
+  <!-- 停靠面板样式 -->
+  <SolidColorBrush x:Key="DockPanelBackgroundBrush" Color="#F5F5F5" />
+  
+</ResourceDictionary>

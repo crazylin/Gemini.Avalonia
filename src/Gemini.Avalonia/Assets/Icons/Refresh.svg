@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <linearGradient id="refreshGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#42A5F5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1976D2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- 刷新箭头主体 -->
+  <path d="M8 2C5.2 2 3 4.2 3 7h1.5L2 10l-2.5-3H1c0-3.9 3.1-7 7-7s7 3.1 7 7-3.1 7-7 7c-1.9 0-3.6-0.8-4.8-2l1.1-1.1C5.1 12.4 6.5 13 8 13c2.8 0 5-2.2 5-5s-2.2-5-5-5z" fill="url(#refreshGrad)" stroke="#0D47A1" stroke-width="0.3"/>
+  <!-- 箭头装饰 -->
+  <path d="M2 10l2.5-3H3c0-2.8 2.2-5 5-5s5 2.2 5 5-2.2 5-5 5c-1.4 0-2.6-0.6-3.5-1.5l0.7-0.7C5.8 10.4 6.9 11 8 11c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4h1.5L2 10z" fill="#64B5F6" opacity="0.8"/>
+  <!-- 中心点 -->
+  <circle cx="8" cy="8" r="1" fill="#FFFFFF" stroke="#1976D2" stroke-width="0.3" opacity="0.9"/>
+  <!-- 装饰弧线 -->
+  <path d="M8 4.5c1.9 0 3.5 1.6 3.5 3.5" fill="none" stroke="#FFFFFF" stroke-width="0.8" stroke-linecap="round" opacity="0.6"/>
+  <path d="M4.5 8c0-1.9 1.6-3.5 3.5-3.5" fill="none" stroke="#FFFFFF" stroke-width="0.8" stroke-linecap="round" opacity="0.6"/>
+</svg>

@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Gemini.Avalonia.Modules.Output.ViewModels"
+             x:Class="Gemini.Avalonia.Modules.Output.Views.OutputMessageView"
+             x:DataType="vm:OutputMessage">
+
+  <Border Padding="8,2"
+          Background="Transparent">
+    <Border.Styles>
+      <Style Selector="Border:pointerover">
+        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundListLowBrush}" />
+      </Style>
+    </Border.Styles>
+    
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      
+      <!-- 时间戳 -->
+      <TextBlock Grid.Column="0"
+                 Text="{Binding Timestamp, StringFormat='[{0:HH:mm:ss}]'}"
+                 FontFamily="Consolas,Monaco,Courier New,monospace"
+                 FontSize="12"
+                 Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                 VerticalAlignment="Top"
+                 Margin="0,0,8,0" />
+      
+      <!-- 消息内容 -->
+      <TextBlock Grid.Column="1"
+                 Text="{Binding Message}"
+                 FontFamily="Consolas,Monaco,Courier New,monospace"
+                 FontSize="12"
+                 TextWrapping="Wrap"
+                 VerticalAlignment="Top">
+        <TextBlock.Styles>
+          <!-- 根据消息类型设置颜色 -->
+          <Style Selector="TextBlock" x:DataType="vm:OutputMessage">
+            <Style Selector="^[Tag=Information]">
+              <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+            </Style>
+            <Style Selector="^[Tag=Success]">
+              <Setter Property="Foreground" Value="Green" />
+            </Style>
+            <Style Selector="^[Tag=Warning]">
+              <Setter Property="Foreground" Value="Orange" />
+            </Style>
+            <Style Selector="^[Tag=Error]">
+              <Setter Property="Foreground" Value="Red" />
+            </Style>
+          </Style>
+        </TextBlock.Styles>
+        
+        <!-- 绑定Tag到消息类型以应用样式 -->
+        <TextBlock.Tag>
+          <Binding Path="Type" />
+        </TextBlock.Tag>
+      </TextBlock>
+    </Grid>
+  </Border>
+</UserControl>

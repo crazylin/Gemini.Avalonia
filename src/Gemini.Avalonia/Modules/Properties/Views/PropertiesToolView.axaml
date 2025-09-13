@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Gemini.Avalonia.Modules.Properties.ViewModels"
+             xmlns:conv="using:Gemini.Avalonia.Modules.Properties.Converters"
+             x:Class="Gemini.Avalonia.Modules.Properties.Views.PropertiesToolView"
+             x:DataType="vm:PropertiesToolViewModel">
+    
+    <Design.DataContext>
+        <vm:PropertiesToolViewModel />
+    </Design.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <!-- 标题栏 -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="8,4">
+            <TextBlock Text="{Binding DisplayName}" 
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center" />
+        </Border>
+        
+        <!-- 属性网格 -->
+        <ScrollViewer Grid.Row="1" 
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Properties}" />
+        </ScrollViewer>
+        
+        <!-- 空状态 -->
+        <Border Grid.Row="1"
+                IsVisible="{Binding Properties.Count, Converter={x:Static conv:IntConverters.Equal}, ConverterParameter=0}"
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+            <StackPanel HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Spacing="8">
+                <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/properties.svg}" Width="32" Height="32" 
+                            HorizontalAlignment="Center"
+                           Opacity="0.5" />
+                <TextBlock Text="{DynamicResource Properties.NoObjectSelected}" 
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                <TextBlock Text="{DynamicResource Properties.SelectObjectHint}" 
+                           HorizontalAlignment="Center"
+                           FontSize="12"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+    
+</UserControl>

@@ -1,0 +1,168 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    
+    <!-- Language resource marker for identification -->
+    <system:Boolean x:Key="LanguageResourceMarker">True</system:Boolean>
+    
+    <!-- Main Menu -->
+    <system:String x:Key="Menu.File">_File</system:String>
+    <system:String x:Key="Menu.Edit">_Edit</system:String>
+    <system:String x:Key="Menu.View">_View</system:String>
+    <system:String x:Key="Menu.Tools">_Tools</system:String>
+    <system:String x:Key="Menu.Window">_Window</system:String>
+    <system:String x:Key="Menu.Help">_Help</system:String>
+    
+    <!-- File Menu Items -->
+    <system:String x:Key="NewFile">New</system:String>
+    <system:String x:Key="OpenFile">Open</system:String>
+    <system:String x:Key="SaveFile">Save</system:String>
+    <system:String x:Key="SaveAsFile">Save As</system:String>
+    <system:String x:Key="ExitApplication">Exit</system:String>
+    
+    <!-- Edit Menu Items -->
+    <system:String x:Key="UndoAction">Undo</system:String>
+    <system:String x:Key="RedoAction">Redo</system:String>
+    <system:String x:Key="CutText">Cut</system:String>
+    <system:String x:Key="CopyText">Copy</system:String>
+    <system:String x:Key="PasteText">Paste</system:String>
+    
+    <!-- View Menu Items -->
+    <system:String x:Key="ShowProjectExplorer">Project Explorer</system:String>
+    <system:String x:Key="ShowProperties">Properties</system:String>
+    <system:String x:Key="ShowOutput">Output</system:String>
+    
+    <!-- Tools Menu Items -->
+    <system:String x:Key="OptionsSettings">Options</system:String>
+    <system:String x:Key="Tools.Options">_Options</system:String>
+    <system:String x:Key="Tools.Options.ToolTip">Open options settings dialog</system:String>
+    
+    <!-- Settings -->
+    <system:String x:Key="SettingsTitle">Settings</system:String>
+    <system:String x:Key="GeneralSettings">General</system:String>
+    <system:String x:Key="LanguageLabel">Language:</system:String>
+    <system:String x:Key="ThemeLabel">Theme:</system:String>
+    
+    <!-- Project Explorer -->
+    <system:String x:Key="ProjectExplorer.Title">Project Explorer</system:String>
+    <system:String x:Key="ProjectExplorer.SearchWatermark">Search project files...</system:String>
+    <system:String x:Key="SearchWatermark">Search files...</system:String>
+    <system:String x:Key="RefreshText">Refresh</system:String>
+    <system:String x:Key="NewProjectText">New Project</system:String>
+    <system:String x:Key="OpenProjectText">Open Project</system:String>
+    <system:String x:Key="CloseProjectText">Close Project</system:String>
+    <system:String x:Key="AddFileText">Add File</system:String>
+    <system:String x:Key="AddFolderText">Add Folder</system:String>
+    <system:String x:Key="DeleteText">Delete</system:String>
+    <system:String x:Key="RenameText">Rename</system:String>
+    <system:String x:Key="RefreshTooltipText">Refresh project</system:String>
+    <system:String x:Key="NewProjectTooltipText">Create new project</system:String>
+    <system:String x:Key="OpenProjectTooltipText">Open project</system:String>
+    <system:String x:Key="CloseProjectTooltipText">Close project</system:String>
+    <system:String x:Key="AddFileTooltipText">Add file</system:String>
+    <system:String x:Key="AddFolderTooltipText">Add folder</system:String>
+    <system:String x:Key="DeleteTooltipText">Delete item</system:String>
+    
+    <!-- Properties Panel -->
+    <system:String x:Key="Properties.Title">Properties</system:String>
+    <system:String x:Key="Properties.NoObjectSelected">No object selected</system:String>
+    <system:String x:Key="Properties.SelectObjectHint">Select a document or tool to view its properties</system:String>
+    <system:String x:Key="PropertiesTitle">Properties</system:String>
+    <system:String x:Key="NoObjectSelectedText">No object selected</system:String>
+    <system:String x:Key="SelectObjectHintText">Select an object to view its properties</system:String>
+
+    
+    <!-- Command Text -->
+    <system:String x:Key="Command.ShowProjectExplorer">_Project Explorer</system:String>
+    <system:String x:Key="Command.ShowProjectExplorer.ToolTip">Show or hide the project explorer</system:String>
+    <system:String x:Key="Command.ShowOutput">_Output</system:String>
+    <system:String x:Key="Command.ShowOutput.ToolTip">Show or hide the output window</system:String>
+    <system:String x:Key="Command.ShowProperties">_Properties</system:String>
+    <system:String x:Key="Command.ShowProperties.ToolTip">Show or hide the properties window</system:String>
+    
+    <!-- View Menu Command Keys (used by command definitions) -->
+    <system:String x:Key="View.ProjectExplorer">_Project Explorer</system:String>
+    <system:String x:Key="View.ProjectExplorer.ToolTip">Show or hide the project explorer</system:String>
+    <system:String x:Key="View.Output">_Output</system:String>
+    <system:String x:Key="View.Output.ToolTip">Show or hide the output window</system:String>
+    <system:String x:Key="View.Properties">_Properties</system:String>
+    <system:String x:Key="View.Properties.ToolTip">Show or hide the properties window</system:String>
+    
+    <!-- Settings Page -->
+    <system:String x:Key="Settings.Language">Language</system:String>
+    <system:String x:Key="Settings.LanguageRestartNote">Changing language requires application restart</system:String>
+    <system:String x:Key="Settings.Theme">Theme</system:String>
+    <system:String x:Key="Settings.Font">Font</system:String>
+    <system:String x:Key="Settings.UIElements">UI Elements Display</system:String>
+    <system:String x:Key="Settings.ShowMenuBar">Show Menu Bar</system:String>
+    <system:String x:Key="Settings.ShowToolbar">Show Toolbar</system:String>
+    <system:String x:Key="Settings.ShowStatusBar">Show Status Bar</system:String>
+    <system:String x:Key="Theme.Default">Default</system:String>
+    <system:String x:Key="Theme.Dark">Dark</system:String>
+    <system:String x:Key="Theme.Light">Light</system:String>
+    <system:String x:Key="Language.Chinese">Chinese</system:String>
+    <system:String x:Key="Language.English">English</system:String>
+    <!-- Added: Settings page tab name and path -->
+    <system:String x:Key="Settings.Page.Application">Application</system:String>
+    <system:String x:Key="Settings.Page.System">System</system:String>
+    <!-- Also add window title key used in code -->
+    <system:String x:Key="Settings.Title">Settings</system:String>
+    
+    <!-- Default file and folder names -->
+    <system:String x:Key="DefaultFileName">NewFile.txt</system:String>
+    <system:String x:Key="DefaultFolderName">NewFolder</system:String>
+    
+    <!-- Output Window -->
+    <system:String x:Key="Output.Title">Output</system:String>
+    <system:String x:Key="Output.ShowSource">Show output from:</system:String>
+    <system:String x:Key="Output.NoOutput">No output</system:String>
+    <system:String x:Key="Output.NoMessages">No messages in current category {0}</system:String>
+    <system:String x:Key="Output.Clear">Clear</system:String>
+    <system:String x:Key="Output.Copy">Copy</system:String>
+    <system:String x:Key="Output.ClearTooltip">Clear output window</system:String>
+    <system:String x:Key="Output.CopyTooltip">Copy output content to clipboard</system:String>
+    
+    <!-- Common -->
+    <system:String x:Key="Common.OK">OK</system:String>
+    <system:String x:Key="Common.Cancel">Cancel</system:String>
+    <system:String x:Key="OkButton">OK</system:String>
+    <system:String x:Key="CancelButton">Cancel</system:String>
+    <system:String x:Key="ApplyButton">Apply</system:String>
+    <system:String x:Key="CloseButton">Close</system:String>
+    
+    <!-- Document Related -->
+    <system:String x:Key="Document.Path">Path: {0}</system:String>
+    <system:String x:Key="Document.Modified">Modified</system:String>
+    <system:String x:Key="Document.Saved">Saved</system:String>
+    <system:String x:Key="Document.CharacterCount">Character count: {0}</system:String>
+    <system:String x:Key="Document.TextDocument">Text Document</system:String>
+    
+
+    
+    <!-- Settings Page Details -->
+    <system:String x:Key="Settings.ApplicationTitle">Application Title:</system:String>
+    <system:String x:Key="Settings.UIOptions">UI Options:</system:String>
+    <system:String x:Key="Settings.AutoSaveInterval">Auto-save interval (minutes):</system:String>
+    <system:String x:Key="Settings.RestartNote">These settings will take effect the next time you start the application. Some changes may require restarting the application to fully apply.</system:String>
+    
+    <!-- General Settings -->
+    <system:String x:Key="GeneralSettings.Title">General Settings</system:String>
+    <system:String x:Key="GeneralSettings.Interval">Interval (minutes):</system:String>
+    <system:String x:Key="GeneralSettings.MaxRecentFiles">Max recent files:</system:String>
+    
+    <!-- Editor Settings -->
+    <system:String x:Key="EditorSettings.Title">Editor Settings</system:String>
+    <system:String x:Key="EditorSettings.DisplayOptions">Display Options</system:String>
+    <system:String x:Key="EditorSettings.IndentSettings">Indent Settings</system:String>
+    <system:String x:Key="EditorSettings.TabSize">Tab size:</system:String>
+    <system:String x:Key="EditorSettings.FontSettings">Font Settings</system:String>
+    <system:String x:Key="EditorSettings.Font">Font:</system:String>
+    <system:String x:Key="EditorSettings.FontSize">Font size:</system:String>
+    
+    <!-- Appearance Settings -->
+    <system:String x:Key="AppearanceSettings.Title">Appearance Settings</system:String>
+    <system:String x:Key="AppearanceSettings.ColorScheme">Color scheme:</system:String>
+    <system:String x:Key="AppearanceSettings.WindowOpacity">Window opacity:</system:String>
+    <system:String x:Key="AppearanceSettings.CustomCssPath">Custom CSS path:</system:String>
+    
+</ResourceDictionary>

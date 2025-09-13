@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <linearGradient id="addFileGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#66BB6A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#388E3C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- 文件主体 -->
+  <path d="M3 2c-0.6 0-1 0.4-1 1v10c0 0.6 0.4 1 1 1h8c0.6 0 1-0.4 1-1V5.5L9.5 2H3z" fill="url(#addFileGrad)" stroke="#2E7D32" stroke-width="0.5" rx="0.5"/>
+  <!-- 文件折角 -->
+  <path d="M9.5 2v3.5H13L9.5 2z" fill="#81C784" stroke="#2E7D32" stroke-width="0.3"/>
+  <!-- 加号背景圆圈 -->
+  <circle cx="8" cy="9.5" r="2.5" fill="#FFFFFF" stroke="#2E7D32" stroke-width="0.3" opacity="0.95"/>
+  <!-- 加号 -->
+  <path d="M7.2 8.7h1.6v1.6H7.2z" fill="#66BB6A" rx="0.2"/>
+  <path d="M6.5 9.2h3v0.6h-3z" fill="#66BB6A" rx="0.1"/>
+  <path d="M7.7 8h0.6v3h-0.6z" fill="#66BB6A" rx="0.1"/>
+  <!-- 文件装饰线 -->
+  <rect x="4.5" y="6" width="3" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
+  <rect x="4.5" y="7" width="2" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
+</svg>

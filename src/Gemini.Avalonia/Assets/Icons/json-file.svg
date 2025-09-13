@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <linearGradient id="jsonGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFCA28;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F57F17;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- 文件主体 -->
+  <path d="M3 2c-0.6 0-1 0.4-1 1v10c0 0.6 0.4 1 1 1h8c0.6 0 1-0.4 1-1V5.5L9.5 2H3z" fill="url(#jsonGrad)" stroke="#E65100" stroke-width="0.5" rx="0.5"/>
+  <!-- 文件折角 -->
+  <path d="M9.5 2v3.5H13L9.5 2z" fill="#FFD54F" stroke="#E65100" stroke-width="0.3"/>
+  <!-- JSON 标识背景 -->
+  <rect x="3.5" y="7" width="7" height="4" fill="#FFFFFF" stroke="#E65100" stroke-width="0.3" rx="0.5" opacity="0.95"/>
+  <!-- JSON 文字 -->
+  <text x="4.2" y="9.8" font-family="Arial, sans-serif" font-size="2.2" font-weight="bold" fill="#FFCA28">JSON</text>
+  <!-- 装饰元素 -->
+  <rect x="4.5" y="4.5" width="3" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
+  <rect x="4.5" y="5.5" width="2" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
+  <!-- JSON 大括号装饰 -->
+  <path d="M4.2 12.2c-0.2 0-0.3-0.1-0.3-0.3v-0.4c0-0.2 0.1-0.3 0.3-0.3" fill="none" stroke="#FFD54F" stroke-width="0.4" stroke-linecap="round" opacity="0.7"/>
+  <path d="M9.8 12.2c0.2 0 0.3-0.1 0.3-0.3v-0.4c0-0.2-0.1-0.3-0.3-0.3" fill="none" stroke="#FFD54F" stroke-width="0.4" stroke-linecap="round" opacity="0.7"/>
+</svg>

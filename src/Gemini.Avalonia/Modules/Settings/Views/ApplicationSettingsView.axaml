@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Gemini.Avalonia.Modules.Settings.ViewModels"
+             x:Class="Gemini.Avalonia.Modules.Settings.Views.ApplicationSettingsView"
+             x:DataType="vm:ApplicationSettingsViewModel">
+    
+    <ScrollViewer>
+        <StackPanel Margin="20" Spacing="15">
+            
+            <!-- 语言设置 -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="{DynamicResource Settings.Language}" FontWeight="SemiBold" FontSize="14"/>
+                <ComboBox ItemsSource="{Binding AvailableLanguages}"
+                          SelectedItem="{Binding SelectedLanguage}"
+                          Width="200"
+                          HorizontalAlignment="Left"/>
+                <TextBlock Text="{DynamicResource Settings.LanguageRestartNote}" 
+                           FontSize="12" 
+                           Foreground="Gray"/>
+            </StackPanel>
+            
+            <!-- 主题设置 -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="{DynamicResource Settings.Theme}" FontWeight="SemiBold" FontSize="14"/>
+                <ComboBox ItemsSource="{Binding AvailableThemes}"
+                          SelectedItem="{Binding SelectedTheme}"
+                          Width="200"
+                          HorizontalAlignment="Left"/>
+            </StackPanel>
+            
+            <!-- 字体设置 -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="{DynamicResource Settings.Font}" FontWeight="SemiBold" FontSize="14"/>
+                <Grid ColumnDefinitions="200,20,100">
+                    <ComboBox Grid.Column="0"
+                              ItemsSource="{Binding AvailableFonts}"
+                              SelectedItem="{Binding FontFamily}"/>
+                    <NumericUpDown Grid.Column="2"
+                                   Value="{Binding FontSize}"
+                                   Minimum="8"
+                                   Maximum="72"
+                                   Increment="1"
+                                   FormatString="F0"/>
+                </Grid>
+            </StackPanel>
+            
+            <!-- 界面元素显示 -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="{DynamicResource Settings.UIElements}" FontWeight="SemiBold" FontSize="14"/>
+                <CheckBox Content="{DynamicResource Settings.ShowMenuBar}" IsChecked="{Binding ShowMenuBar}"/>
+                <CheckBox Content="{DynamicResource Settings.ShowToolbar}" IsChecked="{Binding ShowToolbar}"/>
+                <CheckBox Content="{DynamicResource Settings.ShowStatusBar}" IsChecked="{Binding ShowStatusBar}"/>
+            </StackPanel>
+            
+        </StackPanel>
+    </ScrollViewer>
+    
+</UserControl>

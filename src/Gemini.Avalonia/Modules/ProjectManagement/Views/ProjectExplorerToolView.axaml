@@ -1,0 +1,218 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Gemini.Avalonia.Modules.ProjectManagement.ViewModels"
+             xmlns:models="using:Gemini.Avalonia.Modules.ProjectManagement.Models"
+             xmlns:converters="using:Gemini.Avalonia.Modules.ProjectManagement.Converters"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+             x:Class="Gemini.Avalonia.Modules.ProjectManagement.Views.ProjectExplorerToolView"
+             x:DataType="vm:ProjectExplorerToolViewModel">
+  <UserControl.Resources>
+    <converters:IconPathToSvgConverter x:Key="IconPathToSvgConverter" />
+  </UserControl.Resources>
+  
+  <Design.DataContext>
+    <vm:ProjectExplorerToolViewModel />
+  </Design.DataContext>
+  
+  <Grid RowDefinitions="Auto,Auto,*,Auto">
+    
+    <!-- 标题栏 -->
+    <Border Grid.Row="0" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" 
+            Padding="8,4">
+      <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" />
+    </Border>
+    
+    <!-- 搜索框 -->
+    <Border Grid.Row="1" Padding="8,4" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+            BorderThickness="0,0,0,1">
+      <TextBox Text="{Binding SearchText}" 
+               Watermark="{DynamicResource SearchWatermark}"
+               Classes="clearButton" />
+    </Border>
+    
+    <!-- 项目树 -->
+    <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <TreeView ItemsSource="{Binding FilteredItems}"
+                SelectedItem="{Binding SelectedItem}"
+                Margin="4">
+        
+        <TreeView.ItemTemplate>
+          <TreeDataTemplate ItemsSource="{Binding Children}" DataType="models:ProjectNode">
+            <StackPanel Orientation="Horizontal" Spacing="4">
+              <Image Source="{Binding IconPath, Converter={StaticResource IconPathToSvgConverter}}" Width="16" Height="16" VerticalAlignment="Center" />
+              <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+            </StackPanel>
+          </TreeDataTemplate>
+        </TreeView.ItemTemplate>
+        
+        <TreeView.Styles>
+          <Style Selector="TreeViewItem" x:DataType="models:ProjectNode">
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+          </Style>
+        </TreeView.Styles>
+        
+        <TreeView.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{DynamicResource RefreshText}" Command="{Binding RefreshCommand}">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/Refresh.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="{DynamicResource NewProjectText}" Command="{Binding NewProjectCommand}">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/project.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource OpenProjectText}" Command="{Binding OpenProjectCommand}">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/project.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource CloseProjectText}" Command="{Binding CloseProjectCommand}">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/close.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="{DynamicResource AddFileText}" Command="{Binding AddFileCommand}">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/add-file.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource AddFolderText}" Command="{Binding AddFolderCommand}">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/add-folder.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="{DynamicResource RenameText}" Command="{Binding RenameItemCommand}">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/edit.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource DeleteText}" Command="{Binding DeleteItemCommand}">
+              <MenuItem.Icon>
+                <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/Delete.svg}" Width="16" Height="16" />
+              </MenuItem.Icon>
+            </MenuItem>
+          </ContextMenu>
+        </TreeView.ContextMenu>
+        
+      </TreeView>
+    </ScrollViewer>
+    
+    <!-- 工具栏 -->
+    <Border Grid.Row="3" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" 
+            BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+            BorderThickness="0,1,0,0" Padding="4">
+      <StackPanel Orientation="Horizontal" Spacing="4">
+        
+        <Button Command="{Binding RefreshCommand}" 
+                ToolTip.Tip="{DynamicResource RefreshTooltipText}"
+                Classes="icon">
+          <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/Refresh.svg}" Width="16" Height="16" />
+        </Button>
+        
+        <Separator />
+        
+        <Button Command="{Binding NewProjectCommand}" 
+                ToolTip.Tip="{DynamicResource NewProjectTooltipText}"
+                Classes="icon">
+          <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/project.svg}" Width="16" Height="16" />
+        </Button>
+        
+        <Button Command="{Binding OpenProjectCommand}" 
+                ToolTip.Tip="{DynamicResource OpenProjectTooltipText}"
+                Classes="icon">
+          <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/project.svg}" Width="16" Height="16" />
+        </Button>
+        
+        <Button Command="{Binding CloseProjectCommand}" 
+                ToolTip.Tip="{DynamicResource CloseProjectTooltipText}"
+                Classes="icon">
+          <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/close.svg}" Width="16" Height="16" />
+        </Button>
+        
+        <Separator />
+        
+        <Button Command="{Binding AddFileCommand}" 
+                ToolTip.Tip="{DynamicResource AddFileTooltipText}"
+                Classes="icon">
+          <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/add-file.svg}" Width="16" Height="16" />
+        </Button>
+        
+        <Button Command="{Binding AddFolderCommand}" 
+                ToolTip.Tip="{DynamicResource AddFolderTooltipText}"
+                Classes="icon">
+          <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/add-folder.svg}" Width="16" Height="16" />
+        </Button>
+        
+        <Separator />
+        
+        <Button Command="{Binding DeleteItemCommand}" 
+                ToolTip.Tip="{DynamicResource DeleteTooltipText}"
+                Classes="icon">
+          <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/Delete.svg}" Width="16" Height="16" />
+        </Button>
+        
+      </StackPanel>
+    </Border>
+    
+  </Grid>
+  
+  <UserControl.Styles>
+    <!-- 图标按钮样式 -->
+    <Style Selector="Button.icon">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="6" />
+      <Setter Property="Margin" Value="1" />
+      <Setter Property="CornerRadius" Value="3" />
+    </Style>
+    
+    <Style Selector="Button.icon:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundListLowBrush}" />
+    </Style>
+    
+    <Style Selector="Button.icon:pressed">
+      <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundListMediumBrush}" />
+    </Style>
+    
+    <Style Selector="Button.icon:disabled">
+      <Setter Property="Opacity" Value="0.5" />
+    </Style>
+    
+    <!-- 搜索框样式 -->
+    <Style Selector="TextBox.clearButton">
+      <Setter Property="InnerRightContent">
+        <Template>
+          <Button Classes="icon" 
+                  Command="{Binding $parent[TextBox].Clear}"
+                  IsVisible="{Binding $parent[TextBox].Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <Image Source="{SvgImage avares://Gemini.Avalonia/Assets/Icons/close.svg}" Width="10" Height="10" />
+          </Button>
+        </Template>
+      </Setter>
+    </Style>
+    
+    <!-- 工具栏分隔符样式 -->
+    <Style Selector="StackPanel > Separator">
+      <Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" />
+      <Setter Property="Width" Value="1" />
+      <Setter Property="Height" Value="16" />
+      <Setter Property="Margin" Value="2,0" />
+    </Style>
+    
+    <!-- 右键菜单分隔符样式 -->
+    <Style Selector="ContextMenu Separator">
+      <Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" />
+      <Setter Property="Height" Value="1" />
+      <Setter Property="Margin" Value="0,2" />
+    </Style>
+  </UserControl.Styles>
+  
+</UserControl>
