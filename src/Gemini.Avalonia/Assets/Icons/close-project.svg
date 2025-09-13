@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <linearGradient id="closeProjectGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#64748B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#475569;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- 文档主体 -->
+  <rect x="4" y="3" width="10" height="13" fill="url(#closeProjectGrad)" stroke="#334155" stroke-width="1.5" rx="2"/>
+  <!-- 文档折角 -->
+  <path d="M11 3v3h3L11 3z" fill="#94A3B8" stroke="#334155" stroke-width="1"/>
+  <!-- 文档内容线条（较暗表示非活跃状态） -->
+  <rect x="6" y="8" width="6" height="1" fill="#FFFFFF" opacity="0.4" rx="0.5"/>
+  <rect x="6" y="10" width="4" height="1" fill="#FFFFFF" opacity="0.4" rx="0.5"/>
+  <rect x="6" y="12" width="5" height="1" fill="#FFFFFF" opacity="0.4" rx="0.5"/>
+  <!-- 关闭X（红色圆形背景） -->
+  <circle cx="15" cy="15" r="2.5" fill="#DC2626" stroke="#FFFFFF" stroke-width="1.5"/>
+  <path d="M13.5 13.5l3 3M16.5 13.5l-3 3" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

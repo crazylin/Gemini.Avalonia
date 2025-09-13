@@ -23,6 +23,7 @@ using Gemini.Avalonia.Modules.StatusBar;
 using Gemini.Avalonia.Modules.ToolBars;
 using Gemini.Avalonia.Views;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Gemini.Avalonia.Framework.Commands;
 using System.Diagnostics;
 
@@ -208,11 +209,23 @@ namespace Gemini.Avalonia.Framework
         /// </summary>
         private void InitializeLogging()
         {
-            var logger = new Logger();
-            Logger.EnableConsoleOutput(true);
-            Logger.SetMinLogLevel(Gemini.Avalonia.Framework.Logging.LogLevel.Debug);
-            LogManager.Initialize(logger);
-            LogManager.Info("AppBootstrapper", "日志系统初始化完成");
+            // 创建 Microsoft.Extensions.Logging 日志工厂
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .SetMinimumLevel(LogLevel.Debug)
+                    .AddConsole()
+                    .AddDebug();
+                
+                // 在发布模式下，只显示信息级别及以上的日志
+#if RELEASE
+                builder.SetMinimumLevel(LogLevel.Information);
+#endif
+            });
+            
+            // 使用新的日志工厂初始化LogManager
+            LogManager.Initialize(loggerFactory);
+            LogManager.Info("AppBootstrapper", "日志系统初始化完成 - 使用 Microsoft.Extensions.Logging");
         }
         
         /// <summary>

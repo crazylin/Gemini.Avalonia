@@ -1,22 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
   <defs>
-    <linearGradient id="xamlGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#42A5F5;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1976D2;stop-opacity:1" />
+    <linearGradient id="xamlFileGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563EB;stop-opacity:1" />
     </linearGradient>
   </defs>
   <!-- 文件主体 -->
-  <path d="M3 2c-0.6 0-1 0.4-1 1v10c0 0.6 0.4 1 1 1h8c0.6 0 1-0.4 1-1V5.5L9.5 2H3z" fill="url(#xamlGrad)" stroke="#0D47A1" stroke-width="0.5" rx="0.5"/>
+  <rect x="3" y="2" width="11" height="16" fill="url(#xamlFileGrad)" stroke="#1D4ED8" stroke-width="1.5" rx="2"/>
   <!-- 文件折角 -->
-  <path d="M9.5 2v3.5H13L9.5 2z" fill="#90CAF9" stroke="#0D47A1" stroke-width="0.3"/>
-  <!-- XAML 标识背景 -->
-  <rect x="3.5" y="7" width="7" height="4" fill="#FFFFFF" stroke="#0D47A1" stroke-width="0.3" rx="0.5" opacity="0.95"/>
-  <!-- XAML 文字 -->
-  <text x="4.2" y="9.8" font-family="Arial, sans-serif" font-size="2.2" font-weight="bold" fill="#42A5F5">XAML</text>
-  <!-- 装饰元素 -->
-  <rect x="4.5" y="4.5" width="3" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
-  <rect x="4.5" y="5.5" width="2" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
-  <!-- XML 标签装饰 -->
-  <path d="M4.5 12.2l0.8-0.4 0.8 0.4" fill="none" stroke="#90CAF9" stroke-width="0.4" stroke-linecap="round" opacity="0.7"/>
-  <path d="M8.5 12.2l0.8-0.4 0.8 0.4" fill="none" stroke="#90CAF9" stroke-width="0.4" stroke-linecap="round" opacity="0.7"/>
+  <path d="M11 2v4h3L11 2z" fill="#93C5FD" stroke="#1D4ED8" stroke-width="1"/>
+  <!-- XAML 标签符号 -->
+  <text x="5" y="11" font-family="monospace" font-size="8" fill="#FFFFFF" opacity="0.9">&lt;UI/&gt;</text>
+  <!-- XML 标签行暗示 -->
+  <rect x="5" y="13" width="1" height="0.6" fill="#FFFFFF" opacity="0.7" rx="0.3"/>
+  <rect x="6.5" y="13" width="3" height="0.6" fill="#FFFFFF" opacity="0.7" rx="0.3"/>
+  <rect x="10" y="13" width="1" height="0.6" fill="#FFFFFF" opacity="0.7" rx="0.3"/>
+  <rect x="6" y="15" width="4" height="0.6" fill="#FFFFFF" opacity="0.7" rx="0.3"/>
+  <rect x="10.5" y="15" width="0.5" height="0.6" fill="#FFFFFF" opacity="0.7" rx="0.3"/>
+  <!-- 文件类型标识 -->
+  <circle cx="15" cy="15" r="2" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1"/>
+  <text x="15" y="16.5" text-anchor="middle" font-family="sans-serif" font-size="4.5" font-weight="bold" fill="#2563EB">XML</text>
 </svg>

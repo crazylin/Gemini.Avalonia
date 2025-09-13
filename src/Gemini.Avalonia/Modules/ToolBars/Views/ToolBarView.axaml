@@ -23,7 +23,7 @@
         <Button.DataTemplates>
           <DataTemplate DataType="{x:Type models:ButtonToolBarItem}" x:DataType="models:ButtonToolBarItem">
             <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
-              <Image Source="{Binding IconSource, Converter={x:Static converters:UriToSvgConverter.Instance}}" Width="16" Height="16" VerticalAlignment="Center" />
+              <Image Source="{Binding IconSource, Converter={x:Static converters:UriToSvgConverter.Instance}}" Width="20" Height="20" VerticalAlignment="Center" />
               <TextBlock Text="{Binding Text}" IsVisible="{Binding ImageOnly, Converter={x:Static BoolConverters.Not}}" VerticalAlignment="Center" FontSize="12"></TextBlock>
             </StackPanel>
           </DataTemplate>
@@ -42,7 +42,7 @@
         <ToggleButton.DataTemplates>
           <DataTemplate DataType="{x:Type models:ToggleButtonToolBarItem}" x:DataType="models:ToggleButtonToolBarItem">
             <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
-              <Image Source="{Binding IconSource, Converter={x:Static converters:UriToSvgConverter.Instance}}" Width="16" Height="16" VerticalAlignment="Center" />
+              <Image Source="{Binding IconSource, Converter={x:Static converters:UriToSvgConverter.Instance}}" Width="20" Height="20" VerticalAlignment="Center" />
               <TextBlock Text="{Binding Text}" IsVisible="{Binding ImageOnly, Converter={x:Static BoolConverters.Not}}" VerticalAlignment="Center" FontSize="12"></TextBlock>
             </StackPanel>
           </DataTemplate>
@@ -57,20 +57,33 @@
   </UserControl.DataTemplates>
 
   <ItemsControl ItemsSource="{Binding Items}" IsVisible="{Binding Visible}" x:DataType="toolBars:IToolBars">
+    <!-- 让多个工具栏横向排布 -->
+    <ItemsControl.ItemsPanel>
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Horizontal" Spacing="0"/>
+      </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>
       <DataTemplate DataType="{x:Type models:ToolBarModel}" x:DataType="models:ToolBarModel">
-        <ItemsControl BorderThickness="0" ItemsSource="{Binding Items}" Padding="0" Margin="0" Background="Transparent">
-          <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-              <StackPanel Orientation="Horizontal" Spacing="0"/>
-            </ItemsPanelTemplate>
-          </ItemsControl.ItemsPanel>
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <ContentControl Content="{Binding}" />
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <StackPanel Orientation="Horizontal">
+          <!-- 工具栏分隔符 -->
+          <Border Width="1" Height="24" Background="#E0E0E0" 
+                  Margin="2,0" VerticalAlignment="Center" Opacity="0.6" />
+          
+          <!-- 工具栏内容 -->
+          <ItemsControl BorderThickness="0" ItemsSource="{Binding Items}" Padding="0" Margin="0" Background="Transparent">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="0"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <ContentControl Content="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
       </DataTemplate>
     </ItemsControl.ItemTemplate>
   </ItemsControl>

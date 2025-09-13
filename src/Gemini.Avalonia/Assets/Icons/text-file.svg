@@ -1,23 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
   <defs>
     <linearGradient id="textFileGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#78909C;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#546E7A;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#94A3B8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#64748B;stop-opacity:1" />
     </linearGradient>
   </defs>
   <!-- 文件主体 -->
-  <path d="M3 2c-0.6 0-1 0.4-1 1v10c0 0.6 0.4 1 1 1h8c0.6 0 1-0.4 1-1V5.5L9.5 2H3z" fill="url(#textFileGrad)" stroke="#37474F" stroke-width="0.5" rx="0.5"/>
+  <rect x="3" y="2" width="11" height="16" fill="url(#textFileGrad)" stroke="#475569" stroke-width="1.5" rx="2"/>
   <!-- 文件折角 -->
-  <path d="M9.5 2v3.5H13L9.5 2z" fill="#B0BEC5" stroke="#37474F" stroke-width="0.3"/>
-  <!-- 文本内容线条 -->
-  <rect x="4.5" y="6" width="5" height="0.5" fill="#FFFFFF" opacity="0.8" rx="0.2"/>
-  <rect x="4.5" y="7.5" width="4" height="0.5" fill="#FFFFFF" opacity="0.8" rx="0.2"/>
-  <rect x="4.5" y="9" width="5.5" height="0.5" fill="#FFFFFF" opacity="0.8" rx="0.2"/>
-  <rect x="4.5" y="10.5" width="3.5" height="0.5" fill="#FFFFFF" opacity="0.8" rx="0.2"/>
-  <rect x="4.5" y="12" width="4.5" height="0.5" fill="#FFFFFF" opacity="0.8" rx="0.2"/>
-  <!-- 文本标识 -->
-  <rect x="4.5" y="4.5" width="2" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
-  <!-- 装饰元素 -->
-  <circle cx="10.5" cy="12.5" r="0.4" fill="#B0BEC5" opacity="0.6"/>
-  <circle cx="11.5" cy="12.5" r="0.4" fill="#B0BEC5" opacity="0.6"/>
+  <path d="M11 2v4h3L11 2z" fill="#CBD5E1" stroke="#475569" stroke-width="1"/>
+  <!-- 文本行 -->
+  <rect x="5" y="8" width="6" height="0.8" fill="#FFFFFF" opacity="0.9" rx="0.4"/>
+  <rect x="5" y="10" width="5" height="0.8" fill="#FFFFFF" opacity="0.9" rx="0.4"/>
+  <rect x="5" y="12" width="7" height="0.8" fill="#FFFFFF" opacity="0.9" rx="0.4"/>
+  <rect x="5" y="14" width="4" height="0.8" fill="#FFFFFF" opacity="0.9" rx="0.4"/>
+  <rect x="5" y="16" width="5.5" height="0.8" fill="#FFFFFF" opacity="0.9" rx="0.4"/>
+  <!-- 文件类型标识 -->
+  <circle cx="15" cy="15" r="2" fill="#FFFFFF" stroke="#475569" stroke-width="1"/>
+  <text x="15" y="16.5" text-anchor="middle" font-family="serif" font-size="6" font-weight="bold" fill="#64748B">T</text>
 </svg>

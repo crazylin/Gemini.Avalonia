@@ -162,5 +162,63 @@
     <system:String x:Key="AppearanceSettings.ColorScheme">配色方案:</system:String>
     <system:String x:Key="AppearanceSettings.WindowOpacity">窗口透明度:</system:String>
     <system:String x:Key="AppearanceSettings.CustomCssPath">自定义CSS路径:</system:String>
+    <system:String x:Key="AppearanceSettings.EnableAnimations">启用动画效果</system:String>
+    <system:String x:Key="AppearanceSettings.ShowGridLines">显示网格线</system:String>
+    <system:String x:Key="AppearanceSettings.CustomStylePlaceholder">留空使用默认样式</system:String>
+    
+    <!-- Demo界面文本 -->
+    <system:String x:Key="Demo.SaveButton">保存</system:String>
+    <system:String x:Key="Demo.SaveAsButton">另存为</system:String>
+    <system:String x:Key="Demo.SaveTooltip">保存文档 (Ctrl+S)</system:String>
+    <system:String x:Key="Demo.SaveAsTooltip">另存为...</system:String>
+    <system:String x:Key="Demo.DocumentPath">路径: {0}</system:String>
+    <system:String x:Key="Demo.ContentPlaceholder">在此输入文档内容...</system:String>
+    <system:String x:Key="Demo.ModifiedStatus">已修改</system:String>
+    <system:String x:Key="Demo.SavedStatus">已保存</system:String>
+    <system:String x:Key="Demo.CharacterCount">字符数: {0}</system:String>
+    <system:String x:Key="Demo.PropertyType">类型: {0}</system:String>
+    
+    <!-- 常规设置选项 -->
+    <system:String x:Key="GeneralSettings.ConfirmExit">退出时确认</system:String>
+    <system:String x:Key="GeneralSettings.ShowWelcomeScreen">启动时显示欢迎屏幕</system:String>
+    <system:String x:Key="GeneralSettings.AutoSave">自动保存</system:String>
+    <system:String x:Key="GeneralSettings.EnableDebugMode">启用调试模式</system:String>
+    
+    <!-- 编辑器设置选项 -->
+    <system:String x:Key="EditorSettings.ShowLineNumbers">显示行号</system:String>
+    <system:String x:Key="EditorSettings.WordWrap">自动换行</system:String>
+    <system:String x:Key="EditorSettings.ShowWhitespace">显示空白字符</system:String>
+    <system:String x:Key="EditorSettings.HighlightCurrentLine">高亮当前行</system:String>
+    <system:String x:Key="EditorSettings.BracketMatching">括号匹配</system:String>
+    <system:String x:Key="EditorSettings.InsertSpaces">插入空格而不是制表符</system:String>
+    <system:String x:Key="EditorSettings.AutoIndent">自动缩进</system:String>
+    
+    <!-- 输出窗口 -->
+    <system:String x:Key="Output.CategoryMessage">当前类别 {0} 中没有消息</system:String>
+    
+    <!-- 工具栏定义 -->
+    <system:String x:Key="WindowManagement.ToolBar">窗口管理</system:String>
+    
+    <!-- 语言选项 -->
+    <system:String x:Key="Language.FollowSystem">跟随系统</system:String>
+    <system:String x:Key="Language.Chinese.Full">中文</system:String>
+    
+    <!-- 主题选项 -->
+    <system:String x:Key="Theme.Light.Name">浅色</system:String>
+    <system:String x:Key="Theme.Dark.Name">深色</system:String>
+    <system:String x:Key="Theme.Auto.Name">自动</system:String>
+    
+    <!-- 日志消息（用户可见部分） -->
+    <system:String x:Key="Log.AppInitialized">应用程序初始化完成</system:String>
+    <system:String x:Key="Log.AppStarted">开始启动应用程序</system:String>
+    <system:String x:Key="Log.AppStartComplete">应用程序启动完成</system:String>
+    <system:String x:Key="Log.StartupError">启动应用程序时出错: {0}</system:String>
+    <system:String x:Key="Log.LoggingInitialized">日志系统初始化完成 - 使用 Microsoft.Extensions.Logging</system:String>
+    <system:String x:Key="Log.LanguageServiceInitialized">语言服务初始化完成</system:String>
+    <system:String x:Key="Log.MEFContainerInitialized">MEF容器初始化完成</system:String>
+    <system:String x:Key="Log.ToolbarsInitialized">工具栏初始化完成</system:String>
+    <system:String x:Key="Log.ToolsRegistered">工具注册完成</system:String>
+    <system:String x:Key="Log.GlobalResourcesLoaded">全局资源加载完成</system:String>
+    <system:String x:Key="Log.ViewModelBindingsRegistered">ViewModel绑定注册完成</system:String>
     
 </ResourceDictionary>

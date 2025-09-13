@@ -1,91 +1,110 @@
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.Linq;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Gemini.Avalonia.Framework.Logging
 {
     /// <summary>
-    /// 日志级别
-    /// </summary>
-    public enum LogLevel
-    {
-        Debug = 0,
-        Info = 1,
-        Warning = 2,
-        Error = 3
-    }
-    
-    /// <summary>
-    /// 默认日志实现
+    /// 使用 Microsoft.Extensions.Logging 的日志实现
     /// </summary>
     [Export(typeof(ILogger))]
     public class Logger : ILogger
     {
-        private static LogLevel _minLogLevel = LogLevel.Info;
-        private static bool _enableConsoleOutput = false;
+        private Microsoft.Extensions.Logging.ILogger _microsoftLogger;
+        private readonly string _categoryName;
         
         /// <summary>
-        /// 设置最小日志级别
+        /// 静态的日志工厂，用于创建 Microsoft.Extensions.Logging.ILogger 实例
         /// </summary>
-        /// <param name="level">日志级别</param>
-        public static void SetMinLogLevel(LogLevel level)
+        public static ILoggerFactory LoggerFactory { get; set; } = NullLoggerFactory.Instance;
+        
+        public Logger() : this("Gemini.Avalonia")
         {
-            _minLogLevel = level;
+        }
+        
+        public Logger(string categoryName)
+        {
+            _categoryName = categoryName;
+            _microsoftLogger = LoggerFactory.CreateLogger(categoryName);
         }
         
         /// <summary>
-        /// 启用或禁用控制台输出
+        /// 设置日志工厂
         /// </summary>
-        /// <param name="enable">是否启用</param>
-        public static void EnableConsoleOutput(bool enable)
+        /// <param name="loggerFactory">日志工厂</param>
+        public static void SetLoggerFactory(ILoggerFactory loggerFactory)
         {
-            _enableConsoleOutput = enable;
+            LoggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+        }
+        
+        /// <summary>
+        /// 为指定类别创建日志记录器
+        /// </summary>
+        /// <param name="categoryName">类别名称</param>
+        /// <returns>日志记录器实例</returns>
+        public static ILogger CreateLogger(string categoryName)
+        {
+            return new Logger(categoryName);
         }
         
         public void Debug(string message, params object[] args)
         {
-            Log(LogLevel.Debug, message, args);
+            if (args.Length > 0)
+            {
+                _microsoftLogger.LogDebug(message, args);
+            }
+            else
+            {
+                _microsoftLogger.LogDebug(message);
+            }
         }
         
         public void Info(string message, params object[] args)
         {
-            Log(LogLevel.Info, message, args);
+            if (args.Length > 0)
+            {
+                _microsoftLogger.LogInformation(message, args);
+            }
+            else
+            {
+                _microsoftLogger.LogInformation(message);
+            }
         }
         
         public void Warning(string message, params object[] args)
         {
-            Log(LogLevel.Warning, message, args);
+            if (args.Length > 0)
+            {
+                _microsoftLogger.LogWarning(message, args);
+            }
+            else
+            {
+                _microsoftLogger.LogWarning(message);
+            }
         }
         
         public void Error(string message, params object[] args)
         {
-            Log(LogLevel.Error, message, args);
+            if (args.Length > 0)
+            {
+                _microsoftLogger.LogError(message, args);
+            }
+            else
+            {
+                _microsoftLogger.LogError(message);
+            }
         }
         
         public void Error(Exception exception, string message, params object[] args)
         {
-            var fullMessage = args.Length > 0 ? string.Format(message, args) : message;
-            fullMessage += $" Exception: {exception.Message}";
-            Log(LogLevel.Error, fullMessage);
-        }
-        
-        private void Log(LogLevel level, string message, params object[] args)
-        {
-            if (level < _minLogLevel)
-                return;
-                
-            var formattedMessage = args.Length > 0 ? $"{message} {string.Join(" ", args.Select(ar => ar.ToString()))}" : message;
-            var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            var logMessage = $"[{timestamp}] [{level}] {formattedMessage}";
-
-            // 输出到调试器
-            System.Diagnostics.Debug.WriteLine(logMessage);
-            
-            // 可选的控制台输出
-            if (_enableConsoleOutput)
+            if (args.Length > 0)
             {
-                System.Console.WriteLine(logMessage);
+                _microsoftLogger.LogError(exception, message, args);
+            }
+            else
+            {
+                _microsoftLogger.LogError(exception, message);
             }
         }
     }

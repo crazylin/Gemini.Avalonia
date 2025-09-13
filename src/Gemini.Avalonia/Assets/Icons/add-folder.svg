@@ -1,23 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
   <defs>
     <linearGradient id="addFolderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFA726;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#F57C00;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#FBBF24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:1" />
     </linearGradient>
   </defs>
   <!-- 文件夹主体 -->
-  <path d="M1.5 4.5c0-0.5 0.4-1 1-1h3l1 1.5h6c0.6 0 1 0.4 1 1v6c0 0.6-0.4 1-1 1h-10c-0.6 0-1-0.4-1-1v-7.5z" fill="url(#addFolderGrad)" stroke="#E65100" stroke-width="0.5" rx="0.5"/>
-  <!-- 文件夹顶部高光 -->
-  <path d="M1.5 4.5c0-0.5 0.4-1 1-1h3l1 1.5h6c0.6 0 1 0.4 1 1v1h-12v-2.5z" fill="#FFB74D" opacity="0.7" rx="0.5"/>
-  <!-- 文件夹标签 -->
-  <path d="M2.5 3.5h3l1 1.5h-4v-1.5z" fill="#FF9800" stroke="#E65100" stroke-width="0.3" rx="0.3"/>
-  <!-- 加号背景圆圈 -->
-  <circle cx="8" cy="9" r="2.5" fill="#FFFFFF" stroke="#E65100" stroke-width="0.3" opacity="0.95"/>
-  <!-- 加号 -->
-  <path d="M7.2 8.2h1.6v1.6H7.2z" fill="#FFA726" rx="0.2"/>
-  <path d="M6.5 8.7h3v0.6h-3z" fill="#FFA726" rx="0.1"/>
-  <path d="M7.7 7.5h0.6v3h-0.6z" fill="#FFA726" rx="0.1"/>
-  <!-- 装饰元素 -->
-  <circle cx="4" cy="6.5" r="0.6" fill="#FFFFFF" opacity="0.4"/>
-  <circle cx="12" cy="6.5" r="0.6" fill="#FFFFFF" opacity="0.4"/>
+  <path d="M2 7c0-1 0.5-1.5 1.5-1.5h2.5l1.5 2h7c1 0 1.5 0.5 1.5 1.5v6c0 1-0.5 1.5-1.5 1.5h-11c-1 0-1.5-0.5-1.5-1.5V7z" 
+        fill="url(#addFolderGrad)" stroke="#D97706" stroke-width="1.5" rx="2"/>
+  <!-- 文件夹顶部标签 -->
+  <path d="M3.5 5.5h2.5l1.5 2h-4V5.5z" fill="#FCD34D" stroke="#D97706" stroke-width="1" rx="1"/>
+  <!-- 文件夹高光 -->
+  <rect x="3" y="8.5" width="11" height="1.5" fill="#FEF3C7" opacity="0.6" rx="0.75"/>
+  <!-- 添加按钮（绿色圆形背景） -->
+  <circle cx="15" cy="14" r="2.5" fill="#059669" stroke="#FFFFFF" stroke-width="1.5"/>
+  <path d="M14 14h2M15 13v2" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
 </svg>

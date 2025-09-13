@@ -3,7 +3,7 @@ using System;
 namespace Gemini.Avalonia.Framework.Logging
 {
     /// <summary>
-    /// 日志接口
+    /// Gemini 日志接口（兼容旧版本API的包装器）
     /// </summary>
     public interface ILogger
     {

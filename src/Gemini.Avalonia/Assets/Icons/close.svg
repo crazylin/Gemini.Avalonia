@@ -1,20 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
   <defs>
     <linearGradient id="closeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#78909C;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#455A64;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#EF4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <!-- 关闭按钮背景圆圈 -->
-  <circle cx="8" cy="8" r="6.5" fill="url(#closeGrad)" stroke="#263238" stroke-width="0.5"/>
-  <!-- 内部高光圆圈 -->
-  <circle cx="8" cy="8" r="5.5" fill="#B0BEC5" opacity="0.3"/>
-  <!-- X 符号 -->
-  <path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>
-  <!-- X 符号阴影 -->
-  <path d="M5.7 5.7l4.6 4.6M10.3 5.7l-4.6 4.6" stroke="#37474F" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
-  <!-- 装饰高光 -->
-  <circle cx="6" cy="6" r="0.8" fill="#FFFFFF" opacity="0.4"/>
-  <!-- 边缘装饰 -->
-  <circle cx="8" cy="8" r="6.5" fill="none" stroke="#90A4AE" stroke-width="0.3" opacity="0.6"/>
+  <!-- 圆形背景 -->
+  <circle cx="10" cy="10" r="8" fill="url(#closeGrad)" stroke="#B91C1C" stroke-width="1.5"/>
+  <!-- X 叉号 -->
+  <path d="M7 7l6 6M13 7l-6 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  <!-- 内圆高光 -->
+  <circle cx="10" cy="10" r="6" fill="none" stroke="#FFFFFF" stroke-width="0.5" opacity="0.3"/>
 </svg>

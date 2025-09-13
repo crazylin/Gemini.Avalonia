@@ -1,22 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
   <defs>
-    <linearGradient id="jsonGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFCA28;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#F57F17;stop-opacity:1" />
+    <linearGradient id="jsonFileGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D97706;stop-opacity:1" />
     </linearGradient>
   </defs>
   <!-- 文件主体 -->
-  <path d="M3 2c-0.6 0-1 0.4-1 1v10c0 0.6 0.4 1 1 1h8c0.6 0 1-0.4 1-1V5.5L9.5 2H3z" fill="url(#jsonGrad)" stroke="#E65100" stroke-width="0.5" rx="0.5"/>
+  <rect x="3" y="2" width="11" height="16" fill="url(#jsonFileGrad)" stroke="#B45309" stroke-width="1.5" rx="2"/>
   <!-- 文件折角 -->
-  <path d="M9.5 2v3.5H13L9.5 2z" fill="#FFD54F" stroke="#E65100" stroke-width="0.3"/>
-  <!-- JSON 标识背景 -->
-  <rect x="3.5" y="7" width="7" height="4" fill="#FFFFFF" stroke="#E65100" stroke-width="0.3" rx="0.5" opacity="0.95"/>
-  <!-- JSON 文字 -->
-  <text x="4.2" y="9.8" font-family="Arial, sans-serif" font-size="2.2" font-weight="bold" fill="#FFCA28">JSON</text>
-  <!-- 装饰元素 -->
-  <rect x="4.5" y="4.5" width="3" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
-  <rect x="4.5" y="5.5" width="2" height="0.4" fill="#FFFFFF" opacity="0.7" rx="0.2"/>
-  <!-- JSON 大括号装饰 -->
-  <path d="M4.2 12.2c-0.2 0-0.3-0.1-0.3-0.3v-0.4c0-0.2 0.1-0.3 0.3-0.3" fill="none" stroke="#FFD54F" stroke-width="0.4" stroke-linecap="round" opacity="0.7"/>
-  <path d="M9.8 12.2c0.2 0 0.3-0.1 0.3-0.3v-0.4c0-0.2-0.1-0.3-0.3-0.3" fill="none" stroke="#FFD54F" stroke-width="0.4" stroke-linecap="round" opacity="0.7"/>
+  <path d="M11 2v4h3L11 2z" fill="#FCD34D" stroke="#B45309" stroke-width="1"/>
+  <!-- JSON 大括号 -->
+  <text x="6" y="11" font-family="monospace" font-size="12" font-weight="bold" fill="#FFFFFF">{ }</text>
+  <!-- JSON 键值对暗示 -->
+  <rect x="5" y="13" width="2" height="0.6" fill="#FFFFFF" opacity="0.8" rx="0.3"/>
+  <rect x="7.5" y="13" width="0.8" height="0.6" fill="#FFFFFF" opacity="0.6" rx="0.3"/>
+  <rect x="8.8" y="13" width="1.5" height="0.6" fill="#FFFFFF" opacity="0.8" rx="0.3"/>
+  <!-- 文件类型标识 -->
+  <circle cx="15" cy="15" r="2" fill="#FFFFFF" stroke="#B45309" stroke-width="1"/>
+  <text x="15" y="16.5" text-anchor="middle" font-family="sans-serif" font-size="5" font-weight="bold" fill="#D97706">JS</text>
 </svg>

@@ -164,5 +164,63 @@
     <system:String x:Key="AppearanceSettings.ColorScheme">Color scheme:</system:String>
     <system:String x:Key="AppearanceSettings.WindowOpacity">Window opacity:</system:String>
     <system:String x:Key="AppearanceSettings.CustomCssPath">Custom CSS path:</system:String>
+    <system:String x:Key="AppearanceSettings.EnableAnimations">Enable animations</system:String>
+    <system:String x:Key="AppearanceSettings.ShowGridLines">Show grid lines</system:String>
+    <system:String x:Key="AppearanceSettings.CustomStylePlaceholder">Leave empty to use default style</system:String>
+    
+    <!-- Demo UI Text -->
+    <system:String x:Key="Demo.SaveButton">Save</system:String>
+    <system:String x:Key="Demo.SaveAsButton">Save As</system:String>
+    <system:String x:Key="Demo.SaveTooltip">Save document (Ctrl+S)</system:String>
+    <system:String x:Key="Demo.SaveAsTooltip">Save as...</system:String>
+    <system:String x:Key="Demo.DocumentPath">Path: {0}</system:String>
+    <system:String x:Key="Demo.ContentPlaceholder">Enter document content here...</system:String>
+    <system:String x:Key="Demo.ModifiedStatus">Modified</system:String>
+    <system:String x:Key="Demo.SavedStatus">Saved</system:String>
+    <system:String x:Key="Demo.CharacterCount">Character count: {0}</system:String>
+    <system:String x:Key="Demo.PropertyType">Type: {0}</system:String>
+    
+    <!-- General Settings Options -->
+    <system:String x:Key="GeneralSettings.ConfirmExit">Confirm on exit</system:String>
+    <system:String x:Key="GeneralSettings.ShowWelcomeScreen">Show welcome screen on startup</system:String>
+    <system:String x:Key="GeneralSettings.AutoSave">Auto save</system:String>
+    <system:String x:Key="GeneralSettings.EnableDebugMode">Enable debug mode</system:String>
+    
+    <!-- Editor Settings Options -->
+    <system:String x:Key="EditorSettings.ShowLineNumbers">Show line numbers</system:String>
+    <system:String x:Key="EditorSettings.WordWrap">Word wrap</system:String>
+    <system:String x:Key="EditorSettings.ShowWhitespace">Show whitespace characters</system:String>
+    <system:String x:Key="EditorSettings.HighlightCurrentLine">Highlight current line</system:String>
+    <system:String x:Key="EditorSettings.BracketMatching">Bracket matching</system:String>
+    <system:String x:Key="EditorSettings.InsertSpaces">Insert spaces instead of tabs</system:String>
+    <system:String x:Key="EditorSettings.AutoIndent">Auto indent</system:String>
+    
+    <!-- Output Window -->
+    <system:String x:Key="Output.CategoryMessage">No messages in current category {0}</system:String>
+    
+    <!-- Toolbar Definitions -->
+    <system:String x:Key="WindowManagement.ToolBar">Window Management</system:String>
+    
+    <!-- Language Options -->
+    <system:String x:Key="Language.FollowSystem">Follow System</system:String>
+    <system:String x:Key="Language.Chinese.Full">Chinese</system:String>
+    
+    <!-- Theme Options -->
+    <system:String x:Key="Theme.Light.Name">Light</system:String>
+    <system:String x:Key="Theme.Dark.Name">Dark</system:String>
+    <system:String x:Key="Theme.Auto.Name">Auto</system:String>
+    
+    <!-- Log Messages (User-visible parts) -->
+    <system:String x:Key="Log.AppInitialized">Application initialization completed</system:String>
+    <system:String x:Key="Log.AppStarted">Starting application</system:String>
+    <system:String x:Key="Log.AppStartComplete">Application startup completed</system:String>
+    <system:String x:Key="Log.StartupError">Error starting application: {0}</system:String>
+    <system:String x:Key="Log.LoggingInitialized">Logging system initialized - using Microsoft.Extensions.Logging</system:String>
+    <system:String x:Key="Log.LanguageServiceInitialized">Language service initialization completed</system:String>
+    <system:String x:Key="Log.MEFContainerInitialized">MEF container initialization completed</system:String>
+    <system:String x:Key="Log.ToolbarsInitialized">Toolbar initialization completed</system:String>
+    <system:String x:Key="Log.ToolsRegistered">Tool registration completed</system:String>
+    <system:String x:Key="Log.GlobalResourcesLoaded">Global resources loading completed</system:String>
+    <system:String x:Key="Log.ViewModelBindingsRegistered">ViewModel binding registration completed</system:String>
     
 </ResourceDictionary>

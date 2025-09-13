@@ -17,10 +17,10 @@ namespace Gemini.Avalonia.Modules.Settings.ViewModels
     public partial class ApplicationSettingsViewModel : ObservableObject, ISettingsEditor
     {
         [ObservableProperty]
-        private string _selectedLanguage = "跟随系统";
+        private string _selectedLanguage = "Follow System";
 
         [ObservableProperty]
-        private string _selectedTheme = "浅色";
+        private string _selectedTheme = "Light";
 
         [ObservableProperty]
         private double _fontSize = 12.0;
@@ -73,16 +73,16 @@ namespace Gemini.Avalonia.Modules.Settings.ViewModels
             
             AvailableLanguages = new ObservableCollection<string>
             {
-                "跟随系统",
+                "Follow System",
                 _localizationService.GetString("Language.Chinese"),
                 _localizationService.GetString("Language.English")
             };
 
             AvailableThemes = new ObservableCollection<string>
             {
-                "浅色",
-                "深色",
-                "自动"
+                "Light",
+                "Dark",
+                "Auto"
             };
 
             AvailableFonts = new ObservableCollection<string>
@@ -113,8 +113,8 @@ namespace Gemini.Avalonia.Modules.Settings.ViewModels
 
         private void LoadSettings()
         {
-            SelectedLanguage = _configurationService.GetValue("Application.Language", "跟随系统");
-            SelectedTheme = _configurationService.GetValue("Application.Theme", "浅色");
+            SelectedLanguage = _configurationService.GetValue("Application.Language", "Follow System");
+            SelectedTheme = _configurationService.GetValue("Application.Theme", "Light");
             FontSize = _configurationService.GetValue("Application.FontSize", 12.0);
             FontFamily = _configurationService.GetValue("Application.FontFamily", "Microsoft YaHei UI");
             ShowStatusBar = _configurationService.GetValue("Application.ShowStatusBar", true);
@@ -144,7 +144,7 @@ namespace Gemini.Avalonia.Modules.Settings.ViewModels
                 CultureInfo targetCulture;
                 switch (SelectedLanguage)
                 {
-                    case "中文":
+                    case "Chinese":
                         targetCulture = new CultureInfo("zh-CN");
                         break;
                     case "English":
@@ -174,13 +174,13 @@ namespace Gemini.Avalonia.Modules.Settings.ViewModels
                 ThemeType targetTheme;
                 switch (SelectedTheme)
                 {
-                    case "浅色":
+                    case "Light":
                         targetTheme = ThemeType.Light;
                         break;
-                    case "深色":
+                    case "Dark":
                         targetTheme = ThemeType.Dark;
                         break;
-                    case "自动":
+                    case "Auto":
                         targetTheme = ThemeType.System;
                         break;
                     default:
