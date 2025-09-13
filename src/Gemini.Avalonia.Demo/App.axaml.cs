@@ -2,11 +2,9 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Gemini.Avalonia.Demo.Modules;
-using Gemini.Avalonia.Framework;
+using Gemini.Avalonia.Demo.Framework;
+using Gemini.Avalonia.Framework.Logging;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Avalonia.Threading;
 using Avalonia.Controls;
 
@@ -18,7 +16,7 @@ namespace Gemini.Avalonia.Demo
     /// </summary>
     public partial class App : Application
     {
-        private AppBootstrapper? _bootstrapper;
+        private DemoBootstrapper? _bootstrapper;
         
         /// <summary>
         /// 初始化应用程序
@@ -37,21 +35,35 @@ namespace Gemini.Avalonia.Demo
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                // 创建并配置应用程序引导器
-                _bootstrapper = new AppBootstrapper()
-                    .AddModule<Gemini.Avalonia.Modules.MainMenu.Module>() // 主菜单模块
-                    .AddModule<Gemini.Avalonia.Modules.ToolBars.Module>() // 工具栏模块
-                    .AddModule<Gemini.Avalonia.Modules.Settings.Module>() // 设置模块
-                    .AddModule<Gemini.Avalonia.Modules.Output.Module>() // 输出模块
-                    .AddModule<Gemini.Avalonia.Modules.Properties.Module>() // 属性模块
-                    .AddModule<Gemini.Avalonia.Modules.ProjectManagement.Module>() // 项目管理模块
-                    .AddModule<SampleDocumentModule>(); // 示例文档模块
-            
-  
+                Gemini.Avalonia.Views.ShellView? mainWindow = null;
                 
-                // 初始化并启动应用程序
-                _bootstrapper.Initialize();
-                var mainWindow = await _bootstrapper.StartAsync();
+                try
+                {
+                    // 创建Demo引导器 - 使用新的按需加载架构
+                    _bootstrapper = new DemoBootstrapper();
+                    
+                    // 初始化并启动应用程序（这会初始化LogManager）
+                    _bootstrapper.Initialize();
+                    
+                    // 现在可以安全使用LogManager
+                    LogManager.Info("DemoApp", "开始启动Demo应用程序");
+                    mainWindow = await _bootstrapper.StartAsync();
+                    
+                    LogManager.Info("DemoApp", "Demo应用程序初始化和启动完成");
+                }
+                catch (Exception ex)
+                {
+                    // 如果LogManager未初始化，使用Console作为备用
+                    try
+                    {
+                        LogManager.Error("DemoApp", $"Demo应用程序启动失败: {ex.Message}");
+                    }
+                    catch
+                    {
+                        Console.WriteLine($"Demo应用程序启动失败: {ex.Message}");
+                    }
+                    throw;
+                }
                 
                 desktop.MainWindow = mainWindow;
                 
@@ -74,18 +86,68 @@ namespace Gemini.Avalonia.Demo
                 {
                     args.Cancel = true; // 取消默认关闭行为
                     
-                    if (_bootstrapper?.Shell != null)
+                    try
                     {
-                        var canClose = await _bootstrapper.Shell.CloseAsync();
-                        if (canClose)
+                        try
                         {
-                            await _bootstrapper.StopAsync();
+                            LogManager.Info("DemoApp", "开始关闭Demo应用程序");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("开始关闭Demo应用程序");
+                        }
+                        
+                        if (_bootstrapper?.Shell != null)
+                        {
+                            var canClose = await _bootstrapper.Shell.CloseAsync();
+                            if (canClose)
+                            {
+                                try
+                                {
+                                    LogManager.Info("DemoApp", "Demo应用程序关闭完成");
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Demo应用程序关闭完成");
+                                }
+                                desktop.Shutdown();
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    LogManager.Info("DemoApp", "Demo应用程序关闭被取消");
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Demo应用程序关闭被取消");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            try
+                            {
+                                LogManager.Warning("DemoApp", "Shell为空，直接关闭应用程序");
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Shell为空，直接关闭应用程序");
+                            }
                             desktop.Shutdown();
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        desktop.Shutdown();
+                        try
+                        {
+                            LogManager.Error("DemoApp", $"关闭Demo应用程序时出错: {ex.Message}");
+                        }
+                        catch
+                        {
+                            Console.WriteLine($"关闭Demo应用程序时出错: {ex.Message}");
+                        }
+                        desktop.Shutdown(); // 强制关闭
                     }
                 };
             }

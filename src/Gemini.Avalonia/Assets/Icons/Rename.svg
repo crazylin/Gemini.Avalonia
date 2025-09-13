@@ -1,18 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
   <defs>
     <linearGradient id="renameGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#FF9800;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#F57C00;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <!-- 文件背景 -->
-  <path d="M2 2v10c0 0.5 0.5 1 1 1h6c0.5 0 1-0.5 1-1V5l-2-2H3c-0.5 0-1 0.5-1 1z" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="0.5"/>
-  <!-- 文件折角 -->
-  <path d="M8 3v2h2z" fill="#E0E0E0" stroke="#CCCCCC" stroke-width="0.5"/>
-  <!-- 编辑笔 -->
-  <path d="M10 7l3-3c0.3-0.3 0.3-0.8 0-1.1l-0.9-0.9c-0.3-0.3-0.8-0.3-1.1 0l-3 3v2h2z" fill="url(#renameGrad)" stroke="#E65100" stroke-width="0.3"/>
-  <!-- 笔尖 -->
-  <path d="M10 7l-1 1h1v-1z" fill="#FFC107"/>
-  <!-- 编辑线条 -->
-  <path d="M9 8l4 4" stroke="#FF9800" stroke-width="0.5" stroke-dasharray="1,1" opacity="0.6"/>
+  <!-- 文本框背景 -->
+  <rect x="3" y="6" width="14" height="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" rx="2"/>
+  <!-- 文本选择高亮 -->
+  <rect x="4" y="8" width="8" height="4" fill="url(#renameGrad)" opacity="0.3" rx="1"/>
+  <!-- 文本光标 -->
+  <rect x="12" y="8" width="1.5" height="4" fill="#7C3AED"/>
+  <!-- 文本行暗示 -->
+  <rect x="5" y="9" width="6" height="0.8" fill="#FFFFFF" opacity="0.9" rx="0.4"/>
+  <rect x="5" y="11" width="4" height="0.8" fill="#FFFFFF" opacity="0.9" rx="0.4"/>
+  <!-- 编辑图标 -->
+  <path d="M14 3l3 3-2 2-3-3 2-2z" fill="#7C3AED" stroke="#6D28D9" stroke-width="1"/>
+  <circle cx="15.5" cy="4.5" r="0.5" fill="#FFFFFF"/>
 </svg>

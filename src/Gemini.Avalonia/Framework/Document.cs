@@ -41,7 +41,12 @@ namespace Gemini.Avalonia.Framework
         public string DisplayName
         {
             get => _displayName;
-            set => this.RaiseAndSetIfChanged(ref _displayName, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _displayName, value);
+                // 同步设置Title属性，用于停靠面板显示
+                Title = value;
+            }
         }
         
         /// <summary>
@@ -145,6 +150,9 @@ namespace Gemini.Avalonia.Framework
             base.CanClose = true;
             base.CanFloat = true;
             base.CanPin = false;
+            
+            // 设置默认标题
+            Title = _displayName;
         }
         
         /// <summary>

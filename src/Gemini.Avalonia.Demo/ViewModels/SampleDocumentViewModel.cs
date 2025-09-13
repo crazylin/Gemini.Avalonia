@@ -80,20 +80,63 @@ namespace Gemini.Avalonia.Demo.ViewModels
         /// </summary>
         public ICommand SaveAsCommand { get; }
         
+        private bool _isInitializing = true;
+        
         /// <summary>
         /// 构造函数
         /// </summary>
         public SampleDocumentViewModel()
         {
+            // 先设置默认内容
+            _content = "欢迎使用Gemini.Avalonia框架！\n\n这是一个示例文档，您可以在这里编辑文本内容。";
             DisplayName = "未命名文档";
             
             // 创建命令
             SaveCommand = ReactiveCommand.CreateFromTask(SaveAsync, this.WhenAnyValue(x => x.IsDirty));
             SaveAsCommand = ReactiveCommand.CreateFromTask(SaveAsAsync);
             
-            // 监听内容变化
+            // 监听内容变化（在初始化完成后）
             this.WhenAnyValue(x => x.Content)
-                .Subscribe(_ => IsDirty = true);
+                .Subscribe(_ => 
+                {
+                    if (!_isInitializing)
+                        IsDirty = true;
+                });
+                
+            // 初始化时不标记为脏
+            IsDirty = false;
+            _isInitializing = false;
+            
+            Console.WriteLine($"SampleDocumentViewModel 构造完成，Content长度: {_content?.Length ?? 0}");
+        }
+        
+        /// <summary>
+        /// 带内容的构造函数
+        /// </summary>
+        public SampleDocumentViewModel(string content)
+        {
+            // 直接设置内容，避免触发属性变更
+            _content = content ?? string.Empty;
+            DisplayName = "未命名文档";
+            
+            // 创建命令
+            SaveCommand = ReactiveCommand.CreateFromTask(SaveAsync, this.WhenAnyValue(x => x.IsDirty));
+            SaveAsCommand = ReactiveCommand.CreateFromTask(SaveAsAsync);
+            
+            // 监听内容变化（在初始化完成后）
+            this.WhenAnyValue(x => x.Content)
+                .Subscribe(_ => 
+                {
+                    if (!_isInitializing)
+                        IsDirty = true;
+                });
+                
+            // 初始化时不标记为脏
+            IsDirty = false;
+            _isInitializing = false;
+            
+            Console.WriteLine($"SampleDocumentViewModel 构造完成，带内容长度: {_content?.Length ?? 0}");
+            Console.WriteLine($"Content前50字符: {(_content?.Length > 50 ? _content.Substring(0, 50) + "..." : _content)}");
         }
         
         /// <summary>

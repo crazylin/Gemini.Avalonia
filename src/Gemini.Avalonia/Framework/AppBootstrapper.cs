@@ -17,14 +17,15 @@ using Avalonia.Styling;
 using Gemini.Avalonia.Framework.Services;
 using Gemini.Avalonia.Framework.Extensions;
 using Gemini.Avalonia.Framework.Logging;
+using Gemini.Avalonia.Framework.Modules;
 using Gemini.Avalonia.Modules.MainMenu;
 using Gemini.Avalonia.Services;
 using Gemini.Avalonia.Modules.StatusBar;
-using Gemini.Avalonia.Modules.ToolBars;
 using Gemini.Avalonia.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Gemini.Avalonia.Framework.Commands;
+using Gemini.Avalonia.Framework.Performance;
 using System.Diagnostics;
 
 namespace Gemini.Avalonia.Framework
@@ -39,6 +40,7 @@ namespace Gemini.Avalonia.Framework
         private static MefServiceProvider? _serviceProvider;
         private List<Assembly>? _priorityAssemblies;
         private LanguageService? _languageService;
+        private ModuleManager? _moduleManager;
         
         /// <summary>
         /// MEF容器，用于服务定位器模式
@@ -66,6 +68,11 @@ namespace Gemini.Avalonia.Framework
         public ShellView? MainWindow { get; private set; }
         
         /// <summary>
+        /// 模块管理器
+        /// </summary>
+        public IModuleManager? ModuleManager => _moduleManager;
+        
+        /// <summary>
         /// 添加模块
         /// </summary>
         /// <typeparam name="T">模块类型</typeparam>
@@ -90,28 +97,60 @@ namespace Gemini.Avalonia.Framework
         }
         
         /// <summary>
+        /// 按需加载功能模块
+        /// </summary>
+        /// <param name="moduleName">模块名称</param>
+        /// <returns>加载任务</returns>
+        public async Task<bool> LoadFeatureModuleAsync(string moduleName)
+        {
+            if (_moduleManager != null)
+            {
+                return await _moduleManager.LoadModuleAsync(moduleName);
+            }
+            return false;
+        }
+        
+        /// <summary>
+        /// 加载所有功能模块
+        /// </summary>
+        /// <returns>加载任务</returns>
+        public async Task LoadAllFeatureModulesAsync()
+        {
+            if (_moduleManager != null)
+            {
+                await _moduleManager.LoadModulesByCategoryAsync(ModuleCategory.Feature);
+            }
+        }
+        
+        /// <summary>
         /// 初始化应用程序
         /// </summary>
         public AppBootstrapper Initialize()
         {
+            PerformanceMonitor.StartTimer("AppBootstrapper.Initialize");
+            
             // 第一步：初始化日志系统
-            InitializeLogging();
+            PerformanceMonitor.Measure("初始化日志系统", InitializeLogging);
             
             // 第二步：早期语言配置初始化（在任何MEF操作之前）
-            InitializeLanguageConfigurationEarly();
+            PerformanceMonitor.Measure("早期语言配置初始化", InitializeLanguageConfigurationEarly);
             
             // 第三步：初始化语言服务（在程序集扫描之前）
-            InitializeLanguageService();
+            PerformanceMonitor.Measure("初始化语言服务", InitializeLanguageService);
             
             // 第四步：加载语言资源文件（在MEF容器初始化之前）
-            LoadLanguageResourcesEarly();
+            PerformanceMonitor.Measure("加载语言资源文件", LoadLanguageResourcesEarly);
             
             // 第五步：初始化MEF容器和程序集扫描
-            InitializeMefContainer();
+            PerformanceMonitor.Measure("初始化MEF容器", InitializeMefContainer);
             
-            // 第五步：设置全局容器引用
+            // 第六步：设置全局容器引用
             Container = _mefContainer;
             
+            // 第七步：初始化模块管理器
+            PerformanceMonitor.Measure("初始化模块管理器", InitializeModuleManager);
+            
+            PerformanceMonitor.StopTimer("AppBootstrapper.Initialize");
             LogManager.Info("AppBootstrapper", "应用程序初始化完成");
             return this;
         }
@@ -123,6 +162,7 @@ namespace Gemini.Avalonia.Framework
         {
             try
             {
+                PerformanceMonitor.StartTimer("AppBootstrapper.StartAsync");
                 LogManager.Info("AppBootstrapper", "开始启动应用程序");
                 
                 // 确保已初始化
@@ -134,44 +174,76 @@ namespace Gemini.Avalonia.Framework
                 // 获取Shell服务
                 Shell = Container!.GetExportedValue<IShell>();
                 
-                // 预初始化所有模块
-                foreach (var module in _modules)
+                // 使用模块管理器加载核心模块
+                if (_moduleManager != null)
                 {
-                    module.PreInitialize();
+                    await PerformanceMonitor.MeasureAsync("加载核心模块", 
+                        () => _moduleManager.LoadCoreModulesAsync());
                 }
+                
+                // 兼容旧的模块加载方式
+                PerformanceMonitor.Measure("旧模块预初始化", () =>
+                {
+                    foreach (var module in _modules)
+                    {
+                        module.PreInitialize();
+                    }
+                });
                 
                 // 加载全局资源
-                LoadGlobalResources();
+                PerformanceMonitor.Measure("加载全局资源", LoadGlobalResources);
                 
-                // 初始化所有模块
-                foreach (var module in _modules)
+                // 兼容旧的模块初始化方式
+                PerformanceMonitor.Measure("旧模块初始化", () =>
                 {
-                    module.Initialize();
-                }
+                    foreach (var module in _modules)
+                    {
+                        module.Initialize();
+                    }
+                });
                 
                 // 初始化工具栏
-                InitializeToolBars();
+                PerformanceMonitor.Measure("初始化工具栏", InitializeToolBars);
                 
                 // 初始化Shell
-                if (Shell is ShellViewModel shellViewModel)
+                PerformanceMonitor.Measure("初始化Shell", () =>
                 {
-                    shellViewModel.Initialize();
-                }
+                    if (Shell is ShellViewModel shellViewModel)
+                    {
+                        shellViewModel.Initialize();
+                    }
+                });
                 
                 // 创建主窗口
-                MainWindow = new ShellView(Shell as ShellViewModel ?? throw new InvalidOperationException("Shell must be ShellViewModel"));
+                PerformanceMonitor.Measure("创建主窗口", () =>
+                {
+                    MainWindow = new ShellView(Shell as ShellViewModel ?? throw new InvalidOperationException("Shell must be ShellViewModel"));
+                });
                 
                 // 加载默认文档
-                await LoadDefaultDocuments();
+                await PerformanceMonitor.MeasureAsync("加载默认文档", LoadDefaultDocuments);
                 
                 // 注册所有MEF导出的工具
-                RegisterTools();
+                PerformanceMonitor.Measure("注册MEF工具", RegisterTools);
+                
+                // 加载UI模块
+                if (_moduleManager != null)
+                {
+                    await PerformanceMonitor.MeasureAsync("加载UI模块", 
+                        () => _moduleManager.LoadModulesByCategoryAsync(ModuleCategory.UI));
+                }
                 
                 // 后初始化模块
-                foreach (var module in _modules)
+                await PerformanceMonitor.MeasureAsync("模块后初始化", async () =>
                 {
-                    await module.PostInitializeAsync();
-                }
+                    foreach (var module in _modules)
+                    {
+                        await module.PostInitializeAsync();
+                    }
+                });
+                
+                PerformanceMonitor.StopTimer("AppBootstrapper.StartAsync");
+                PerformanceMonitor.LogSummary();
                 
                 LogManager.Info("AppBootstrapper", "应用程序启动完成");
                 return MainWindow;
@@ -203,6 +275,52 @@ namespace Gemini.Avalonia.Framework
         }
         
         #region 私有初始化方法
+        
+        /// <summary>
+        /// 初始化模块管理器
+        /// </summary>
+        private void InitializeModuleManager()
+        {
+            try
+            {
+                LogManager.Info("AppBootstrapper", "开始初始化模块管理器");
+                
+                _moduleManager = new ModuleManager();
+                
+                // 注册所有配置的模块
+                var moduleConfigurations = ModuleConfiguration.GetAllModuleConfigurations();
+                foreach (var config in moduleConfigurations)
+                {
+                    if (config.ModuleType != null)
+                    {
+                        _moduleManager.RegisterModule(config.ModuleType, config);
+                    }
+                }
+                
+                // 注册现有的模块实例
+                foreach (var module in _modules)
+                {
+                    var metadata = new ModuleMetadata
+                    {
+                        Name = module.GetType().Name,
+                        Description = $"Legacy module {module.GetType().Name}",
+                        Category = ModuleCategory.Core,
+                        Priority = 0,
+                        AllowLazyLoading = false,
+                        ModuleType = module.GetType(),
+                        Instance = module
+                    };
+                    _moduleManager.RegisterModule(module.GetType(), metadata);
+                }
+                
+                LogManager.Info("AppBootstrapper", $"模块管理器初始化完成，已注册 {moduleConfigurations.Count} 个模块");
+            }
+            catch (Exception ex)
+            {
+                LogManager.Error("AppBootstrapper", $"初始化模块管理器失败: {ex.Message}");
+                throw;
+            }
+        }
         
         /// <summary>
         /// 初始化日志系统

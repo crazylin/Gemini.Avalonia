@@ -18,22 +18,19 @@
         
         <!-- 工具栏 -->
         <Border Grid.Row="0" 
-                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                Background="LightGray"
+                BorderBrush="Gray"
                 BorderThickness="0,0,0,1"
                 Padding="8,4">
             <StackPanel Orientation="Horizontal" Spacing="8">
-                <Button Content="{DynamicResource Demo.SaveButton}" 
+                <Button Content="保存" 
                         Command="{Binding SaveCommand}"
-                        IsEnabled="{Binding IsDirty}"
-                        ToolTip.Tip="{DynamicResource Demo.SaveTooltip}" />
-                <Button Content="{DynamicResource Demo.SaveAsButton}" 
-                        Command="{Binding SaveAsCommand}"
-                        ToolTip.Tip="{DynamicResource Demo.SaveAsTooltip}" />
+                        IsEnabled="{Binding IsDirty}" />
+                <Button Content="另存为" 
+                        Command="{Binding SaveAsCommand}" />
                 <Separator />
                 <TextBlock Text="{Binding FilePath, StringFormat='路径: {0}'}"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                           VerticalAlignment="Center" />
             </StackPanel>
         </Border>
         
@@ -41,24 +38,38 @@
         <ScrollViewer Grid.Row="1" 
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
-            <TextBox Text="{Binding Content}"
-                     AcceptsReturn="True"
-                     AcceptsTab="True"
-                     TextWrapping="NoWrap"
-                     FontFamily="Consolas,Monaco,Courier New,monospace"
-                     FontSize="14"
-                     Background="Transparent"
-                     BorderThickness="0"
-                     Padding="12"
-                     Watermark="{DynamicResource Demo.ContentPlaceholder}"
-                     VerticalAlignment="Stretch"
-                     HorizontalAlignment="Stretch" />
+            <StackPanel>
+                <!-- 调试信息 -->
+                <Border Background="LightYellow" Padding="5" Margin="5">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Content, StringFormat='绑定内容: {0}'}" 
+                                   TextWrapping="Wrap" MaxWidth="400" />
+                        <TextBlock Text="{Binding DisplayName, StringFormat='文档名: {0}'}" />
+                        <TextBlock Text="DataContext已设置" />
+                    </StackPanel>
+                </Border>
+                
+                <TextBox Text="{Binding Content, Mode=TwoWay}"
+                         AcceptsReturn="True"
+                         AcceptsTab="True"
+                         TextWrapping="Wrap"
+                         FontFamily="Consolas,Monaco,Courier New,monospace"
+                         FontSize="14"
+                         Background="White"
+                         BorderThickness="1"
+                         BorderBrush="Gray"
+                         Padding="12"
+                         Watermark="在此输入文档内容..."
+                         MinHeight="250"
+                         VerticalAlignment="Stretch"
+                         HorizontalAlignment="Stretch" />
+            </StackPanel>
         </ScrollViewer>
         
         <!-- 状态栏 -->
         <Border Grid.Row="2" 
-                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                Background="LightGray"
+                BorderBrush="Gray"
                 BorderThickness="0,1,0,0"
                 Padding="8,4">
             <Grid>
@@ -69,21 +80,18 @@
                 </Grid.ColumnDefinitions>
                 
                 <TextBlock Grid.Column="0"
-                           Text="{Binding IsDirty, Converter={x:Static conv:BoolConverters.ToString}, ConverterParameter='已修改|已保存'}"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                           Text="{Binding IsDirty}"
+                           VerticalAlignment="Center" />
                 
                 <TextBlock Grid.Column="1"
                            Text="{Binding Content.Length, StringFormat='字符数: {0}'}"
                            VerticalAlignment="Center"
-                           Margin="16,0,0,0"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                           Margin="16,0,0,0" />
                 
                 <TextBlock Grid.Column="2"
-                           Text="{DynamicResource Document.TextDocument}"
+                           Text="文本文档"
                            VerticalAlignment="Center"
-                           Margin="16,0,0,0"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                           Margin="16,0,0,0" />
             </Grid>
         </Border>
     </Grid>

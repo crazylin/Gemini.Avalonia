@@ -162,13 +162,26 @@ namespace Gemini.Avalonia.Framework.Extensions
             {
                 try
                 {
+                    Console.WriteLine($"[ViewModelViewBinding] 🎯 自动DataTemplate被调用！创建View: {viewType.Name} for ViewModel: {viewModelType.Name}");
+                    Console.WriteLine($"[ViewModelViewBinding] 数据类型: {data?.GetType().Name ?? "null"}");
+                    
                     var view = (Control?)Activator.CreateInstance(viewType);
                     if (view != null)
+                    {
                         view.DataContext = data;
-                    return view;
+                        Console.WriteLine($"[ViewModelViewBinding] ✅ {viewType.Name} 创建成功，DataContext已设置");
+                        return view;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[ViewModelViewBinding] ❌ 创建 {viewType.Name} 失败：Activator.CreateInstance返回null");
+                        return null;
+                    }
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine($"[ViewModelViewBinding] ❌ 创建 {viewType.Name} 时出错: {ex.Message}");
+                    Console.WriteLine($"[ViewModelViewBinding] 错误详情: {ex.StackTrace}");
                     return null;
                 }
             });

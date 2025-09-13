@@ -16,7 +16,6 @@
         Title="Gemini Avalonia Framework"
         Width="1200" Height="800"
         WindowStartupLocation="CenterScreen">
-    
 
     <DockPanel>
         <!-- 主菜单 -->

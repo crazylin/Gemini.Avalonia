@@ -47,12 +47,8 @@ public class DockFactory : Factory
 
     public override IRootDock CreateLayout()
     {
-        // 创建默认主文档
-        var homeDocument = new Document
-        {
-            Id = "Home",
-            Title = "主页"
-        };
+        // 创建默认主文档 - 使用欢迎页面内容
+        var homeDocument = CreateWelcomeDocument();
 
         // 创建文档停靠区域
         var documentDock = new DocumentDock
@@ -241,12 +237,13 @@ public class DockFactory : Factory
 
     private IDockable CreateDockableFromDocument(GeminiFramework.Document document)
     {
-        return new DocumentDockable
-        {
-            Id = document.Id.ToString(),
-            Title = document.Title,
-            CanClose = document.CanClose
-        };
+        LogManager.Debug("DockFactory", $"创建文档Dockable: {document.Title}, ViewModel类型: {document.GetType().Name}");
+        
+        // Document类本身就继承自DockableBase，所以直接返回文档实例
+        // 这样文档的ViewModel就能被正确地用于视图绑定
+        LogManager.Debug("DockFactory", $"直接返回文档实例作为Dockable: {document.GetType().Name}, Id: {document.Id}");
+        
+        return document;
     }
 
     private IDockable CreateDockableFromTool(GeminiFramework.Tool tool)
@@ -419,6 +416,21 @@ public class DockFactory : Factory
             // 只有中央：中央占用全部空间
             _centerDock.Proportion = 1.0;
         }
+    }
+
+    /// <summary>
+    /// 创建欢迎页面文档
+    /// </summary>
+    /// <returns>欢迎页面文档实例</returns>
+    private GeminiFramework.Document CreateWelcomeDocument()
+    {
+        var welcomePage = new GeminiFramework.WelcomePageViewModel
+        {
+            Id = Guid.NewGuid()
+        };
+
+        LogManager.Info("DockFactory", "创建欢迎页面文档");
+        return welcomePage;
     }
 }
 
