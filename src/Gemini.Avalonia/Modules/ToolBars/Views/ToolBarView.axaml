@@ -51,7 +51,8 @@
     </DataTemplate>
     
     <DataTemplate DataType="{x:Type models:SeparatorToolBarItem}">
-      <Label Content="|"></Label>
+      <Border Width="1" Height="24" Background="#E0E0E0" 
+              Margin="2,0" VerticalAlignment="Center" Opacity="0.6" />
     </DataTemplate>
 
   </UserControl.DataTemplates>

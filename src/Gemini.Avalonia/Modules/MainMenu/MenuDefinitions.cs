@@ -48,9 +48,6 @@ namespace Gemini.Avalonia.Modules.MainMenu
         public static readonly MenuDefinition WindowMenu = new MenuDefinition(MainMenuBar, 4, "Menu.Window");
 
         [Export]
-        public static MenuItemGroupDefinition WindowDocumentListMenuGroup = new MenuItemGroupDefinition(WindowMenu, 10);
-
-        [Export]
         public static readonly MenuDefinition HelpMenu = new MenuDefinition(MainMenuBar, 5, "Menu.Help");
 
         [Export]
