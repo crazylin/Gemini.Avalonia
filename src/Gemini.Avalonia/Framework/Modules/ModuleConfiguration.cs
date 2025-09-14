@@ -55,37 +55,37 @@ namespace Gemini.Avalonia.Framework.Modules
                 
                 // WindowManagement模块已删除 - 窗口管理命令和菜单通过MEF自动注册
                 
-                // // 功能模块 - 按需加载
-                // new ModuleMetadata
-                // {
-                //     Name = "ProjectManagementModule",
-                //     Description = "项目管理模块，提供项目创建、打开、管理功能",
-                //     Category = ModuleCategory.Feature,
-                //     Priority = 100,
-                //     AllowLazyLoading = true,
-                //     ModuleType = typeof(Gemini.Avalonia.Modules.ProjectManagement.Module),
-                //     Dependencies = new List<string> { "MainMenuModule" }
-                // },
+                // 功能模块 - 按需加载
+                new ModuleMetadata
+                {
+                    Name = "ProjectManagementModule",
+                    Description = "项目管理模块，提供项目创建、打开、管理功能",
+                    Category = ModuleCategory.Feature,
+                    Priority = 100,
+                    AllowLazyLoading = true,
+                    ModuleType = typeof(Gemini.Avalonia.Modules.ProjectManagement.Module),
+                    Dependencies = new List<string> { "MainMenuModule" }
+                },
                 
-                // new ModuleMetadata
-                // {
-                //     Name = "OutputModule",
-                //     Description = "输出模块，提供应用程序输出和日志显示功能",
-                //     Category = ModuleCategory.Feature,
-                //     Priority = 110,
-                //     AllowLazyLoading = true,
-                //     ModuleType = typeof(Gemini.Avalonia.Modules.Output.Module)
-                // },
+                new ModuleMetadata
+                {
+                    Name = "OutputModule",
+                    Description = "输出模块，提供应用程序输出和日志显示功能",
+                    Category = ModuleCategory.Feature,
+                    Priority = 110,
+                    AllowLazyLoading = true,
+                    ModuleType = typeof(Gemini.Avalonia.Modules.Output.Module)
+                },
                 
-                // new ModuleMetadata
-                // {
-                //     Name = "PropertiesModule",
-                //     Description = "属性模块，提供对象属性编辑功能",
-                //     Category = ModuleCategory.Feature,
-                //     Priority = 120,
-                //     AllowLazyLoading = true,
-                //     ModuleType = typeof(Gemini.Avalonia.Modules.Properties.Module)
-                // },
+                new ModuleMetadata
+                {
+                    Name = "PropertiesModule",
+                    Description = "属性模块，提供对象属性编辑功能",
+                    Category = ModuleCategory.Feature,
+                    Priority = 120,
+                    AllowLazyLoading = true,
+                    ModuleType = typeof(Gemini.Avalonia.Modules.Properties.Module)
+                },
                 
                 new ModuleMetadata
                 {

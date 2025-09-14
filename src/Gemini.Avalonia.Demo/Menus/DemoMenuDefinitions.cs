@@ -13,15 +13,6 @@ namespace Gemini.Avalonia.Demo.Menus
     /// </summary>
     public static class MenuDefinitions
     {
-        [Export]
-        public static MenuDefinition DemoMenu = new MenuDefinition(Gemini.Avalonia.Modules.MainMenu.MenuDefinitions.MainMenuBar, 600, "Demo");
-        
-        [Export]
-        public static MenuItemGroupDefinition DemoModuleGroup = new MenuItemGroupDefinition(DemoMenu, 0);
-        
-        [Export]
-        public static MenuItemGroupDefinition DemoUtilityGroup = new MenuItemGroupDefinition(DemoMenu, 100);
-
         // 使用核心框架的文件和编辑菜单，添加新的菜单项组
         [Export]
         public static MenuItemGroupDefinition FileSaveGroup = new MenuItemGroupDefinition(Gemini.Avalonia.Modules.MainMenu.MenuDefinitions.FileMenu, 100);
@@ -39,49 +30,9 @@ namespace Gemini.Avalonia.Demo.Menus
         public static MenuItemGroupDefinition EditFindGroup = new MenuItemGroupDefinition(Gemini.Avalonia.Modules.MainMenu.MenuDefinitions.EditMenu, 400);
     }
     
-    /// <summary>
-    /// Demo菜单项定义
-    /// </summary>
-    [Export(typeof(MenuItemDefinition))]
-    public class LoadSampleDocumentModuleMenuItem : CommandMenuItemDefinition<LoadSampleDocumentModuleCommandDefinition>
-    {
-        public LoadSampleDocumentModuleMenuItem()
-            : base(MenuDefinitions.DemoModuleGroup, 0)
-        {
-        }
-    }
-    
-    [Export(typeof(MenuItemDefinition))]
-    public class LoadAllDemoFeaturesMenuItem : CommandMenuItemDefinition<LoadAllDemoFeaturesCommandDefinition>
-    {
-        public LoadAllDemoFeaturesMenuItem()
-            : base(MenuDefinitions.DemoModuleGroup, 1)
-        {
-        }
-    }
-    
-    [Export(typeof(MenuItemDefinition))]
-    public class DemoMenuSeparator : MenuItemDefinition
-    {
-        public DemoMenuSeparator()
-            : base(MenuDefinitions.DemoUtilityGroup, 0)
-        {
-        }
 
-        public override string Header => "-";
-        public override Uri IconSource => null!;
-        public override KeyGesture KeyGesture => null!;
-        public override CommandDefinition CommandDefinition => null!;
-    }
-    
-    [Export(typeof(MenuItemDefinition))]
-    public class ShowModuleStatusMenuItem : CommandMenuItemDefinition<ShowModuleStatusCommandDefinition>
-    {
-        public ShowModuleStatusMenuItem()
-            : base(MenuDefinitions.DemoUtilityGroup, 1)
-        {
-        }
-    }
+ 
+
 
     #region 文件菜单项
 
