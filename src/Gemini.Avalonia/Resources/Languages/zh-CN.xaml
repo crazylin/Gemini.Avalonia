@@ -19,6 +19,14 @@
     <system:String x:Key="SaveFile">保存</system:String>
     <system:String x:Key="SaveAsFile">另存为</system:String>
     <system:String x:Key="ExitApplication">退出</system:String>
+    <system:String x:Key="ExitApplication.ToolTip">退出应用程序</system:String>
+    
+    <!-- 帮助菜单 -->
+    <system:String x:Key="Menu.Help">帮助</system:String>
+    <system:String x:Key="Help.About">关于</system:String>
+    <system:String x:Key="Help.About.ToolTip">显示关于应用程序的信息</system:String>
+    <system:String x:Key="Help.ModuleList">模块列表</system:String>
+    <system:String x:Key="Help.ModuleList.ToolTip">显示已加载的模块列表</system:String>
     
     <!-- 编辑菜单项 -->
     <system:String x:Key="UndoAction">撤销</system:String>

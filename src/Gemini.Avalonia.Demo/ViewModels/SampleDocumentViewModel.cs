@@ -196,16 +196,52 @@ namespace Gemini.Avalonia.Demo.ViewModels
         /// <summary>
         /// 尝试关闭文档
         /// </summary>
-        protected override async Task TryCloseAsync()
+        public override async Task TryCloseAsync()
         {
             if (IsDirty)
             {
-                // 这里应该显示保存确认对话框
-                // 为了演示，我们直接保存
-                await SaveAsync();
+                // 显示保存确认对话框
+                var result = await ShowSaveConfirmationDialog();
+                
+                switch (result)
+                {
+                    case SaveConfirmationResult.Save:
+                        await SaveAsync();
+                        break;
+                    case SaveConfirmationResult.DontSave:
+                        // 不保存，直接关闭
+                        IsDirty = false;
+                        break;
+                    case SaveConfirmationResult.Cancel:
+                        // 用户取消，抛出异常以阻止关闭
+                        throw new OperationCanceledException("用户取消了文档关闭操作");
+                }
             }
             
             await base.TryCloseAsync();
+        }
+        
+        /// <summary>
+        /// 保存确认结果
+        /// </summary>
+        public enum SaveConfirmationResult
+        {
+            Save,       // 保存
+            DontSave,   // 不保存
+            Cancel      // 取消
+        }
+        
+        /// <summary>
+        /// 显示保存确认对话框
+        /// </summary>
+        private async Task<SaveConfirmationResult> ShowSaveConfirmationDialog()
+        {
+            // 目前返回保存，后续可以实现真正的对话框
+            // 这里可以集成Avalonia的消息框或自定义对话框
+            await Task.Delay(10); // 模拟对话框显示延迟
+            
+            // 临时实现：直接保存
+            return SaveConfirmationResult.Save;
         }
         
         /// <summary>

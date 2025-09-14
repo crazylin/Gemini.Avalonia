@@ -21,8 +21,8 @@ namespace Gemini.Avalonia.Demo.Commands
         public const string CommandName = "Demo.LoadSampleDocumentModule";
         
         public override string Name => CommandName;
-        public override string Text => "加载示例文档模块";
-        public override string ToolTip => "演示按需加载示例文档模块";
+        public override string Text => LocalizationService?.GetString("Command.Demo.LoadSampleDocumentModule");
+        public override string ToolTip => LocalizationService?.GetString("Command.Demo.LoadSampleDocumentModule.ToolTip");
         public override Uri IconSource => new Uri("avares://Gemini.Avalonia/Assets/Icons/document.svg");
     }
     
@@ -33,8 +33,8 @@ namespace Gemini.Avalonia.Demo.Commands
         public const string CommandName = "Demo.LoadAllFeatures";
         
         public override string Name => CommandName;
-        public override string Text => "加载所有Demo功能";
-        public override string ToolTip => "一次性加载所有Demo功能模块";
+        public override string Text => LocalizationService?.GetString("Command.Demo.LoadAllFeatures");
+        public override string ToolTip => LocalizationService?.GetString("Command.Demo.LoadAllFeatures.ToolTip");
         public override Uri IconSource => new Uri("avares://Gemini.Avalonia/Assets/Icons/folder.svg");
     }
     
@@ -45,8 +45,8 @@ namespace Gemini.Avalonia.Demo.Commands
         public const string CommandName = "Demo.ShowModuleStatus";
         
         public override string Name => CommandName;
-        public override string Text => "显示模块状态";
-        public override string ToolTip => "显示当前已加载的模块状态信息";
+        public override string Text => LocalizationService?.GetString("Command.Demo.ShowModuleStatus");
+        public override string ToolTip => LocalizationService?.GetString("Command.Demo.ShowModuleStatus.ToolTip");
         public override Uri IconSource => new Uri("avares://Gemini.Avalonia/Assets/Icons/properties.svg");
     }
 }

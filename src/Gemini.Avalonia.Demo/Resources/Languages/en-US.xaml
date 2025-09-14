@@ -1,0 +1,57 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- Menus -->
+    <system:String x:Key="Menu.File">File</system:String>
+    <system:String x:Key="Menu.Edit">Edit</system:String>
+    
+    <!-- Edit Commands -->
+    <system:String x:Key="Command.Edit.Undo">Undo</system:String>
+    <system:String x:Key="Command.Edit.Undo.ToolTip">Undo the last operation (Ctrl+Z)</system:String>
+    
+    <system:String x:Key="Command.Edit.Redo">Redo</system:String>
+    <system:String x:Key="Command.Edit.Redo.ToolTip">Redo the last undone operation (Ctrl+Y)</system:String>
+    
+    <system:String x:Key="Command.Edit.Cut">Cut</system:String>
+    <system:String x:Key="Command.Edit.Cut.ToolTip">Cut the selected text to the clipboard (Ctrl+X)</system:String>
+    
+    <system:String x:Key="Command.Edit.Copy">Copy</system:String>
+    <system:String x:Key="Command.Edit.Copy.ToolTip">Copy the selected text to the clipboard (Ctrl+C)</system:String>
+    
+    <system:String x:Key="Command.Edit.Paste">Paste</system:String>
+    <system:String x:Key="Command.Edit.Paste.ToolTip">Paste text from the clipboard (Ctrl+V)</system:String>
+    
+    <system:String x:Key="Command.Edit.SelectAll">Select All</system:String>
+    <system:String x:Key="Command.Edit.SelectAll.ToolTip">Select all text (Ctrl+A)</system:String>
+    
+    <system:String x:Key="Command.Edit.Find">Find</system:String>
+    <system:String x:Key="Command.Edit.Find.ToolTip">Find text (Ctrl+F)</system:String>
+    
+    <system:String x:Key="Command.Edit.Replace">Replace</system:String>
+    <system:String x:Key="Command.Edit.Replace.ToolTip">Find and replace text (Ctrl+H)</system:String>
+    
+    <system:String x:Key="Command.Edit.GoToLine">Go to Line</system:String>
+    <system:String x:Key="Command.Edit.GoToLine.ToolTip">Go to a specific line number (Ctrl+G)</system:String>
+    
+    <!-- File Commands -->
+    <system:String x:Key="Command.File.Save">Save</system:String>
+    <system:String x:Key="Command.File.Save.ToolTip">Save the document (Ctrl+S)</system:String>
+    
+    <system:String x:Key="Command.File.SaveAs">Save As</system:String>
+    <system:String x:Key="Command.File.SaveAs.ToolTip">Save as (Ctrl+Shift+S)</system:String>
+    
+    <!-- Demo Commands -->
+    <system:String x:Key="Command.Demo.LoadSampleDocumentModule">Load Sample Document Module</system:String>
+    <system:String x:Key="Command.Demo.LoadSampleDocumentModule.ToolTip">Demonstrate on-demand loading of sample document module</system:String>
+    
+    <system:String x:Key="Command.Demo.LoadAllFeatures">Load All Demo Features</system:String>
+    <system:String x:Key="Command.Demo.LoadAllFeatures.ToolTip">Load all Demo feature modules at once</system:String>
+    
+    <system:String x:Key="Command.Demo.ShowModuleStatus">Show Module Status</system:String>
+    <system:String x:Key="Command.Demo.ShowModuleStatus.ToolTip">Show status information of currently loaded modules</system:String>
+
+    <!-- Toolbar -->
+    <system:String x:Key="ToolBar.Edit">Edit Toolbar</system:String>
+
+</ResourceDictionary>

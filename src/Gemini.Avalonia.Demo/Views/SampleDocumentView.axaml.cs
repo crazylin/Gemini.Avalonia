@@ -1,6 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
 using Gemini.Avalonia.Demo.ViewModels;
+using Gemini.Avalonia.Demo.Controls;
 
 namespace Gemini.Avalonia.Demo.Views
 {
@@ -9,6 +12,11 @@ namespace Gemini.Avalonia.Demo.Views
     /// </summary>
     public partial class SampleDocumentView : UserControl
     {
+        /// <summary>
+        /// 文本编辑器控件
+        /// </summary>
+        public EnhancedTextEditor EditorControl => this.FindControl<EnhancedTextEditor>("TextEditor")!;
+        
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -20,6 +28,7 @@ namespace Gemini.Avalonia.Demo.Views
             AddHandler(KeyDownEvent, OnKeyDown, handledEventsToo: true);
         }
         
+        
         /// <summary>
         /// 处理键盘按键事件
         /// </summary>
@@ -28,24 +37,32 @@ namespace Gemini.Avalonia.Demo.Views
             if (DataContext is not SampleDocumentViewModel viewModel)
                 return;
                 
-            // Ctrl+S 保存
-            if (e.Key == Key.S && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+            // 文档相关快捷键
+            if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
-                if (viewModel.SaveCommand.CanExecute(null))
+                switch (e.Key)
                 {
-                    viewModel.SaveCommand.Execute(null);
-                    e.Handled = true;
+                    case Key.S when !e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                        // Ctrl+S 保存
+                        if (viewModel.SaveCommand.CanExecute(null))
+                        {
+                            viewModel.SaveCommand.Execute(null);
+                            e.Handled = true;
+                        }
+                        break;
+                    
+                    case Key.S when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                        // Ctrl+Shift+S 另存为
+                        if (viewModel.SaveAsCommand.CanExecute(null))
+                        {
+                            viewModel.SaveAsCommand.Execute(null);
+                            e.Handled = true;
+                        }
+                        break;
                 }
             }
-            // Ctrl+Shift+S 另存为
-            else if (e.Key == Key.S && e.KeyModifiers.HasFlag(KeyModifiers.Control | KeyModifiers.Shift))
-            {
-                if (viewModel.SaveAsCommand.CanExecute(null))
-                {
-                    viewModel.SaveAsCommand.Execute(null);
-                    e.Handled = true;
-                }
-            }
+            
+            // 其他快捷键由EnhancedTextEditor处理
         }
     }
 }

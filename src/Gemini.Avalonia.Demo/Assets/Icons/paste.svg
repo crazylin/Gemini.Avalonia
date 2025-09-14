@@ -1,0 +1,7 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11 2H5c-.55 0-1 .45-1 1v1h7c.55 0 1 .45 1 1v7h1c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1z" fill="currentColor"/>
+  <path d="M9 5H3c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V6c0-.55-.45-1-1-1zM9 14H3V6h6v8z" fill="currentColor"/>
+  <rect x="4" y="7" width="4" height="1" fill="currentColor"/>
+  <rect x="4" y="9" width="4" height="1" fill="currentColor"/>
+  <rect x="4" y="11" width="3" height="1" fill="currentColor"/>
+</svg>

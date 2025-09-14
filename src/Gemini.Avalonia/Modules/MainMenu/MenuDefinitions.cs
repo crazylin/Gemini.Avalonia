@@ -21,7 +21,7 @@ namespace Gemini.Avalonia.Modules.MainMenu
         public static MenuItemGroupDefinition FileSaveMenuGroup = new MenuItemGroupDefinition(FileMenu, 6);
 
         [Export]
-        public static MenuItemGroupDefinition FileExitOpenMenuGroup = new MenuItemGroupDefinition(FileMenu, 10);
+        public static MenuItemGroupDefinition FileExitOpenMenuGroup = new MenuItemGroupDefinition(FileMenu, 1000); // 最高优先级，确保在最底部
 
         [Export]
         public static readonly MenuDefinition EditMenu = new MenuDefinition(MainMenuBar, 1, "Menu.Edit");
@@ -52,6 +52,9 @@ namespace Gemini.Avalonia.Modules.MainMenu
 
         [Export]
         public static readonly MenuDefinition HelpMenu = new MenuDefinition(MainMenuBar, 5, "Menu.Help");
+
+        [Export]
+        public static MenuItemGroupDefinition HelpAboutMenuGroup = new MenuItemGroupDefinition(HelpMenu, 100);
 
     }
 }

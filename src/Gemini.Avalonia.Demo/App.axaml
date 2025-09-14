@@ -9,7 +9,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- 语言资源将在 App.axaml.cs 中动态加载 -->
+                <!-- Demo项目语言资源将通过框架的LanguageService动态加载 -->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

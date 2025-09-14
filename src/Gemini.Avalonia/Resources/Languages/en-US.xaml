@@ -19,6 +19,14 @@
     <system:String x:Key="SaveFile">Save</system:String>
     <system:String x:Key="SaveAsFile">Save As</system:String>
     <system:String x:Key="ExitApplication">Exit</system:String>
+    <system:String x:Key="ExitApplication.ToolTip">Exit the application</system:String>
+    
+    <!-- Help Menu -->
+    <system:String x:Key="Menu.Help">Help</system:String>
+    <system:String x:Key="Help.About">About</system:String>
+    <system:String x:Key="Help.About.ToolTip">Show information about the application</system:String>
+    <system:String x:Key="Help.ModuleList">Module List</system:String>
+    <system:String x:Key="Help.ModuleList.ToolTip">Show list of loaded modules</system:String>
     
     <!-- Edit Menu Items -->
     <system:String x:Key="UndoAction">Undo</system:String>

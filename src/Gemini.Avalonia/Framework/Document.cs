@@ -138,7 +138,7 @@ namespace Gemini.Avalonia.Framework
         /// </summary>
         public ICommand CloseCommand
         {
-            get => _closeCommand ??= ReactiveCommand.CreateFromTask(async () => await TryCloseAsync());
+            get => _closeCommand ??= ReactiveCommand.CreateFromTask(TryCloseAsync);
         }
         
         /// <summary>
@@ -167,8 +167,8 @@ namespace Gemini.Avalonia.Framework
         /// <summary>
         /// 尝试关闭文档，子类可重写以添加保存确认等逻辑
         /// </summary>
-        /// <returns>关闭任务</returns>
-        protected virtual async Task TryCloseAsync()
+        /// <returns>关闭任务，如果用户取消则抛出OperationCanceledException</returns>
+        public virtual async Task TryCloseAsync()
         {
             // 默认实现直接关闭
             // 子类可以重写此方法来添加保存确认等逻辑

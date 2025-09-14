@@ -25,4 +25,9 @@
     <ProjectReference Include="..\Gemini.Avalonia\Gemini.Avalonia.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**\*" />
+    <AvaloniaResource Include="Resources\**\*" />
+  </ItemGroup>
+
 </Project>

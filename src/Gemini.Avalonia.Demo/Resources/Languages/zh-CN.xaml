@@ -1,0 +1,57 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- 菜单 -->
+    <system:String x:Key="Menu.File">文件</system:String>
+    <system:String x:Key="Menu.Edit">编辑</system:String>
+    
+    <!-- 编辑命令 -->
+    <system:String x:Key="Command.Edit.Undo">撤销</system:String>
+    <system:String x:Key="Command.Edit.Undo.ToolTip">撤销上一个操作 (Ctrl+Z)</system:String>
+    
+    <system:String x:Key="Command.Edit.Redo">重做</system:String>
+    <system:String x:Key="Command.Edit.Redo.ToolTip">重做上一个被撤销的操作 (Ctrl+Y)</system:String>
+    
+    <system:String x:Key="Command.Edit.Cut">剪切</system:String>
+    <system:String x:Key="Command.Edit.Cut.ToolTip">将选中的文本剪切到剪贴板 (Ctrl+X)</system:String>
+    
+    <system:String x:Key="Command.Edit.Copy">复制</system:String>
+    <system:String x:Key="Command.Edit.Copy.ToolTip">将选中的文本复制到剪贴板 (Ctrl+C)</system:String>
+    
+    <system:String x:Key="Command.Edit.Paste">粘贴</system:String>
+    <system:String x:Key="Command.Edit.Paste.ToolTip">从剪贴板粘贴文本 (Ctrl+V)</system:String>
+    
+    <system:String x:Key="Command.Edit.SelectAll">全选</system:String>
+    <system:String x:Key="Command.Edit.SelectAll.ToolTip">选择所有文本 (Ctrl+A)</system:String>
+    
+    <system:String x:Key="Command.Edit.Find">查找</system:String>
+    <system:String x:Key="Command.Edit.Find.ToolTip">查找文本 (Ctrl+F)</system:String>
+    
+    <system:String x:Key="Command.Edit.Replace">替换</system:String>
+    <system:String x:Key="Command.Edit.Replace.ToolTip">查找并替换文本 (Ctrl+H)</system:String>
+    
+    <system:String x:Key="Command.Edit.GoToLine">转到行</system:String>
+    <system:String x:Key="Command.Edit.GoToLine.ToolTip">转到指定行号 (Ctrl+G)</system:String>
+    
+    <!-- 文件命令 -->
+    <system:String x:Key="Command.File.Save">保存</system:String>
+    <system:String x:Key="Command.File.Save.ToolTip">保存文档 (Ctrl+S)</system:String>
+    
+    <system:String x:Key="Command.File.SaveAs">另存为</system:String>
+    <system:String x:Key="Command.File.SaveAs.ToolTip">另存为 (Ctrl+Shift+S)</system:String>
+    
+    <!-- Demo命令 -->
+    <system:String x:Key="Command.Demo.LoadSampleDocumentModule">加载示例文档模块</system:String>
+    <system:String x:Key="Command.Demo.LoadSampleDocumentModule.ToolTip">演示按需加载示例文档模块</system:String>
+    
+    <system:String x:Key="Command.Demo.LoadAllFeatures">加载所有Demo功能</system:String>
+    <system:String x:Key="Command.Demo.LoadAllFeatures.ToolTip">一次性加载所有Demo功能模块</system:String>
+    
+    <system:String x:Key="Command.Demo.ShowModuleStatus">显示模块状态</system:String>
+    <system:String x:Key="Command.Demo.ShowModuleStatus.ToolTip">显示当前已加载的模块状态信息</system:String>
+
+    <!-- 工具栏 -->
+    <system:String x:Key="ToolBar.Edit">编辑工具栏</system:String>
+
+</ResourceDictionary>

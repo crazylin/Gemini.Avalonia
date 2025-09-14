@@ -9,7 +9,11 @@ using Gemini.Avalonia.Framework.Logging;
 using Gemini.Avalonia.Views;
 using Gemini.Avalonia.Demo.ViewModels;
 using Gemini.Avalonia.Framework.Extensions;
+using Gemini.Avalonia.Services;
 using Avalonia;
+using Avalonia.Markup.Xaml;
+using Avalonia.Styling;
+using Avalonia.Controls;
 
 namespace Gemini.Avalonia.Demo.Framework
 {
@@ -33,6 +37,9 @@ namespace Gemini.Avalonia.Demo.Framework
             
             // 注册Demo特定的模块配置
             InitializeDemoModules();
+            
+            // 加载Demo项目的语言资源
+            LoadDemoLanguageResources();
             
             PerformanceMonitor.StopTimer("DemoBootstrapper.Initialize");
             LogManager.Info("DemoBootstrapper", "Demo应用程序初始化完成");
@@ -198,6 +205,75 @@ namespace Gemini.Avalonia.Demo.Framework
                 LogManager.Info("DemoBootstrapper", "开始加载所有Demo功能模块");
                 await ModuleManager.LoadModulesByCategoryAsync(ModuleCategory.Feature);
                 LogManager.Info("DemoBootstrapper", "所有Demo功能模块加载完成");
+            }
+        }
+        
+        /// <summary>
+        /// 加载Demo项目的语言资源
+        /// </summary>
+        private void LoadDemoLanguageResources()
+        {
+            try
+            {
+                LogManager.Info("DemoBootstrapper", "开始加载Demo项目语言资源");
+                
+                var app = Application.Current;
+                if (app == null)
+                {
+                    LogManager.Warning("DemoBootstrapper", "Application.Current为null，无法加载Demo语言资源");
+                    return;
+                }
+                
+                // 获取当前语言设置
+                var currentLanguage = "zh-CN"; // 默认中文
+                try
+                {
+                    var languageService = IoC.Get<ILanguageService>();
+                    if (languageService != null)
+                    {
+                        currentLanguage = languageService.CurrentCulture.Name;
+                        LogManager.Debug("DemoBootstrapper", $"从LanguageService获取语言: {currentLanguage}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogManager.Warning("DemoBootstrapper", $"获取LanguageService失败，使用默认语言: {ex.Message}");
+                }
+                
+                // 加载Demo项目的语言资源文件
+                var demoResourceUri = new Uri($"avares://Gemini.Avalonia.Demo/Resources/Languages/{currentLanguage}.xaml");
+                LogManager.Debug("DemoBootstrapper", $"Demo语言资源URI: {demoResourceUri}");
+                
+                var demoResourceDictionary = AvaloniaXamlLoader.Load(demoResourceUri) as IResourceDictionary;
+                if (demoResourceDictionary != null)
+                {
+                    app.Resources.MergedDictionaries.Add(demoResourceDictionary);
+                    LogManager.Info("DemoBootstrapper", $"Demo语言资源加载完成: {currentLanguage}");
+                }
+                else
+                {
+                    LogManager.Warning("DemoBootstrapper", "Demo语言资源字典加载失败");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Warning("DemoBootstrapper", $"Demo语言资源加载失败: {ex.Message}");
+                
+                // 加载默认中文资源作为备用
+                try
+                {
+                    var fallbackUri = new Uri("avares://Gemini.Avalonia.Demo/Resources/Languages/zh-CN.xaml");
+                    var fallbackResource = AvaloniaXamlLoader.Load(fallbackUri) as IResourceDictionary;
+                    if (fallbackResource != null)
+                    {
+                        Application.Current?.Resources.MergedDictionaries.Add(fallbackResource);
+                        LogManager.Info("DemoBootstrapper", "Demo默认中文语言资源加载成功");
+                    }
+                }
+                catch (Exception fallbackEx)
+                {
+                    LogManager.Error("DemoBootstrapper", $"Demo默认语言资源加载失败: {fallbackEx.Message}");
+                }
             }
         }
     }
