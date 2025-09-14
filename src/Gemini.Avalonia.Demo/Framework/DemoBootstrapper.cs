@@ -23,13 +23,22 @@ namespace Gemini.Avalonia.Demo.Framework
     public class DemoBootstrapper : AppBootstrapper
     {
         /// <summary>
-        /// 初始化Demo应用程序
+        /// 重写早期语言资源加载，在MEF容器初始化之前同时加载核心和Demo资源
         /// </summary>
+        protected override void LoadLanguageResourcesEarly()
+        {
+            // 先加载基类的语言资源（核心框架）
+            base.LoadLanguageResourcesEarly();
+            
+            // 然后立即加载Demo的语言资源
+            LoadDemoLanguageResources();
+        }
+        
         public new DemoBootstrapper Initialize()
         {
             PerformanceMonitor.StartTimer("DemoBootstrapper.Initialize");
             
-            // 首先调用基类的初始化（这会初始化LogManager）
+            // 首先调用基类的初始化（这会在正确的时机加载Demo语言资源）
             base.Initialize();
             
             // 现在可以安全使用LogManager
@@ -37,9 +46,6 @@ namespace Gemini.Avalonia.Demo.Framework
             
             // 注册Demo特定的模块配置
             InitializeDemoModules();
-            
-            // 加载Demo项目的语言资源
-            LoadDemoLanguageResources();
             
             PerformanceMonitor.StopTimer("DemoBootstrapper.Initialize");
             LogManager.Info("DemoBootstrapper", "Demo应用程序初始化完成");

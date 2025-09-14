@@ -387,9 +387,9 @@ namespace Gemini.Avalonia.Framework
                     "跟随系统" => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "zh" 
                         ? new CultureInfo("zh-CN") 
                         : new CultureInfo("en-US"),
-                    "中文" or "Chinese" => new CultureInfo("zh-CN"),
-                    "English" => new CultureInfo("en-US"),
-                    _ => new CultureInfo("en-US")
+                    "中文" or "Chinese" or "Language.Chinese" => new CultureInfo("zh-CN"),
+                    "English" or "Language.English" => new CultureInfo("en-US"),
+                    _ => new CultureInfo("zh-CN") // 默认使用中文而不是英文
                 };
                 
                 // 设置当前线程的文化信息
@@ -755,7 +755,7 @@ namespace Gemini.Avalonia.Framework
         /// <summary>
         /// 早期加载语言资源文件（在MEF容器初始化之前）
         /// </summary>
-        private void LoadLanguageResourcesEarly()
+        protected virtual void LoadLanguageResourcesEarly()
         {
             try
             {

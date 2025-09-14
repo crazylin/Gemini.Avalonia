@@ -21,8 +21,7 @@
     <system:String x:Key="ExitApplication">退出</system:String>
     <system:String x:Key="ExitApplication.ToolTip">退出应用程序</system:String>
     
-    <!-- 帮助菜单 -->
-    <system:String x:Key="Menu.Help">帮助</system:String>
+    <!-- 帮助菜单项 -->
     <system:String x:Key="Help.About">关于</system:String>
     <system:String x:Key="Help.About.ToolTip">显示关于应用程序的信息</system:String>
     <system:String x:Key="Help.ModuleList">模块列表</system:String>

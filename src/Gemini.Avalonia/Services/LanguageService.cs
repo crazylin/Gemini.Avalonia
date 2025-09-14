@@ -47,15 +47,17 @@ namespace Gemini.Avalonia.Services
             // 定义支持的语言
             _availableLanguages = new[]
             {
-                new CultureInfo("en-US"),
-                new CultureInfo("zh-CN")
+                new CultureInfo("zh-CN"), // 中文优先
+                new CultureInfo("en-US")
             };
             
-            // 设置默认语言为系统语言，如果不支持则使用英语
+            // 设置默认语言：优先使用当前UI文化信息（这是AppBootstrapper设置的），如果不支持则使用中文
             var systemCulture = CultureInfo.CurrentUICulture;
             var supportedCulture = _availableLanguages.FirstOrDefault(c => 
-                c.TwoLetterISOLanguageName == systemCulture.TwoLetterISOLanguageName) 
-                ?? _availableLanguages[0];
+                c.Name == systemCulture.Name) 
+                ?? _availableLanguages.FirstOrDefault(c => 
+                    c.TwoLetterISOLanguageName == systemCulture.TwoLetterISOLanguageName) 
+                ?? _availableLanguages[0]; // 默认中文
                 
             _currentCulture = supportedCulture;
         }
