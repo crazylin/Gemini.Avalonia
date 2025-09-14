@@ -627,10 +627,18 @@ namespace Gemini.Avalonia.Framework
             try
             {
                 LogManager.Info("AppBootstrapper", "开始注册工具");
-                var tools = _mefContainer!.GetExportedValues<ITool>();
-                LogManager.Info("AppBootstrapper", $"从MEF容器中找到 {tools.Count()} 个工具");
+                var allTools = _mefContainer!.GetExportedValues<ITool>();
+                LogManager.Info("AppBootstrapper", $"从MEF容器中找到 {allTools.Count()} 个工具");
                 
-                foreach (var tool in tools)
+                // 获取启用的模块列表
+                var enabledModuleNames = GetEnabledModuleNames();
+                LogManager.Info("AppBootstrapper", $"启用的模块: {string.Join(", ", enabledModuleNames)}");
+                
+                // 过滤工具：只加载属于启用模块的工具
+                var filteredTools = FilterToolsByEnabledModules(allTools, enabledModuleNames);
+                LogManager.Info("AppBootstrapper", $"过滤后的工具数量: {filteredTools.Count}");
+                
+                foreach (var tool in filteredTools)
                 {
                     LogManager.Info("AppBootstrapper", $"正在注册工具: {tool.GetType().Name} - {tool.DisplayName}");
                     var result = Shell!.RegisterTool(tool);
@@ -643,6 +651,97 @@ namespace Gemini.Avalonia.Framework
                 LogManager.Error("AppBootstrapper", $"注册工具时出错: {ex.Message}");
                 LogManager.Error("AppBootstrapper", $"异常详情: {ex}");
             }
+        }
+        
+        /// <summary>
+        /// 获取启用的模块名称列表
+        /// </summary>
+        /// <returns>启用的模块名称集合</returns>
+        private HashSet<string> GetEnabledModuleNames()
+        {
+            var enabledModules = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            
+            // 始终启用核心模块
+            enabledModules.Add("MainMenuModule");
+            enabledModules.Add("ThemeModule"); 
+            enabledModules.Add("SettingsModule");
+            
+            // 从ModuleConfiguration获取配置的模块
+            try
+            {
+                var moduleConfigs = Modules.ModuleConfiguration.GetAllModuleConfigurations();
+                foreach (var config in moduleConfigs)
+                {
+                    enabledModules.Add(config.Name);
+                    LogManager.Debug("AppBootstrapper", $"模块配置中启用的模块: {config.Name}");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Warning("AppBootstrapper", $"获取模块配置时出错: {ex.Message}");
+            }
+            
+            return enabledModules;
+        }
+        
+        /// <summary>
+        /// 根据启用的模块过滤工具
+        /// </summary>
+        /// <param name="allTools">所有工具</param>
+        /// <param name="enabledModuleNames">启用的模块名称</param>
+        /// <returns>过滤后的工具列表</returns>
+        private List<ITool> FilterToolsByEnabledModules(IEnumerable<ITool> allTools, HashSet<string> enabledModuleNames)
+        {
+            var filteredTools = new List<ITool>();
+            
+            // 模块命名空间到模块名称的映射
+            var namespaceToModule = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "Gemini.Avalonia.Modules.ProjectManagement", "ProjectManagementModule" },
+                { "Gemini.Avalonia.Modules.Output", "OutputModule" },
+                { "Gemini.Avalonia.Modules.Properties", "PropertiesModule" },
+                { "Gemini.Avalonia.Modules.Settings", "SettingsModule" },
+                { "Gemini.Avalonia.Modules.MainMenu", "MainMenuModule" },
+                { "Gemini.Avalonia.Modules.Theme", "ThemeModule" },
+                { "Gemini.Avalonia.Demo", "DemoModule" } // Demo项目的工具
+            };
+            
+            foreach (var tool in allTools)
+            {
+                var toolType = tool.GetType();
+                var toolNamespace = toolType.Namespace ?? string.Empty;
+                
+                // 查找工具属于哪个模块
+                string? moduleName = null;
+                foreach (var mapping in namespaceToModule)
+                {
+                    if (toolNamespace.StartsWith(mapping.Key, StringComparison.OrdinalIgnoreCase))
+                    {
+                        moduleName = mapping.Value;
+                        break;
+                    }
+                }
+                
+                if (moduleName == null)
+                {
+                    // 未知模块的工具，默认加载（可能是第三方或自定义工具）
+                    LogManager.Info("AppBootstrapper", $"工具 {toolType.Name} 属于未知模块，默认加载");
+                    filteredTools.Add(tool);
+                }
+                else if (enabledModuleNames.Contains(moduleName))
+                {
+                    // 属于启用模块的工具
+                    LogManager.Info("AppBootstrapper", $"工具 {toolType.Name} 属于启用模块 {moduleName}，加载");
+                    filteredTools.Add(tool);
+                }
+                else
+                {
+                    // 属于禁用模块的工具
+                    LogManager.Info("AppBootstrapper", $"工具 {toolType.Name} 属于禁用模块 {moduleName}，跳过");
+                }
+            }
+            
+            return filteredTools;
         }
         
         #endregion

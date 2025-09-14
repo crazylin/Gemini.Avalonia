@@ -53,7 +53,7 @@ namespace Gemini.Avalonia.Framework.Modules
                     ModuleType = typeof(Gemini.Avalonia.Modules.Theme.Module)
                 },
                 
-                // WindowManagement模块已删除 - 窗口管理命令和菜单通过MEF自动注册
+                WindowManagement模块已删除 - 窗口管理命令和菜单通过MEF自动注册
                 
                 // 功能模块 - 按需加载
                 new ModuleMetadata
