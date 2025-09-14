@@ -16,18 +16,26 @@ namespace Gemini.Avalonia.Framework.Commands
         private CommandDefinitionBase[] _commandDefinitions;
 
         [ImportingConstructor]
-        public CommandService([ImportMany] CommandDefinitionBase[] commandDefinitions)
+        public CommandService([ImportMany] CommandDefinitionBase[] commandDefinitions,
+                            IModuleFilterService moduleFilterService)
         {
-            _commandDefinitions = commandDefinitions ?? Array.Empty<CommandDefinitionBase>();
+            // 根据启用的模块过滤命令定义
+            var allCommandDefinitions = commandDefinitions ?? Array.Empty<CommandDefinitionBase>();
+            _commandDefinitions = allCommandDefinitions
+                .Where(cmd => moduleFilterService.IsTypeFromEnabledModule(cmd.GetType()))
+                .ToArray();
+                
+            LogManager.Debug("CommandService", $"过滤命令定义: 总数 {allCommandDefinitions.Length}, 启用 {_commandDefinitions.Length}");
+            
             _commandDefinitionsLookup = new Dictionary<Type, CommandDefinitionBase>();
             _commands = new Dictionary<CommandDefinitionBase, Command>();
             _targetableCommands = new Dictionary<Command, TargetableCommand>();
             
-       
             // 导入命令定义完成
              foreach (var cmd in _commandDefinitions)
              {
                  _commandDefinitionsLookup[cmd.GetType()] = cmd;
+                 LogManager.Debug("CommandService", $"注册命令: {cmd.GetType().Name} ({cmd.Name})");
              }
         }
 

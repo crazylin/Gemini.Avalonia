@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Gemini.Avalonia.Framework.Logging;
 
 namespace Gemini.Avalonia.Framework.Commands
 {
@@ -18,10 +19,18 @@ namespace Gemini.Avalonia.Framework.Commands
             
         [ImportingConstructor]
         public CommandRouter(
-            [ImportMany(typeof(ICommandHandler))] ICommandHandler[] globalCommandHandlers)
+            [ImportMany(typeof(ICommandHandler))] ICommandHandler[] globalCommandHandlers,
+            IModuleFilterService moduleFilterService)
         {
+            // 根据启用的模块过滤命令处理器
+            var filteredCommandHandlers = globalCommandHandlers
+                .Where(handler => moduleFilterService.IsTypeFromEnabledModule(handler.GetType()))
+                .ToArray();
+                
+            LogManager.Debug("CommandRouter", $"过滤命令处理器: 总数 {globalCommandHandlers.Length}, 启用 {filteredCommandHandlers.Length}");
+            
             _commandHandlerTypeToCommandDefinitionTypesLookup = new Dictionary<Type, HashSet<Type>>();
-            _globalCommandHandlerWrappers = BuildCommandHandlerWrappers(globalCommandHandlers);
+            _globalCommandHandlerWrappers = BuildCommandHandlerWrappers(filteredCommandHandlers);
         }
 
         private Dictionary<Type, CommandHandlerWrapper> BuildCommandHandlerWrappers(ICommandHandler[] commandHandlers)
