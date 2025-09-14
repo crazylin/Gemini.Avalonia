@@ -23,18 +23,8 @@
                 BorderBrush="Gray"
                 BorderThickness="0,0,0,1"
                 Padding="8,4">
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <Button Content="保存" 
-                        Command="{Binding SaveCommand}"
-                        IsEnabled="{Binding IsDirty}"
-                        ToolTip.Tip="保存文档 (Ctrl+S)" />
-                <Button Content="另存为" 
-                        Command="{Binding SaveAsCommand}"
-                        ToolTip.Tip="另存为 (Ctrl+Shift+S)" />
-                <Separator />
-                <TextBlock Text="{Binding FilePath, StringFormat='路径: {0}'}"
-                           VerticalAlignment="Center" />
-            </StackPanel>
+            <TextBlock Text="{Binding FilePath, StringFormat='路径: {0}'}"
+                       VerticalAlignment="Center" />
         </Border>
         
         <!-- 文本编辑器 -->
