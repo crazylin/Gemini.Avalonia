@@ -14,12 +14,24 @@ namespace Gemini.Avalonia.Framework.Converters
         
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
+            string? uriString = null;
+            
+            // 处理Uri或string类型
             if (value is Uri uri)
+            {
+                uriString = uri.ToString();
+            }
+            else if (value is string str && !string.IsNullOrEmpty(str))
+            {
+                uriString = str;
+            }
+            
+            if (!string.IsNullOrEmpty(uriString))
             {
                 try
                 {
                     var svgImage = new SvgImage();
-                    svgImage.Source = SvgSource.Load(uri.ToString(), null);
+                    svgImage.Source = SvgSource.Load(uriString, null);
                     return svgImage;
                 }
                 catch

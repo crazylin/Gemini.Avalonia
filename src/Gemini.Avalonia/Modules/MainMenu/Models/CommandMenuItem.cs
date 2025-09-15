@@ -13,7 +13,12 @@ namespace Gemini.Avalonia.Modules.MainMenu.Models
     {
         public override string Header => _command.Text;
 
-        public override Uri IconSource => _command.IconSource;
+        public override Uri IconSource
+        {
+            get => _command?.IconSource;
+            set { /* CommandMenuItem的IconSource由_command.IconSource控制，忽略setter */ }
+        }
+
 
         public override KeyGesture KeyGesture => IoC.Get<ICommandKeyGestureService>()
             .GetPrimaryKeyGesture(_command.CommandDefinition);

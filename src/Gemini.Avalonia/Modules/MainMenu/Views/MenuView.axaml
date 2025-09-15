@@ -15,14 +15,7 @@
         <Setter Property="Command" Value="{Binding Command}"/>
         <Setter Property="InputGesture" Value="{Binding KeyGesture}"></Setter>
         <Setter Property="IsVisible" Value="{Binding IsVisible}"></Setter>
-        <Setter Property="Icon">
-          <Setter.Value>
-            <DataTemplate x:DataType="models:MenuItemBase">
-            <Image Source="{Binding IconSource, Converter={x:Static converters:UriToSvgConverter.Instance}}" 
-                       Width="20" Height="20" VerticalAlignment="Center" /> 
-            </DataTemplate>
-          </Setter.Value>
-        </Setter>
+        <Setter Property="Icon" Value="{Binding IconSource, Converter={x:Static converters:UriToImageConverter.Instance}}"/>
       </Style>
     </Menu.Styles>
   </Menu>
