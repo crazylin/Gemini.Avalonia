@@ -308,7 +308,6 @@ namespace AuroraUI.Framework
                     IsInitialized = false // 将在后续步骤中初始化
                 };
                 _moduleManager?.RegisterModule(module.GetType(), metadata);
-                LogManager.Debug("AppBootstrapper", $"注册遗留模块: {metadata.Name}");
             }
         }
         
@@ -325,7 +324,6 @@ namespace AuroraUI.Framework
                 try
                 {
                     module.PreInitialize();
-                    LogManager.Debug("AppBootstrapper", $"遗留模块预初始化完成: {module.GetType().Name}");
                 }
                 catch (Exception ex)
                 {
@@ -339,7 +337,6 @@ namespace AuroraUI.Framework
                 try
                 {
                     module.Initialize();
-                    LogManager.Debug("AppBootstrapper", $"遗留模块初始化完成: {module.GetType().Name}");
                 }
                 catch (Exception ex)
                 {
@@ -363,7 +360,6 @@ namespace AuroraUI.Framework
                 try
                 {
                     await module.PostInitializeAsync();
-                    LogManager.Debug("AppBootstrapper", $"遗留模块后初始化完成: {module.GetType().Name}");
                 }
                 catch (Exception ex)
                 {
@@ -780,7 +776,6 @@ namespace AuroraUI.Framework
                     if (_languageService != null)
                     {
                         currentLanguage = _languageService.CurrentCulture.Name;
-                        LogManager.Debug("AppBootstrapper", $"从LanguageService获取到的语言: {currentLanguage}");
                     }
                 }
                 catch (Exception ex)
@@ -834,7 +829,6 @@ namespace AuroraUI.Framework
                     if (_languageService != null)
                     {
                         currentLanguage = _languageService.CurrentCulture.Name;
-                        LogManager.Debug("AppBootstrapper", $"从LanguageService获取到的语言: {currentLanguage}");
                     }
                 }
                 catch (Exception ex)

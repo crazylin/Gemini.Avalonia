@@ -33,8 +33,6 @@ namespace AuroraUI.Framework.Extensions
         /// <param name="assemblies">要扫描的程序集列表</param>
         public static void RegisterViewModelViewBindings(this Application application, ViewModelViewBindingOptions options, params Assembly[] assemblies)
         {
-            Console.WriteLine("[ViewModelViewBinding] 开始注册ViewModel和View的自动绑定");
-            
             if (application == null)
                 throw new ArgumentNullException(nameof(application));
                 
@@ -43,32 +41,18 @@ namespace AuroraUI.Framework.Extensions
                 
             if (assemblies == null || assemblies.Length == 0)
              {
-                 Console.WriteLine("[ViewModelViewBinding] 未提供程序集列表，将扫描当前应用域中的所有程序集");
-                 
                  assemblies = AppDomain.CurrentDomain.GetAssemblies()
                      .Where(a => options.AssemblyFilter?.Invoke(a) ?? true)
                      .ToArray();
              }
              
-             Console.WriteLine($"[ViewModelViewBinding] 将扫描 {assemblies.Length} 个程序集");
-             foreach (var assembly in assemblies)
-             {
-                 Console.WriteLine($"[ViewModelViewBinding] 扫描程序集: {assembly.FullName}");
-             }
-             
              var bindings = DiscoverViewModelViewBindings(assemblies, options);
-             
-             Console.WriteLine($"[ViewModelViewBinding] 发现 {bindings.Count} 个ViewModel-View绑定关系");
              
              foreach (var binding in bindings)
              {
-                 Console.WriteLine($"[ViewModelViewBinding] 正在注册绑定: {binding.ViewModelType.Name} -> {binding.ViewType.Name}");
                  var dataTemplate = CreateDataTemplate(binding.ViewModelType, binding.ViewType);
                  application.DataTemplates.Add(dataTemplate);
-                 Console.WriteLine($"[ViewModelViewBinding] 绑定注册完成: {binding.ViewModelType.Name} -> {binding.ViewType.Name}");
              }
-             
-             Console.WriteLine($"[ViewModelViewBinding] 所有绑定注册完成，共注册了 {bindings.Count} 个DataTemplate");
         }
         
         /// <summary>
@@ -80,13 +64,11 @@ namespace AuroraUI.Framework.Extensions
         private static List<ViewModelViewBinding> DiscoverViewModelViewBindings(Assembly[] assemblies, ViewModelViewBindingOptions options)
         {
             var bindings = new List<ViewModelViewBinding>();
-            Console.WriteLine("[ViewModelViewBinding] 开始发现ViewModel和View的绑定关系");
 
             foreach (var assembly in assemblies)
             {
                 try
                 {
-                    Console.WriteLine($"[ViewModelViewBinding] 正在扫描程序集: {assembly.GetName().Name}");
                     
                     // 获取所有ViewModel类型
                     var viewModelTypes = assembly.GetTypes()
@@ -94,16 +76,13 @@ namespace AuroraUI.Framework.Extensions
                                    (t.Name.EndsWith("ViewModel") && t.IsClass && !t.IsAbstract && t.IsPublic))
                         .ToList();
 
-                    Console.WriteLine($"[ViewModelViewBinding] 在程序集 {assembly.GetName().Name} 中找到 {viewModelTypes.Count} 个ViewModel类型");
 
                     foreach (var viewModelType in viewModelTypes)
                      {
-                         Console.WriteLine($"[ViewModelViewBinding] 处理ViewModel: {viewModelType.FullName}");
                          
                          // 跳过排除的ViewModel类型
                          if (options.ExcludedViewModelTypes.Contains(viewModelType))
                          {
-                             Console.WriteLine($"[ViewModelViewBinding] 跳过排除的ViewModel: {viewModelType.Name}");
                              continue;
                          }
                              
@@ -111,7 +90,6 @@ namespace AuroraUI.Framework.Extensions
                          var viewTypeName = options.CustomNamingConvention?.Invoke(viewModelType.Name) ?? 
                                            viewModelType.Name.Replace(options.ViewModelSuffix, options.ViewSuffix);
                          
-                         Console.WriteLine($"[ViewModelViewBinding] 查找对应的View类型: {viewTypeName}");
                          
                          var viewType = assembly.GetTypes()
                              .FirstOrDefault(t => t.Name == viewTypeName && 
@@ -124,26 +102,20 @@ namespace AuroraUI.Framework.Extensions
  
                          if (viewType != null)
                          {
-                             Console.WriteLine($"[ViewModelViewBinding] 找到匹配的View: {viewType.FullName}");
                              bindings.Add(new ViewModelViewBinding(viewModelType, viewType));
                          }
                          else
                          {
-                             Console.WriteLine($"[ViewModelViewBinding] 警告: 未找到 {viewModelType.Name} 对应的View: {viewTypeName}");
-                             
-                             // 列出程序集中所有可能的View类型
-                             var allViewTypes = assembly.GetTypes()
-                                 .Where(t => typeof(Control).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract && t.IsPublic)
-                                 .Select(t => t.Name)
-                                 .ToList();
-                             Console.WriteLine($"[ViewModelViewBinding] 程序集中可用的View类型: {string.Join(", ", allViewTypes)}");
+                             if (options.ShowWarningsForMissingViews)
+                             {
+                                 Console.WriteLine($"[ViewModelViewBinding] 警告: 未找到 {viewModelType.Name} 对应的View: {viewTypeName}");
+                             }
                          }
                      }
                 }
                 catch (Exception ex)
                  {
                      Console.WriteLine($"[ViewModelViewBinding] 扫描程序集 {assembly.GetName().Name} 时出错: {ex.Message}");
-                     Console.WriteLine($"[ViewModelViewBinding] 异常详情: {ex}");
                  }
             }
 
@@ -162,26 +134,21 @@ namespace AuroraUI.Framework.Extensions
             {
                 try
                 {
-                    Console.WriteLine($"[ViewModelViewBinding] 🎯 自动DataTemplate被调用！创建View: {viewType.Name} for ViewModel: {viewModelType.Name}");
-                    Console.WriteLine($"[ViewModelViewBinding] 数据类型: {data?.GetType().Name ?? "null"}");
                     
                     var view = (Control?)Activator.CreateInstance(viewType);
                     if (view != null)
                     {
                         view.DataContext = data;
-                        Console.WriteLine($"[ViewModelViewBinding] ✅ {viewType.Name} 创建成功，DataContext已设置");
                         return view;
                     }
                     else
                     {
-                        Console.WriteLine($"[ViewModelViewBinding] ❌ 创建 {viewType.Name} 失败：Activator.CreateInstance返回null");
                         return null;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[ViewModelViewBinding] ❌ 创建 {viewType.Name} 时出错: {ex.Message}");
-                    Console.WriteLine($"[ViewModelViewBinding] 错误详情: {ex.StackTrace}");
+                    Console.WriteLine($"[ViewModelViewBinding] 创建 {viewType.Name} 时出错: {ex.Message}");
                     return null;
                 }
             });
