@@ -42,33 +42,10 @@ namespace Gemini.Avalonia.SimpleDemo
                 }
                 catch (Exception ex)
                 {
-                    // 如果LogManager未初始化，使用Console作为备用
-                    try
-                    {
-                        LogManager.Error("SimpleDemoApp", $"SimpleDemo应用程序启动失败: {ex.Message}");
-                    }
-                    catch
-                    {
-                        Console.WriteLine($"SimpleDemo应用程序启动失败: {ex.Message}");
-                    }
-                    throw;
+                    LogManager.Error("SimpleDemoApp", $"SimpleDemo应用程序启动失败: {ex.Message}");
                 }
                 
                 desktop.MainWindow = mainWindow;
-                
-                if (mainWindow != null)
-                {
-                    // 在UI线程上确保窗口显示
-                    await Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        mainWindow.Show();
-                        mainWindow.Activate();
-                        
-                        // 尝试将窗口置于前台
-                        mainWindow.Topmost = true;
-                        mainWindow.Topmost = false;
-                    });
-                }
             }
 
             base.OnFrameworkInitializationCompleted();

@@ -22,24 +22,9 @@ namespace Gemini.Avalonia.Modules.Settings.ViewModels
         [ObservableProperty]
         private string _selectedTheme = "Light";
 
-        [ObservableProperty]
-        private double _fontSize = 12.0;
-
-        [ObservableProperty]
-        private string _fontFamily = "Microsoft YaHei UI";
-
-        [ObservableProperty]
-        private bool _showStatusBar = true;
-
-        [ObservableProperty]
-        private bool _showToolbar = true;
-
-        [ObservableProperty]
-        private bool _showMenuBar = true;
 
         public ObservableCollection<string> AvailableLanguages { get; }
         public ObservableCollection<string> AvailableThemes { get; }
-        public ObservableCollection<string> AvailableFonts { get; }
 
         public string SettingsPageName => _localizationService?.GetString("Settings.Page.Application");
         
@@ -52,11 +37,6 @@ namespace Gemini.Avalonia.Modules.Settings.ViewModels
         public string LanguageText => _localizationService?.GetString("Settings.Language");
         public string LanguageRestartNoteText => _localizationService?.GetString("Settings.LanguageRestartNote");
         public string ThemeText => _localizationService?.GetString("Settings.Theme");
-        public string FontText => _localizationService?.GetString("Settings.Font");
-        public string UIElementsText => _localizationService?.GetString("Settings.UIElements");
-        public string ShowMenuBarText => _localizationService?.GetString("Settings.ShowMenuBar");
-        public string ShowToolbarText => _localizationService?.GetString("Settings.ShowToolbar");
-        public string ShowStatusBarText => _localizationService?.GetString("Settings.ShowStatusBar");
 
         private readonly IConfigurationService _configurationService;
         private readonly ILocalizationService _localizationService;
@@ -85,14 +65,6 @@ namespace Gemini.Avalonia.Modules.Settings.ViewModels
                 "Auto"
             };
 
-            AvailableFonts = new ObservableCollection<string>
-            {
-                "Microsoft YaHei UI",
-                "SimSun",
-                "Consolas",
-                "Arial",
-                "Times New Roman"
-            };
 
             // 语言切换改为重启模式，不再订阅CultureChanged事件
 
@@ -115,22 +87,12 @@ namespace Gemini.Avalonia.Modules.Settings.ViewModels
         {
             SelectedLanguage = _configurationService.GetValue("Application.Language", "Follow System");
             SelectedTheme = _configurationService.GetValue("Application.Theme", "Light");
-            FontSize = _configurationService.GetValue("Application.FontSize", 12.0);
-            FontFamily = _configurationService.GetValue("Application.FontFamily", "Microsoft YaHei UI");
-            ShowStatusBar = _configurationService.GetValue("Application.ShowStatusBar", true);
-            ShowToolbar = _configurationService.GetValue("Application.ShowToolbar", true);
-            ShowMenuBar = _configurationService.GetValue("Application.ShowMenuBar", true);
         }
 
         private void SaveSettings()
         {
             _configurationService.SetValue("Application.Language", SelectedLanguage);
             _configurationService.SetValue("Application.Theme", SelectedTheme);
-            _configurationService.SetValue("Application.FontSize", FontSize);
-            _configurationService.SetValue("Application.FontFamily", FontFamily);
-            _configurationService.SetValue("Application.ShowStatusBar", ShowStatusBar);
-            _configurationService.SetValue("Application.ShowToolbar", ShowToolbar);
-            _configurationService.SetValue("Application.ShowMenuBar", ShowMenuBar);
             
             // 异步保存到文件
             _ = _configurationService.SaveAsync();

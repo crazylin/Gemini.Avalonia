@@ -950,16 +950,12 @@ namespace Gemini.Avalonia.Framework
                                 name?.Contains("Module") == true);
                     },
                     ViewModelFilter = type => 
-                        (type.Name.EndsWith("ViewModel") || type.Name.EndsWith("Message")) && 
+                        type.Name.EndsWith("ViewModel") && 
                         type.IsClass && 
                         !type.IsAbstract && 
                         type.IsPublic,
                     CustomNamingConvention = viewModelName => 
-                    {
-                        if (viewModelName.EndsWith("Message"))
-                            return viewModelName + "View";
-                        return viewModelName.Replace("ViewModel", "View");
-                    }
+                        viewModelName.Replace("ViewModel", "View")
                 };
                 
                 // 注册自动绑定

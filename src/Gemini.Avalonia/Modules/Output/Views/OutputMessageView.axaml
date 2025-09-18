@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:Gemini.Avalonia.Modules.Output.ViewModels"
              x:Class="Gemini.Avalonia.Modules.Output.Views.OutputMessageView"
-             x:DataType="vm:OutputMessage">
+             x:DataType="vm:OutputMessageViewModel">
 
   <Border Padding="8,2"
           Background="Transparent">
@@ -36,7 +36,7 @@
                  VerticalAlignment="Top">
         <TextBlock.Styles>
           <!-- 根据消息类型设置颜色 -->
-          <Style Selector="TextBlock" x:DataType="vm:OutputMessage">
+          <Style Selector="TextBlock" x:DataType="vm:OutputMessageViewModel">
             <Style Selector="^[Tag=Information]">
               <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
             </Style>

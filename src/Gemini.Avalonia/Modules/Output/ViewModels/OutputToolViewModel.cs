@@ -64,12 +64,12 @@ namespace Gemini.Avalonia.Modules.Output.ViewModels
         /// <summary>
         /// 所有消息
         /// </summary>
-        public ObservableCollection<OutputMessage> AllMessages { get; }
+        public ObservableCollection<OutputMessageViewModel> AllMessages { get; }
         
         /// <summary>
         /// 过滤后的消息
         /// </summary>
-        public ObservableCollection<OutputMessage> FilteredMessages { get; }
+        public ObservableCollection<OutputMessageViewModel> FilteredMessages { get; }
         
         /// <summary>
         /// 最大行数
@@ -101,8 +101,8 @@ namespace Gemini.Avalonia.Modules.Output.ViewModels
         {
             // 初始化集合
             Categories = new ObservableCollection<string> { "常规", "构建", "调试", "错误" };
-            AllMessages = new ObservableCollection<OutputMessage>();
-            FilteredMessages = new ObservableCollection<OutputMessage>();
+            AllMessages = new ObservableCollection<OutputMessageViewModel>();
+            FilteredMessages = new ObservableCollection<OutputMessageViewModel>();
             
             // 创建命令
             ClearCommand = ReactiveCommand.Create(Clear);
@@ -142,7 +142,7 @@ namespace Gemini.Avalonia.Modules.Output.ViewModels
         /// <param name="type">消息类型</param>
         public void WriteLine(string message, string category = "常规", OutputMessageType type = OutputMessageType.Information)
         {
-            var outputMessage = new OutputMessage
+            var outputMessage = new OutputMessageViewModel
             {
                 Timestamp = DateTime.Now,
                 Message = message,
@@ -238,7 +238,7 @@ namespace Gemini.Avalonia.Modules.Output.ViewModels
                 
                 for (int i = 0; i < messageCount; i++)
                 {
-                    var message = new OutputMessage
+                    var message = new OutputMessageViewModel
                     {
                         Timestamp = DateTime.FromBinary(reader.ReadInt64()),
                         Message = reader.ReadString(),
@@ -288,9 +288,9 @@ namespace Gemini.Avalonia.Modules.Output.ViewModels
     }
     
     /// <summary>
-    /// 输出消息
+    /// 输出消息视图模型
     /// </summary>
-    public class OutputMessage : ReactiveObject
+    public class OutputMessageViewModel : ReactiveObject
     {
         private DateTime _timestamp;
         private string _message = string.Empty;

@@ -91,11 +91,6 @@
     <system:String x:Key="Settings.Language">语言</system:String>
     <system:String x:Key="Settings.LanguageRestartNote">更改语言需要重启应用程序</system:String>
     <system:String x:Key="Settings.Theme">主题</system:String>
-    <system:String x:Key="Settings.Font">字体</system:String>
-    <system:String x:Key="Settings.UIElements">界面元素显示</system:String>
-    <system:String x:Key="Settings.ShowMenuBar">显示菜单栏</system:String>
-    <system:String x:Key="Settings.ShowToolbar">显示工具栏</system:String>
-    <system:String x:Key="Settings.ShowStatusBar">显示状态栏</system:String>
     <system:String x:Key="Theme.Default">默认</system:String>
     <system:String x:Key="Theme.Dark">深色</system:String>
     <system:String x:Key="Theme.Light">浅色</system:String>

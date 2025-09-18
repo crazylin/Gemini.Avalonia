@@ -99,11 +99,6 @@
     <system:String x:Key="Settings.Language">Language</system:String>
     <system:String x:Key="Settings.LanguageRestartNote">Changing language requires application restart</system:String>
     <system:String x:Key="Settings.Theme">Theme</system:String>
-    <system:String x:Key="Settings.Font">Font</system:String>
-    <system:String x:Key="Settings.UIElements">UI Elements Display</system:String>
-    <system:String x:Key="Settings.ShowMenuBar">Show Menu Bar</system:String>
-    <system:String x:Key="Settings.ShowToolbar">Show Toolbar</system:String>
-    <system:String x:Key="Settings.ShowStatusBar">Show Status Bar</system:String>
     <system:String x:Key="Theme.Default">Default</system:String>
     <system:String x:Key="Theme.Dark">Dark</system:String>
     <system:String x:Key="Theme.Light">Light</system:String>

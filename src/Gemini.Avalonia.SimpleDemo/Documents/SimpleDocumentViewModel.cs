@@ -9,9 +9,9 @@ using Gemini.Avalonia.Framework;
 namespace Gemini.Avalonia.SimpleDemo.Documents
 {
     /// <summary>
-    /// 简单文档实现 - 文本编辑器
+    /// 简单文档视图模型 - 文本编辑器
     /// </summary>
-    public class SimpleDocument : Document, INotifyPropertyChanged
+    public class SimpleDocumentViewModel : Document, INotifyPropertyChanged
     {
         private string _content = string.Empty;
         private string? _filePath;
@@ -71,7 +71,7 @@ namespace Gemini.Avalonia.SimpleDemo.Documents
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SimpleDocument()
+        public SimpleDocumentViewModel()
         {
             DisplayName = "新建文档";
         }
@@ -80,7 +80,7 @@ namespace Gemini.Avalonia.SimpleDemo.Documents
         /// 构造函数
         /// </summary>
         /// <param name="filePath">文件路径</param>
-        public SimpleDocument(string filePath)
+        public SimpleDocumentViewModel(string filePath)
         {
             FilePath = filePath;
             LoadFromFile(filePath);

@@ -28,29 +28,6 @@
                           HorizontalAlignment="Left"/>
             </StackPanel>
             
-            <!-- 字体设置 -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="{DynamicResource Settings.Font}" FontWeight="SemiBold" FontSize="14"/>
-                <Grid ColumnDefinitions="200,20,100">
-                    <ComboBox Grid.Column="0"
-                              ItemsSource="{Binding AvailableFonts}"
-                              SelectedItem="{Binding FontFamily}"/>
-                    <NumericUpDown Grid.Column="2"
-                                   Value="{Binding FontSize}"
-                                   Minimum="8"
-                                   Maximum="72"
-                                   Increment="1"
-                                   FormatString="F0"/>
-                </Grid>
-            </StackPanel>
-            
-            <!-- 界面元素显示 -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="{DynamicResource Settings.UIElements}" FontWeight="SemiBold" FontSize="14"/>
-                <CheckBox Content="{DynamicResource Settings.ShowMenuBar}" IsChecked="{Binding ShowMenuBar}"/>
-                <CheckBox Content="{DynamicResource Settings.ShowToolbar}" IsChecked="{Binding ShowToolbar}"/>
-                <CheckBox Content="{DynamicResource Settings.ShowStatusBar}" IsChecked="{Binding ShowStatusBar}"/>
-            </StackPanel>
             
         </StackPanel>
     </ScrollViewer>

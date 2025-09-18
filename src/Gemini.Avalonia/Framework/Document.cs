@@ -55,7 +55,12 @@ namespace Gemini.Avalonia.Framework
         public new bool CanClose
         {
             get => _canClose;
-            set => this.RaiseAndSetIfChanged(ref _canClose, value);
+            set 
+            {
+                this.RaiseAndSetIfChanged(ref _canClose, value);
+                // 同步更新基类的CanClose属性，确保停靠系统正确识别
+                base.CanClose = value;
+            }
         }
         
         /// <summary>
@@ -147,7 +152,7 @@ namespace Gemini.Avalonia.Framework
         protected Document()
         {
             // 设置默认属性
-            base.CanClose = true;
+            CanClose = true;  // 通过属性设置器同步更新基类属性
             base.CanFloat = true;
             base.CanPin = false;
             
