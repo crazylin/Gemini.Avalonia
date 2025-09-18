@@ -78,15 +78,16 @@ namespace Gemini.Avalonia.Framework.Modules
                 {
                     LogManager.Info(GetType().Name, "开始延迟加载模块");
                     
+                    // 先设置加载状态，这样Initialize()中的IsLoaded检查就会通过
+                    _isLoaded = true;
+                    Metadata.IsLoaded = true;
+                    Metadata.IsInitialized = true;
+                    
                     // 调用模块的预初始化
                     PreInitialize();
                     
                     // 调用模块的初始化
                     Initialize();
-                    
-                    _isLoaded = true;
-                    Metadata.IsLoaded = true;
-                    Metadata.IsInitialized = true;
                     
                     LogManager.Info(GetType().Name, "模块延迟加载完成");
                 }

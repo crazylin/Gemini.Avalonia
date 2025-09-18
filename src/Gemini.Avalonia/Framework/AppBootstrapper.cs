@@ -181,26 +181,11 @@ namespace Gemini.Avalonia.Framework
                         () => _moduleManager.LoadCoreModulesAsync());
                 }
                 
-                // 兼容旧的模块加载方式
-                PerformanceMonitor.Measure("旧模块预初始化", () =>
-                {
-                    foreach (var module in _modules)
-                    {
-                        module.PreInitialize();
-                    }
-                });
+                // 初始化遗留模块（向后兼容）
+                await PerformanceMonitor.MeasureAsync("初始化遗留模块", InitializeLegacyModulesAsync);
                 
                 // 加载全局资源
                 PerformanceMonitor.Measure("加载全局资源", LoadGlobalResources);
-                
-                // 兼容旧的模块初始化方式
-                PerformanceMonitor.Measure("旧模块初始化", () =>
-                {
-                    foreach (var module in _modules)
-                    {
-                        module.Initialize();
-                    }
-                });
                 
                 // 初始化工具栏
                 PerformanceMonitor.Measure("初始化工具栏", InitializeToolBars);
@@ -233,14 +218,8 @@ namespace Gemini.Avalonia.Framework
                         () => _moduleManager.LoadModulesByCategoryAsync(ModuleCategory.UI));
                 }
                 
-                // 后初始化模块
-                await PerformanceMonitor.MeasureAsync("模块后初始化", async () =>
-                {
-                    foreach (var module in _modules)
-                    {
-                        await module.PostInitializeAsync();
-                    }
-                });
+                // 后初始化遗留模块
+                await PerformanceMonitor.MeasureAsync("遗留模块后初始化", PostInitializeLegacyModulesAsync);
                 
                 PerformanceMonitor.StopTimer("AppBootstrapper.StartAsync");
                 PerformanceMonitor.LogSummary();
@@ -297,29 +276,102 @@ namespace Gemini.Avalonia.Framework
                     }
                 }
                 
-                // 注册现有的模块实例
-                foreach (var module in _modules)
-                {
-                    var metadata = new ModuleMetadata
-                    {
-                        Name = module.GetType().Name,
-                        Description = $"Legacy module {module.GetType().Name}",
-                        Category = ModuleCategory.Core,
-                        Priority = 0,
-                        AllowLazyLoading = false,
-                        ModuleType = module.GetType(),
-                        Instance = module
-                    };
-                    _moduleManager.RegisterModule(module.GetType(), metadata);
-                }
+                // 注册遗留模块实例（向后兼容）
+                RegisterLegacyModules();
                 
-                LogManager.Info("AppBootstrapper", $"模块管理器初始化完成，已注册 {moduleConfigurations.Count} 个模块");
+                LogManager.Info("AppBootstrapper", $"模块管理器初始化完成，已注册 {moduleConfigurations.Count + _modules.Count} 个模块");
             }
             catch (Exception ex)
             {
                 LogManager.Error("AppBootstrapper", $"初始化模块管理器失败: {ex.Message}");
                 throw;
             }
+        }
+        
+        /// <summary>
+        /// 注册遗留模块实例（向后兼容）
+        /// </summary>
+        private void RegisterLegacyModules()
+        {
+            foreach (var module in _modules)
+            {
+                var metadata = new ModuleMetadata
+                {
+                    Name = $"Legacy_{module.GetType().Name}",
+                    Description = $"Legacy module {module.GetType().Name}",
+                    Category = ModuleCategory.Core,
+                    Priority = 0,
+                    AllowLazyLoading = false,
+                    ModuleType = module.GetType(),
+                    Instance = module,
+                    IsLoaded = true,
+                    IsInitialized = false // 将在后续步骤中初始化
+                };
+                _moduleManager?.RegisterModule(module.GetType(), metadata);
+                LogManager.Debug("AppBootstrapper", $"注册遗留模块: {metadata.Name}");
+            }
+        }
+        
+        /// <summary>
+        /// 初始化遗留模块（向后兼容）
+        /// </summary>
+        private async Task InitializeLegacyModulesAsync()
+        {
+            LogManager.Info("AppBootstrapper", "开始初始化遗留模块");
+            
+            // 预初始化
+            foreach (var module in _modules)
+            {
+                try
+                {
+                    module.PreInitialize();
+                    LogManager.Debug("AppBootstrapper", $"遗留模块预初始化完成: {module.GetType().Name}");
+                }
+                catch (Exception ex)
+                {
+                    LogManager.Error("AppBootstrapper", $"遗留模块预初始化失败 {module.GetType().Name}: {ex.Message}");
+                }
+            }
+            
+            // 初始化
+            foreach (var module in _modules)
+            {
+                try
+                {
+                    module.Initialize();
+                    LogManager.Debug("AppBootstrapper", $"遗留模块初始化完成: {module.GetType().Name}");
+                }
+                catch (Exception ex)
+                {
+                    LogManager.Error("AppBootstrapper", $"遗留模块初始化失败 {module.GetType().Name}: {ex.Message}");
+                }
+            }
+            
+            LogManager.Info("AppBootstrapper", "遗留模块初始化完成");
+            await Task.CompletedTask;
+        }
+        
+        /// <summary>
+        /// 后初始化遗留模块（向后兼容）
+        /// </summary>
+        private async Task PostInitializeLegacyModulesAsync()
+        {
+            LogManager.Info("AppBootstrapper", "开始后初始化遗留模块");
+            
+            foreach (var module in _modules)
+            {
+                try
+                {
+                    await module.PostInitializeAsync();
+                    LogManager.Debug("AppBootstrapper", $"遗留模块后初始化完成: {module.GetType().Name}");
+                }
+                catch (Exception ex)
+                {
+                    LogManager.Error("AppBootstrapper", $"遗留模块后初始化失败 {module.GetType().Name}: {ex.Message}");
+                }
+            }
+            
+            LogManager.Info("AppBootstrapper", "遗留模块后初始化完成");
         }
         
         /// <summary>
@@ -522,7 +574,8 @@ namespace Gemini.Avalonia.Framework
             var allowedAssemblyPrefixes = new[] 
             {
                 "Gemini.Avalonia",
-                "Gemini.Avalonia.Demo"
+                "Gemini.Avalonia.Demo",
+                "Gemini.Avalonia.SimpleDemo"
             };
             
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())

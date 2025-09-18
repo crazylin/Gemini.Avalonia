@@ -35,7 +35,61 @@ namespace Gemini.Avalonia.Framework
             { "Gemini.Avalonia.Demo", "DemoModule" } // Demo项目及其子命名空间
         };
 
+        private static HashSet<string> _disabledModules = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        
+        /// <summary>
+        /// 全局禁用的模块列表（可以被外部设置）
+        /// </summary>
+        public static HashSet<string> DisabledModules 
+        { 
+            get => _disabledModules;
+            set 
+            { 
+                _disabledModules = value ?? new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                // 清除所有实例的缓存
+                ClearAllCaches();
+            }
+        }
+
         private HashSet<string>? _cachedEnabledModules;
+        
+        /// <summary>
+        /// 所有ModuleFilterService实例的静态列表，用于清除缓存
+        /// </summary>
+        private static readonly List<WeakReference<ModuleFilterService>> AllInstances = new();
+        
+        /// <summary>
+        /// 构造函数 - 将实例添加到静态列表中
+        /// </summary>
+        public ModuleFilterService()
+        {
+            lock (AllInstances)
+            {
+                AllInstances.Add(new WeakReference<ModuleFilterService>(this));
+            }
+        }
+        
+        /// <summary>
+        /// 清除所有实例的缓存
+        /// </summary>
+        private static void ClearAllCaches()
+        {
+            lock (AllInstances)
+            {
+                for (int i = AllInstances.Count - 1; i >= 0; i--)
+                {
+                    if (AllInstances[i].TryGetTarget(out var instance))
+                    {
+                        instance._cachedEnabledModules = null;
+                    }
+                    else
+                    {
+                        // 移除已经被垃圾回收的弱引用
+                        AllInstances.RemoveAt(i);
+                    }
+                }
+            }
+        }
         
         /// <summary>
         /// 获取启用的模块名称集合
@@ -68,13 +122,29 @@ namespace Gemini.Avalonia.Framework
                 var moduleConfigs = ModuleConfiguration.GetAllModuleConfigurations();
                 foreach (var config in moduleConfigs)
                 {
-                    enabledModules.Add(config.Name);
-                    LogManager.Debug("ModuleFilterService", $"模块配置中启用的模块: {config.Name}");
+                    // 检查模块是否被全局禁用
+                    if (!DisabledModules.Contains(config.Name))
+                    {
+                        enabledModules.Add(config.Name);
+                        LogManager.Debug("ModuleFilterService", $"模块配置中启用的模块: {config.Name}");
+                    }
+                    else
+                    {
+                        LogManager.Info("ModuleFilterService", $"模块已被禁用: {config.Name}");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 LogManager.Warning("ModuleFilterService", $"获取模块配置时出错: {ex.Message}");
+            }
+            
+            // 移除禁用列表中的所有模块
+            enabledModules.ExceptWith(DisabledModules);
+            
+            if (DisabledModules.Count > 0)
+            {
+                LogManager.Info("ModuleFilterService", $"已禁用 {DisabledModules.Count} 个模块: {string.Join(", ", DisabledModules)}");
             }
             
             _cachedEnabledModules = enabledModules;

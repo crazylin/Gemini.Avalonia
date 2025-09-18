@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <linearGradient id="refreshGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563EB;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- 圆形箭头主体 -->
+  <circle cx="10" cy="10" r="6" fill="none" stroke="url(#refreshGrad)" stroke-width="1.5" 
+          stroke-dasharray="28 10" stroke-linecap="round" transform="rotate(-90 10 10)"/>
+  <!-- 箭头头部1 -->
+  <path d="M10 3l-2 2 2 2" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 箭头头部2 -->
+  <path d="M10 17l2-2-2-2" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 中心点强调 -->
+  <circle cx="10" cy="10" r="1.5" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5"/>
+  <circle cx="10" cy="10" r="0.8" fill="#2563EB"/>
+</svg>
