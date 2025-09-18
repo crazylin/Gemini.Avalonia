@@ -1,0 +1,17 @@
+using System;
+using System.Windows.Input;
+using Avalonia.Input;
+
+namespace AuroraUI.Modules.MainMenu.Models
+{
+    public abstract class StandardMenuItem : MenuItemBase
+    {
+        public override string Header { get; set; }
+        public override Uri IconSource { get; set; }
+        public virtual ICommand Command { get; set; }
+        public virtual bool IsChecked { get; }
+        public virtual bool IsVisible { get; }
+        public virtual KeyGesture KeyGesture { set; get; }
+
+    }
+}

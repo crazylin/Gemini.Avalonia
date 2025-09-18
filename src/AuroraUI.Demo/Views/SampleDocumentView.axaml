@@ -1,0 +1,73 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AuroraUI.Demo.ViewModels"
+             xmlns:conv="using:AuroraUI.Demo.Converters"
+             xmlns:controls="using:AuroraUI.Demo.Controls"
+             x:Class="AuroraUI.Demo.Views.SampleDocumentView"
+             x:DataType="vm:SampleDocumentViewModel">
+    
+    <Design.DataContext>
+        <vm:SampleDocumentViewModel />
+    </Design.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <!-- 文档信息栏 -->
+        <Border Grid.Row="0" 
+                Background="LightGray"
+                BorderBrush="Gray"
+                BorderThickness="0,0,0,1"
+                Padding="8,4">
+            <TextBlock Text="{Binding FilePath, StringFormat='路径: {0}'}"
+                       VerticalAlignment="Center" />
+        </Border>
+        
+        <!-- 文本编辑器 -->
+        <Border Grid.Row="1" 
+                Background="White"
+                BorderBrush="Gray"
+                BorderThickness="1">
+            <controls:EnhancedTextEditor Name="TextEditor"
+                                       Document="{Binding}"
+                                       Text="{Binding Content, Mode=TwoWay}"
+                                       Watermark="在此输入文档内容..."
+                                       Background="White"
+                                       BorderThickness="0" />
+        </Border>
+        
+        <!-- 状态栏 -->
+        <Border Grid.Row="2" 
+                Background="LightGray"
+                BorderBrush="Gray"
+                BorderThickness="0,1,0,0"
+                Padding="8,4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0"
+                           Text="{Binding IsDirty, StringFormat='已修改: {0}'}"
+                           VerticalAlignment="Center" />
+                
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Content.Length, StringFormat='字符数: {0}'}"
+                           VerticalAlignment="Center"
+                           Margin="16,0,0,0" />
+                
+                <TextBlock Grid.Column="2"
+                           Text="文本文档"
+                           VerticalAlignment="Center"
+                           Margin="16,0,0,0" />
+            </Grid>
+        </Border>
+    </Grid>
+    
+</UserControl>

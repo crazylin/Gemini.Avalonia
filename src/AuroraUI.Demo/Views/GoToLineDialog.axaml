@@ -1,0 +1,58 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AuroraUI.Demo.Views.GoToLineDialog"
+        Title="跳转到行"
+        Width="300"
+        Height="150"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="White">
+    
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <!-- 标题 -->
+        <TextBlock Grid.Row="0" 
+                   Text="请输入要跳转到的行号:" 
+                   Margin="0,0,0,12" />
+        
+        <!-- 输入框 -->
+        <TextBox Grid.Row="1" 
+                 Name="LineNumberTextBox"
+                 Text="{Binding LineNumber, Mode=TwoWay}"
+                 Watermark="行号 (1-N)"
+                 Margin="0,0,0,12" />
+        
+        <!-- 提示信息 -->
+        <TextBlock Grid.Row="2" 
+                   Name="InfoTextBlock"
+                   Text="{Binding InfoMessage}"
+                   VerticalAlignment="Top"
+                   Foreground="Gray"
+                   FontSize="12"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,12" />
+        
+        <!-- 按钮 -->
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Spacing="8">
+            <Button Content="跳转" 
+                    Name="GoToButton"
+                    Click="GoTo_Click"
+                    IsDefault="True"
+                    MinWidth="80" />
+            <Button Content="取消" 
+                    Name="CancelButton"
+                    Click="Cancel_Click"
+                    IsCancel="True"
+                    MinWidth="80" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,91 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:AuroraUI.Modules.ToolBars.Models"
+             xmlns:viewModels="clr-namespace:AuroraUI.Modules.ToolBars.ViewModels"
+             xmlns:toolBars="clr-namespace:AuroraUI.Modules.ToolBars"
+              xmlns:converters="clr-namespace:AuroraUI.Framework.Converters"
+              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AuroraUI.Modules.ToolBars.Views.ToolBarView"
+             Background="{DynamicResource ToolBarBackgroundBrush}"
+             Padding="4,2"
+             Margin="0,1">
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="{x:Type models:ButtonToolBarItem}">
+      <Button Content="{Binding}" Command="{Binding Command}" IsVisible="{Binding IsVisible}" Padding="6,4" Margin="1,0" MinHeight="28" MinWidth="32" VerticalAlignment="Center"
+              Background="{DynamicResource ButtonBackgroundBrush}" CornerRadius="3">
+        <ToolTip.Tip>
+          <ToolTip IsVisible="{Binding HasToolTip}">
+            <TextBlock Text="{Binding ToolTip}"></TextBlock>
+          </ToolTip>
+        </ToolTip.Tip>
+        <Button.DataTemplates>
+          <DataTemplate DataType="{x:Type models:ButtonToolBarItem}" x:DataType="models:ButtonToolBarItem">
+            <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+              <Image Source="{Binding IconSource, Converter={x:Static converters:UriToSvgConverter.Instance}}" Width="20" Height="20" VerticalAlignment="Center" />
+              <TextBlock Text="{Binding Text}" IsVisible="{Binding ImageOnly, Converter={x:Static BoolConverters.Not}}" VerticalAlignment="Center" FontSize="12"></TextBlock>
+            </StackPanel>
+          </DataTemplate>
+        </Button.DataTemplates>
+      </Button>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:ToggleButtonToolBarItem}">
+      <ToggleButton Content="{Binding}" Command="{Binding Command}" IsVisible="{Binding IsVisible}" IsChecked="{Binding IsChecked}" Padding="6,4" Margin="1,0" MinHeight="28" MinWidth="32" VerticalAlignment="Center"
+                    Background="{DynamicResource ButtonBackgroundBrush}" CornerRadius="3">
+        <ToolTip.Tip>
+          <ToolTip IsVisible="{Binding HasToolTip}">
+            <TextBlock Text="{Binding ToolTip}"></TextBlock>
+          </ToolTip>
+        </ToolTip.Tip>
+        <ToggleButton.DataTemplates>
+          <DataTemplate DataType="{x:Type models:ToggleButtonToolBarItem}" x:DataType="models:ToggleButtonToolBarItem">
+            <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+              <Image Source="{Binding IconSource, Converter={x:Static converters:UriToSvgConverter.Instance}}" Width="20" Height="20" VerticalAlignment="Center" />
+              <TextBlock Text="{Binding Text}" IsVisible="{Binding ImageOnly, Converter={x:Static BoolConverters.Not}}" VerticalAlignment="Center" FontSize="12"></TextBlock>
+            </StackPanel>
+          </DataTemplate>
+        </ToggleButton.DataTemplates>
+      </ToggleButton>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type models:SeparatorToolBarItem}">
+      <Border Width="1" Height="24" Background="#E0E0E0" 
+              Margin="2,0" VerticalAlignment="Center" Opacity="0.6" />
+    </DataTemplate>
+
+  </UserControl.DataTemplates>
+
+  <ItemsControl ItemsSource="{Binding Items}" IsVisible="{Binding Visible}" x:DataType="toolBars:IToolBars">
+    <!-- 让多个工具栏横向排布 -->
+    <ItemsControl.ItemsPanel>
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Horizontal" Spacing="0"/>
+      </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+    <ItemsControl.ItemTemplate>
+      <DataTemplate DataType="{x:Type models:ToolBarModel}" x:DataType="models:ToolBarModel">
+        <StackPanel Orientation="Horizontal">
+          <!-- 工具栏分隔符 -->
+          <Border Width="1" Height="24" Background="#E0E0E0" 
+                  Margin="2,0" VerticalAlignment="Center" Opacity="0.6" />
+          
+          <!-- 工具栏内容 -->
+          <ItemsControl BorderThickness="0" ItemsSource="{Binding Items}" Padding="0" Margin="0" Background="Transparent">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="0"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <ContentControl Content="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </DataTemplate>
+    </ItemsControl.ItemTemplate>
+  </ItemsControl>
+</UserControl>

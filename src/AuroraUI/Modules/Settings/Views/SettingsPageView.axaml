@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AuroraUI.Modules.Settings.ViewModels"
+             x:Class="AuroraUI.Modules.Settings.Views.SettingsPageView"
+             x:DataType="vm:SettingsPageViewModel">
+
+  <StackPanel>
+    <!-- 显示页面名称 -->
+    <TextBlock Text="{Binding Name}"
+               FontSize="16"
+               FontWeight="Bold"
+               Margin="0,0,0,10" />
+    
+    <!-- 显示设置编辑器 -->
+    <ItemsControl ItemsSource="{Binding Editors}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <ContentControl Content="{Binding}" Margin="0,0,0,10" />
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </StackPanel>
+</UserControl>

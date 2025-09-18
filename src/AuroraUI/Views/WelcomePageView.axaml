@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AuroraUI.Framework"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="AuroraUI.Views.WelcomePageView"
+             x:DataType="vm:WelcomePageViewModel">
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto"
+                  Padding="20">
+        <TextBlock Text="{Binding Content}"
+                   FontFamily="微软雅黑,Segoe UI,Arial,sans-serif"
+                   FontSize="14"
+                   LineHeight="24"
+                   TextWrapping="Wrap"
+                   Foreground="#333333"
+                   Background="White"
+                   MaxWidth="800"
+                   HorizontalAlignment="Left" />
+    </ScrollViewer>
+    
+</UserControl>
