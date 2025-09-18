@@ -5,15 +5,31 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "SCSA Debug",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Gemini.Avalonia.Demo/bin/Debug/net9.0/Gemini.Avalonia.Demo.dll",
+            "preLaunchTask": "build-scsa",
+            "program": "${workspaceFolder}/src/AuroraUI.SCSA/bin/Debug/net9.0/SCSA.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Gemini.Avalonia.Demo",
+            "cwd": "${workspaceFolder}/src/AuroraUI.SCSA",
             "console": "internalConsole",
-            "stopAtEntry": false
+            "stopAtEntry": false,
+            "env": {
+                "DOTNET_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            "name": "SCSA Quick Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/AuroraUI.SCSA/bin/Debug/net9.0/SCSA.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/AuroraUI.SCSA",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "env": {
+                "DOTNET_ENVIRONMENT": "Development"
+            }
         },
         {
             "name": ".NET Core Attach",

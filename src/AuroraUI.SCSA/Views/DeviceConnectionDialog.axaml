@@ -1,0 +1,146 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:SCSA.ViewModels"
+        xmlns:converters="using:SCSA.Converters"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+        Width="900" Height="600"
+        MinWidth="800" MinHeight="500"
+        x:Class="SCSA.Views.DeviceConnectionDialog"
+        x:DataType="vm:DeviceConnectionViewModel"
+        Title="设备连接管理"
+        WindowStartupLocation="CenterOwner">
+
+    <Design.DataContext>
+        <vm:DeviceConnectionViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- 工具栏 -->
+        <Border Grid.Row="0" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" 
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+                BorderThickness="0,0,0,1" Padding="10">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto,*,Auto">
+                <!-- 网络接口选择 -->
+                <TextBlock Grid.Column="0" Text="网络接口:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox Grid.Column="1" MinWidth="200" 
+                          ItemsSource="{Binding NetworkInterfaces}"
+                          SelectedItem="{Binding SelectedInterface}"
+                          DisplayMemberBinding="{Binding Name}"/>
+                
+                <!-- 端口设置 -->
+                <TextBlock Grid.Column="2" Text="端口:" VerticalAlignment="Center" Margin="20,0,10,0"/>
+                <NumericUpDown Grid.Column="3" Width="100" 
+                              Value="{Binding Port}" 
+                              Minimum="1024" Maximum="65535"
+                              ShowButtonSpinner="False"/>
+                
+                <!-- 操作按钮 -->
+                <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="10">
+                    <Button Content="刷新接口" Command="{Binding RefreshInterfacesCommand}"/>
+                    <Button Content="启动监听" 
+                            Command="{Binding StartServerCommand}"
+                            IsVisible="{Binding !IsServerRunning}"/>
+                    <Button Content="停止监听" 
+                            Command="{Binding StopServerCommand}"
+                            IsVisible="{Binding IsServerRunning}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- 主内容区 -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,5,300">
+            <!-- 设备列表 -->
+            <Grid Grid.Column="0" RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0" Text="连接的设备" FontSize="16" FontWeight="Bold" 
+                          Margin="10,10,10,5"/>
+                
+                <DataGrid Grid.Row="1" Margin="10,5,5,10"
+                          ItemsSource="{Binding ConnectedDevices}"
+                          SelectedItem="{Binding SelectedDevice}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          GridLinesVisibility="Horizontal"
+                          HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="设备ID" Binding="{Binding DeviceId}" Width="100"/>
+                        <DataGridTextColumn Header="设备名称" Binding="{Binding DeviceName}" Width="120"/>
+                        <DataGridTextColumn Header="IP地址" Binding="{Binding EndPoint.Address}" Width="120"/>
+                        <DataGridTextColumn Header="端口" Binding="{Binding EndPoint.Port}" Width="80"/>
+                        <DataGridTextColumn Header="连接时间" Binding="{Binding ConnectTime, StringFormat='HH:mm:ss'}" Width="80"/>
+                        <DataGridTextColumn Header="设备类型" Binding="{Binding DeviceType}" Width="100"/>
+                        <DataGridTemplateColumn Header="操作" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="断开" 
+                                            Command="{Binding $parent[DataGrid].((vm:DeviceConnectionViewModel)DataContext).DisconnectDeviceCommand}"
+                                            CommandParameter="{Binding}"
+                                            HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <GridSplitter Grid.Column="1" Background="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"/>
+
+            <!-- 设备详情面板 -->
+            <Grid Grid.Column="2" RowDefinitions="Auto,*" Margin="5,10,10,10">
+                <TextBlock Grid.Row="0" Text="设备详情" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+                
+                <ScrollViewer Grid.Row="1">
+                    <StackPanel Spacing="10" IsVisible="{Binding SelectedDevice, Converter={x:Static converters:ObjectConverters.IsNotNull}}">
+                        <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" 
+                                CornerRadius="5" Padding="10">
+                            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="设备ID:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedDevice.DeviceId}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="设备名称:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedDevice.DeviceName}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="IP地址:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedDevice.EndPoint.Address}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="端口:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedDevice.EndPoint.Port}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="连接时间:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedDevice.ConnectTime, StringFormat='yyyy-MM-dd HH:mm:ss'}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="设备类型:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedDevice.DeviceType}" Margin="0,0,0,5"/>
+                                
+                                <TextBlock Grid.Row="6" Grid.Column="0" Text="连接状态:" FontWeight="Bold" Margin="0,0,10,0"/>
+                                <TextBlock Grid.Row="6" Grid.Column="1" 
+                                          Text="{Binding SelectedDevice.IsConnected, Converter={x:Static converters:BoolConverters.ToYesNo}}"
+                                          Foreground="{Binding SelectedDevice.IsConnected, Converter={x:Static converters:BoolConverters.ToSuccessErrorBrush}}"/>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- 操作按钮 -->
+                        <StackPanel Spacing="5">
+                            <Button Content="读取设备信息" HorizontalAlignment="Stretch" IsEnabled="False"/>
+                            <Button Content="设备测试" HorizontalAlignment="Stretch" IsEnabled="False"/>
+                            <Button Content="参数配置" HorizontalAlignment="Stretch" IsEnabled="False"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+
+        <!-- 状态栏 -->
+        <Border Grid.Row="2" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" 
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+                BorderThickness="0,1,0,0" Padding="10,5">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <TextBlock Grid.Column="0" Text="状态:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding StatusMessage}" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding ConnectedDevices.Count, StringFormat='已连接设备: {0} 个'}" 
+                          VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

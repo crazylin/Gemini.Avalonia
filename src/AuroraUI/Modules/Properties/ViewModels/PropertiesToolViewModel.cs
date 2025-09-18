@@ -165,7 +165,7 @@ namespace AuroraUI.Modules.Properties.ViewModels
         /// <summary>
         /// 加载状态
         /// </summary>
-        public void LoadState(BinaryReader reader)
+        public override void LoadState(BinaryReader reader)
         {
             // 属性工具通常不需要保存状态，因为它显示的是当前选中对象的属性
         }
@@ -173,7 +173,7 @@ namespace AuroraUI.Modules.Properties.ViewModels
         /// <summary>
         /// 保存状态
         /// </summary>
-        public void SaveState(BinaryWriter writer)
+        public override void SaveState(BinaryWriter writer)
         {
             // 属性工具通常不需要保存状态
         }

@@ -2,38 +2,39 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build-scsa",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Gemini.Avalonia.sln",
+                "${workspaceFolder}/AuroraUI.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "group": "build"
         },
         {
-            "label": "publish",
+            "label": "run-scsa",
             "command": "dotnet",
             "type": "process",
             "args": [
-                "publish",
-                "${workspaceFolder}/Gemini.Avalonia.sln",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+                "run",
+                "--project",
+                "${workspaceFolder}/src/AuroraUI.Demo"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "dependsOn": "build-scsa"
         },
         {
-            "label": "watch",
+            "label": "watch-scsa",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/Gemini.Avalonia.sln"
+                "${workspaceFolder}/src/AuroraUI.Demo"
             ],
             "problemMatcher": "$msCompile"
         }

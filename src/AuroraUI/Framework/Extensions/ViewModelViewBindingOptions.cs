@@ -70,7 +70,7 @@ namespace AuroraUI.Framework.Extensions
                 var name = assembly.FullName;
                 return !assembly.IsDynamic && 
                        !string.IsNullOrEmpty(assembly.Location) &&
-                       (name?.Contains("Gemini.Avalonia") == true ||
+                       (name?.Contains("AuroraUI") == true ||
                         name?.Contains("Demo") == true ||
                         name?.Contains("App") == true);
             },
@@ -90,16 +90,16 @@ namespace AuroraUI.Framework.Extensions
         };
         
         /// <summary>
-        /// 创建用于Gemini框架的配置
+        /// 创建用于Aurora框架的配置
         /// </summary>
-        public static ViewModelViewBindingOptions ForGeminiFramework => new ViewModelViewBindingOptions
+        public static ViewModelViewBindingOptions ForAuroraFramework => new ViewModelViewBindingOptions
         {
             AssemblyFilter = assembly => 
             {
                 var name = assembly.FullName;
                 return !assembly.IsDynamic && 
                        !string.IsNullOrEmpty(assembly.Location) &&
-                       (name?.Contains("Gemini") == true);
+                       (name?.Contains("AuroraUI") == true);
             },
             
             ViewModelFilter = type => 

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>AuroraUI.IO</PackageId>
+    <Title>AuroraUI.IO</Title>
+    <Authors>AuroraUI Team</Authors>
+    <Description>AuroraUI.IO provides networking and communication utilities including TCP clients/servers, Modbus RTU clients, and pipeline-based data processing.</Description>
+    <PackageTags>AuroraUI;IO;TCP;Modbus;Network;Communication</PackageTags>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
+    <PackageReference Include="System.IO.Pipelines" Version="8.0.0" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../AuroraUI/AuroraUI.csproj" />
+  </ItemGroup>
+
+</Project>

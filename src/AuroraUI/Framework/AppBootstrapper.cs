@@ -566,12 +566,17 @@ namespace AuroraUI.Framework
                 assemblies.Add(currentAssembly);
             }
             
+            // 允许子类添加额外的程序集
+            var additionalAssemblies = GetAdditionalAssemblies();
+            if (additionalAssemblies != null)
+            {
+                assemblies.AddRange(additionalAssemblies);
+            }
+            
             // 扫描应用程序域中的相关程序集
             var allowedAssemblyPrefixes = new[] 
             {
-                "Gemini.Avalonia",
-                "Gemini.Avalonia.Demo",
-                "Gemini.Avalonia.SimpleDemo"
+                "AuroraUI"
             };
             
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -605,6 +610,38 @@ namespace AuroraUI.Framework
             }
             
             return assemblies;
+        }
+        
+        /// <summary>
+        /// 获取额外的程序集，子类可以重写此方法添加自己的程序集
+        /// </summary>
+        /// <returns>额外的程序集列表</returns>
+        protected virtual IEnumerable<Assembly>? GetAdditionalAssemblies()
+        {
+            return null;
+        }
+        
+        /// <summary>
+        /// 判断ViewModel是否应该被排除在自动绑定之外
+        /// </summary>
+        /// <param name="type">ViewModel类型</param>
+        /// <returns>如果应该排除则返回true</returns>
+        private static bool IsExcludedViewModel(Type type)
+        {
+            // 排除特定的ViewModel类型
+            var excludedViewModels = new[]
+            {
+                "HomeViewModel",           // RootDock类型，不需要View
+                "StatusBarViewModel",      // 状态栏ViewModel，有特殊处理
+                "StatusBarItemViewModel",  // 状态栏项ViewModel，有特殊处理
+                "ShellViewModel",          // Shell主窗口ViewModel，有特殊处理
+                "WelcomePageViewModel"     // 欢迎页ViewModel，可能有特殊处理
+            };
+            
+            return excludedViewModels.Contains(type.Name) ||
+                   // 排除继承自特定基类的ViewModel（但不排除Tool，因为Tool需要View绑定）
+                   type.BaseType?.Name == "RootDock" ||
+                   type.BaseType?.Name == "Document";
         }
         
         /// <summary>
@@ -921,19 +958,28 @@ namespace AuroraUI.Framework
             
             try
             {
-                // 获取所有已加载的程序集
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                // 获取所有已加载的程序集，包括额外程序集
+                var baseAssemblies = AppDomain.CurrentDomain.GetAssemblies()
                     .Where(a => !a.IsDynamic && 
                                !string.IsNullOrEmpty(a.Location) &&
                                (a.FullName?.Contains("AuroraUI") == true ||
                                 a.FullName?.Contains("Demo") == true))
-                    .ToArray();
+                    .ToList();
+                
+                // 添加额外程序集（如SCSA等）
+                var additionalAssemblies = GetAdditionalAssemblies();
+                if (additionalAssemblies != null)
+                {
+                    baseAssemblies.AddRange(additionalAssemblies);
+                }
+                
+                var assemblies = baseAssemblies.ToArray();
                 
                 // 使用自定义配置进行绑定
                 var bindingOptions = new ViewModelViewBindingOptions
                 {
                     EnableVerboseLogging = true,
-                    ShowWarningsForMissingViews = true,
+                    ShowWarningsForMissingViews = false, // 关闭警告，避免不必要的日志
                     AssemblyFilter = assembly => 
                     {
                         var name = assembly.FullName;
@@ -941,13 +987,16 @@ namespace AuroraUI.Framework
                                !string.IsNullOrEmpty(assembly.Location) &&
                                (name?.Contains("AuroraUI") == true ||
                                 name?.Contains("Demo") == true ||
-                                name?.Contains("Module") == true);
+                                name?.Contains("Module") == true ||
+                                name?.Contains("SCSA") == true);
                     },
                     ViewModelFilter = type => 
                         type.Name.EndsWith("ViewModel") && 
                         type.IsClass && 
                         !type.IsAbstract && 
-                        type.IsPublic,
+                        type.IsPublic &&
+                        // 排除不需要自动绑定的ViewModel
+                        !IsExcludedViewModel(type),
                     CustomNamingConvention = viewModelName => 
                         viewModelName.Replace("ViewModel", "View")
                 };

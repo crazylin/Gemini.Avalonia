@@ -21,9 +21,9 @@ namespace AuroraUI.Modules.ToolBars.Models
         private readonly KeyGesture _keyGesture;
         private readonly IToolBar _parent;
 
-		public string Text => TrimMnemonics(_command.Text);
+		public override string Text => TrimMnemonics(_command.Text);
 
-        public Uri IconSource => _command.IconSource;
+        public override Uri IconSource => _command.IconSource;
 
         public string IconName => _command.IconName;
 
@@ -36,7 +36,7 @@ namespace AuroraUI.Modules.ToolBars.Models
                 return result;
             }
         }
-        public string ToolTip
+        public override string ToolTip
 	    {
 	        get
 	        {
@@ -49,13 +49,13 @@ namespace AuroraUI.Modules.ToolBars.Models
 	    }
         
 
-	    public bool HasToolTip => !string.IsNullOrWhiteSpace(ToolTip);
+	    public override bool HasToolTip => !string.IsNullOrWhiteSpace(ToolTip);
 
-        public ICommand Command => IoC.Get<ICommandService>().GetTargetableCommand(_command);
+        public override ICommand Command => IoC.Get<ICommandService>().GetTargetableCommand(_command);
 
-        public bool IsChecked => _command.Checked;
+        public override bool IsChecked => _command.Checked;
 
-        public bool IsVisible => _command.Visible;
+        public override bool IsVisible => _command.Visible;
 
 
         public ButtonToolBarItem(ToolBarItemDefinition toolBarItem, Command command, IToolBar parent)
