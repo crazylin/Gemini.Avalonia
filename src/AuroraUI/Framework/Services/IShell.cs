@@ -7,6 +7,7 @@ using AuroraUI.Modules.ToolBars;
 using ReactiveUI;
 using Dock.Model.Core;
 using AuroraUI.Services;
+using AuroraUI.Views;
 
 namespace AuroraUI.Framework.Services
 {
@@ -29,6 +30,11 @@ namespace AuroraUI.Framework.Services
         /// 是否在任务栏显示浮动窗口
         /// </summary>
         bool ShowFloatingWindowsInTaskbar { get; set; }
+        
+        /// <summary>
+        /// 主窗口视图
+        /// </summary>
+        ShellView? MainWindow { get; }
         
         /// <summary>
         /// 主菜单

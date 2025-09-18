@@ -203,6 +203,12 @@ namespace AuroraUI.Framework
                 PerformanceMonitor.Measure("创建主窗口", () =>
                 {
                     MainWindow = new ShellView(Shell as ShellViewModel ?? throw new InvalidOperationException("Shell must be ShellViewModel"));
+                
+                // 设置Shell的MainWindow属性
+                if (Shell is ShellViewModel shellVM)
+                {
+                    shellVM.MainWindow = MainWindow;
+                }
                 });
                 
                 // 加载默认文档
@@ -573,12 +579,7 @@ namespace AuroraUI.Framework
                 assemblies.AddRange(additionalAssemblies);
             }
             
-            // 扫描应用程序域中的相关程序集
-            var allowedAssemblyPrefixes = new[] 
-            {
-                "AuroraUI"
-            };
-            
+            // 扫描应用程序域中包含MEF导出的程序集
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 if (!assemblies.Contains(assembly) && !assembly.IsDynamic)
@@ -587,8 +588,8 @@ namespace AuroraUI.Framework
                     {
                         var assemblyName = assembly.GetName().Name;
                         
-                        // 只处理允许的程序集前缀
-                        if (allowedAssemblyPrefixes.Any(prefix => assemblyName?.StartsWith(prefix) == true))
+                        // 检查程序集是否包含MEF导出（跳过系统程序集）
+                        if (!IsSystemAssembly(assemblyName))
                         {
                             // 检查程序集是否包含MEF导出
                             var exportTypes = assembly.GetTypes().Where(t => 
@@ -619,6 +620,30 @@ namespace AuroraUI.Framework
         protected virtual IEnumerable<Assembly>? GetAdditionalAssemblies()
         {
             return null;
+        }
+        
+        /// <summary>
+        /// 判断程序集是否为系统程序集
+        /// </summary>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <returns>如果是系统程序集则返回true</returns>
+        private static bool IsSystemAssembly(string? assemblyName)
+        {
+            if (string.IsNullOrEmpty(assemblyName))
+                return true;
+                
+            // 系统程序集前缀列表
+            var systemPrefixes = new[]
+            {
+                "System", "Microsoft", "mscorlib", "netstandard", "Avalonia.Base",
+                "Avalonia.Controls", "Avalonia.Input", "Avalonia.Interactivity",
+                "Avalonia.Layout", "Avalonia.Logging", "Avalonia.Markup",
+                "Avalonia.Metadata", "Avalonia.Platform", "Avalonia.Styling",
+                "Avalonia.Utilities", "Avalonia.Visuals", "ReactiveUI.Events",
+                "Splat", "DynamicData", "Dock.Model"
+            };
+            
+            return systemPrefixes.Any(prefix => assemblyName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
         }
         
         /// <summary>
@@ -962,8 +987,7 @@ namespace AuroraUI.Framework
                 var baseAssemblies = AppDomain.CurrentDomain.GetAssemblies()
                     .Where(a => !a.IsDynamic && 
                                !string.IsNullOrEmpty(a.Location) &&
-                               (a.FullName?.Contains("AuroraUI") == true ||
-                                a.FullName?.Contains("Demo") == true))
+                               !IsSystemAssembly(a.GetName().Name))
                     .ToList();
                 
                 // 添加额外程序集（如SCSA等）
@@ -982,13 +1006,9 @@ namespace AuroraUI.Framework
                     ShowWarningsForMissingViews = false, // 关闭警告，避免不必要的日志
                     AssemblyFilter = assembly => 
                     {
-                        var name = assembly.FullName;
                         return !assembly.IsDynamic && 
                                !string.IsNullOrEmpty(assembly.Location) &&
-                               (name?.Contains("AuroraUI") == true ||
-                                name?.Contains("Demo") == true ||
-                                name?.Contains("Module") == true ||
-                                name?.Contains("SCSA") == true);
+                               !IsSystemAssembly(assembly.GetName().Name);
                     },
                     ViewModelFilter = type => 
                         type.Name.EndsWith("ViewModel") && 

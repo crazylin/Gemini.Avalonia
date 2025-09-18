@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Reflection;
 using System.Threading.Tasks;
 using AuroraUI.Framework;
 using AuroraUI.Framework.Logging;
@@ -14,20 +12,6 @@ namespace SCSA
     /// </summary>
     public class SCSABootstrapper : AppBootstrapper
     {
-        protected override IEnumerable<Assembly>? GetAdditionalAssemblies()
-        {
-            // 获取调用方法信息
-            var callerMethod = new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name;
-            
-            // 只为ViewModel绑定提供SCSA程序集，MEF容器会自动包含入口程序集
-            if (callerMethod == "RegisterViewModelBindings")
-            {
-                return new[] { Assembly.GetExecutingAssembly() };
-            }
-            
-            return null;
-        }
-        
         public new SCSABootstrapper Initialize()
         {
             // 禁用项目管理模块

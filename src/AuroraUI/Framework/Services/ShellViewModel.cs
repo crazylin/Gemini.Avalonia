@@ -16,6 +16,7 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Core;
 using AuroraUI.Modules.MainMenu.ViewModels;
 using AuroraUI.Modules.ToolBars.ViewModels;
+using AuroraUI.Views;
 
 namespace AuroraUI.Framework.Services
 {
@@ -31,6 +32,7 @@ namespace AuroraUI.Framework.Services
         private ICommand? _closeCommand;
         private bool _showFloatingWindowsInTaskbar = true;
         private IDock? _layout;
+        private ShellView? _mainWindow;
         
         [Import(AllowDefault = true)]
         private IThemeService? _themeService;
@@ -114,6 +116,15 @@ namespace AuroraUI.Framework.Services
         {
             get => _showFloatingWindowsInTaskbar;
             set => this.RaiseAndSetIfChanged(ref _showFloatingWindowsInTaskbar, value);
+        }
+        
+        /// <summary>
+        /// 主窗口视图
+        /// </summary>
+        public ShellView? MainWindow
+        {
+            get => _mainWindow;
+            internal set => this.RaiseAndSetIfChanged(ref _mainWindow, value);
         }
         
         /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Avalonia.Controls;
 
@@ -61,18 +62,39 @@ namespace AuroraUI.Framework.Extensions
         public HashSet<Type> ExcludedViewTypes { get; set; } = new();
         
         /// <summary>
+        /// 判断程序集是否为系统程序集
+        /// </summary>
+        /// <param name="assemblyName">程序集名称</param>
+        /// <returns>如果是系统程序集则返回true</returns>
+        private static bool IsSystemAssembly(string? assemblyName)
+        {
+            if (string.IsNullOrEmpty(assemblyName))
+                return true;
+                
+            // 系统程序集前缀列表
+            var systemPrefixes = new[]
+            {
+                "System", "Microsoft", "mscorlib", "netstandard", "Avalonia.Base",
+                "Avalonia.Controls", "Avalonia.Input", "Avalonia.Interactivity",
+                "Avalonia.Layout", "Avalonia.Logging", "Avalonia.Markup",
+                "Avalonia.Metadata", "Avalonia.Platform", "Avalonia.Styling",
+                "Avalonia.Utilities", "Avalonia.Visuals", "ReactiveUI.Events",
+                "Splat", "DynamicData", "Dock.Model"
+            };
+            
+            return systemPrefixes.Any(prefix => assemblyName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+        }
+        
+        /// <summary>
         /// 默认配置
         /// </summary>
         public static ViewModelViewBindingOptions Default => new ViewModelViewBindingOptions
         {
             AssemblyFilter = assembly => 
             {
-                var name = assembly.FullName;
                 return !assembly.IsDynamic && 
                        !string.IsNullOrEmpty(assembly.Location) &&
-                       (name?.Contains("AuroraUI") == true ||
-                        name?.Contains("Demo") == true ||
-                        name?.Contains("App") == true);
+                       !IsSystemAssembly(assembly.GetName().Name);
             },
             
             ViewModelFilter = type => 
@@ -96,10 +118,9 @@ namespace AuroraUI.Framework.Extensions
         {
             AssemblyFilter = assembly => 
             {
-                var name = assembly.FullName;
                 return !assembly.IsDynamic && 
                        !string.IsNullOrEmpty(assembly.Location) &&
-                       (name?.Contains("AuroraUI") == true);
+                       !IsSystemAssembly(assembly.GetName().Name);
             },
             
             ViewModelFilter = type => 

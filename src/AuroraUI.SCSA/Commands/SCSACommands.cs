@@ -33,7 +33,7 @@ public class ShowDeviceConnectionCommandHandler : CommandHandlerBase<ShowDeviceC
         _shell = shell;
     }
 
-    public override Task Run(Command command)
+    public override async Task Run(Command command)
     {
         try
         {
@@ -41,15 +41,20 @@ public class ShowDeviceConnectionCommandHandler : CommandHandlerBase<ShowDeviceC
             var viewModel = new ViewModels.DeviceConnectionViewModel();
             var dialog = new Views.DeviceConnectionDialog(viewModel);
 
-            // 显示对话框
-            dialog.Show();
-            return Task.CompletedTask;
+            // 使用主窗口作为父窗口显示模态对话框
+            if (_shell.MainWindow != null)
+            {
+                await dialog.ShowDialog(_shell.MainWindow);
+            }
+            else
+            {
+                dialog.Show();
+            }
         }
         catch (Exception ex)
         {
             // 记录错误
             AuroraUI.Framework.Logging.LogManager.GetLogger("SCSA.Commands").Error($"显示设备连接对话框失败: {ex.Message}");
-            return Task.CompletedTask;
         }
     }
 }
