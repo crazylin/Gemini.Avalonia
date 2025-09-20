@@ -415,7 +415,7 @@ namespace AuroraUI.Framework
                 // 直接读取配置文件，不依赖MEF容器
                 var configPath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "Gemini.Avalonia",
+                    "AuroraUI",
                     "settings.json");
                 
                 string savedLanguage = "跟随系统";

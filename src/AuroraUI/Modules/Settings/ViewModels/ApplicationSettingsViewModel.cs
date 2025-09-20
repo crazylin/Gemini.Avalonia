@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -75,19 +76,44 @@ namespace AuroraUI.Modules.Settings.ViewModels
 
             // 语言切换改为重启模式，不再订阅CultureChanged事件
 
-            LoadSettings();
+            _ = InitializeAsync();
+        }
+        
+        private async Task InitializeAsync()
+        {
+            try
+            {
+                // 首先从文件加载配置
+                await _configurationService.LoadAsync();
+                LogManager.Info("ApplicationSettingsViewModel", "配置文件已加载");
+                
+                // 然后加载设置到UI
+                LoadSettings();
+            }
+            catch (Exception ex)
+            {
+                LogManager.Error("ApplicationSettingsViewModel", $"初始化配置失败: {ex.Message}");
+                // 如果加载失败，使用默认设置
+                LoadSettings();
+            }
         }
 
-        public void ApplyChanges()
+        public async Task ApplyChangesAsync()
         {
             // 先保存所有设置到配置服务
-            SaveSettings();
+            await SaveSettingsAsync();
             
             // 检查语言是否发生变化，如果变化则触发语言切换（不重复保存配置）
             ApplyLanguageSettings();
             
             // 应用主题设置
             ApplyThemeSettings();
+        }
+        
+        // 保留同步版本以兼容现有接口
+        public void ApplyChanges()
+        {
+            _ = ApplyChangesAsync();
         }
 
         private void OnPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -149,13 +175,14 @@ namespace AuroraUI.Modules.Settings.ViewModels
             UpdateFilteredThemes();
         }
 
-        private void SaveSettings()
+        private async Task SaveSettingsAsync()
         {
             _configurationService.SetValue("Application.Language", SelectedLanguage);
             _configurationService.SetValue("Application.Theme", SelectedTheme?.Type.ToString() ?? "Light");
             
             // 异步保存到文件
-            _ = _configurationService.SaveAsync();
+            await _configurationService.SaveAsync();
+            LogManager.Info("ApplicationSettingsViewModel", "配置已保存");
         }
         
         private void ApplyLanguageSettings()

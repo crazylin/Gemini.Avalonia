@@ -1,12 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-  <defs>
-    <linearGradient id="copyGradDemo" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#94A3B8;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#64748B;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  <!-- 后层文档 -->
-  <rect x="5" y="2" width="6" height="9" fill="#CBD5E1" stroke="#64748B" stroke-width="1" rx="1" opacity="0.7"/>
-  <!-- 前层文档 -->
-  <rect x="3" y="5" width="6" height="8" fill="url(#copyGradDemo)" stroke="#475569" stroke-width="1" rx="1"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><!-- 后层文档 --><rect x="5" y="2" width="6" height="9" fill="none" stroke="currentColor" stroke-width="1" rx="1" opacity="0.7"/><!-- 前层文档 --><rect x="3" y="5" width="6" height="8" fill="none" stroke="currentColor" stroke-width="1" rx="1"/></svg>

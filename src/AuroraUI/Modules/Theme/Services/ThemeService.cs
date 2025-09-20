@@ -1,10 +1,12 @@
 using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Styling;
 using AuroraUI.Modules.Theme.Models;
 using AuroraUI.Framework.Logging;
 using AuroraUI.Modules.Theme.Services;
+using AuroraUI.Services;
 
 namespace AuroraUI.Modules.Theme.Services
 {
@@ -23,6 +25,9 @@ namespace AuroraUI.Modules.Theme.Services
         [Import]
         private IThemeManager? _themeManager;
         
+        [Import]
+        private IConfigurationService? _configurationService;
+        
         public ThemeType CurrentTheme => _currentTheme;
         
         public event EventHandler<ThemeChangedEventArgs>? ThemeChanged;
@@ -31,8 +36,45 @@ namespace AuroraUI.Modules.Theme.Services
         {
             Logger.Info("初始化主题服务");
             
-            // 设置默认主题
-            ChangeTheme(ThemeType.System);
+            // 异步初始化，但不阻塞主线程
+            _ = InitializeAsync();
+        }
+        
+        private async Task InitializeAsync()
+        {
+            // 从配置文件读取保存的主题设置
+            ThemeType savedTheme = ThemeType.System; // 默认值
+            
+            if (_configurationService != null)
+            {
+                try
+                {
+                    // 确保配置文件已加载
+                    await _configurationService.LoadAsync();
+                    
+                    var savedThemeString = _configurationService.GetValue("Application.Theme", "System");
+                    if (Enum.TryParse<ThemeType>(savedThemeString, out var parsedTheme))
+                    {
+                        savedTheme = parsedTheme;
+                        Logger.Info("从配置文件加载主题设置: {0}", savedTheme);
+                    }
+                    else
+                    {
+                        Logger.Warning("配置文件中的主题设置无效: {0}，使用默认主题", savedThemeString);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "读取主题配置时发生错误，使用默认主题");
+                }
+            }
+            else
+            {
+                Logger.Warning("配置服务不可用，使用默认主题");
+            }
+            
+            // 应用读取到的主题
+            ChangeTheme(savedTheme);
             
             Logger.Info("主题服务初始化完成，当前主题: {0}", _currentTheme);
         }

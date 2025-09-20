@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-  <defs>
-    <linearGradient id="undoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#94A3B8;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#64748B;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  <path d="M3.5 7.5L7 4v2.5h4.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5H9v1h2.5c1.93 0 3.5-1.57 3.5-3.5S13.43 5 11.5 5H7V2.5L3.5 7.5z" fill="url(#undoGrad)" stroke="#475569" stroke-width="0.5"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M3.5 7.5L7 4v2.5h4.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5H9v1h2.5c1.93 0 3.5-1.57 3.5-3.5S13.43 5 11.5 5H7V2.5L3.5 7.5z" fill="none" stroke="currentColor" stroke-width="0.5"/></svg>
