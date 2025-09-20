@@ -20,6 +20,18 @@ public static class BoolConverters
     /// </summary>
     public static readonly IValueConverter ToSuccessErrorBrush = new FuncValueConverter<bool, IBrush>(value =>
         value ? Brushes.Green : Brushes.Red);
+
+    /// <summary>
+    /// 布尔值转已连接/未连接文本
+    /// </summary>
+    public static readonly IValueConverter ToConnectedDisconnected = new FuncValueConverter<bool, string>(value =>
+        value ? "已连接" : "未连接");
+
+    /// <summary>
+    /// 布尔值转操作状态颜色
+    /// </summary>
+    public static readonly IValueConverter ToOperatingColor = new FuncValueConverter<bool, Color>(value =>
+        value ? Colors.Orange : Colors.Green);
 }
 
 /// <summary>

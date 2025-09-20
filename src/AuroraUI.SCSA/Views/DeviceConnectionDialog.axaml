@@ -122,25 +122,49 @@
                         
                         <!-- 操作按钮 -->
                         <StackPanel Spacing="5">
+                            <Button Content="选择此设备" 
+                                    HorizontalAlignment="Stretch" 
+                                    Background="{DynamicResource SystemAccentColor}"
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    Command="{Binding SelectDeviceCommand}"/>
                             <Button Content="读取设备信息" HorizontalAlignment="Stretch" IsEnabled="False"/>
                             <Button Content="设备测试" HorizontalAlignment="Stretch" IsEnabled="False"/>
-                            <Button Content="参数配置" HorizontalAlignment="Stretch" IsEnabled="False"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
         </Grid>
 
-        <!-- 状态栏 -->
-        <Border Grid.Row="2" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" 
-                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
-                BorderThickness="0,1,0,0" Padding="10,5">
-            <Grid ColumnDefinitions="Auto,*,Auto">
-                <TextBlock Grid.Column="0" Text="状态:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Grid.Column="1" Text="{Binding StatusMessage}" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="2" Text="{Binding ConnectedDevices.Count, StringFormat='已连接设备: {0} 个'}" 
-                          VerticalAlignment="Center"/>
-            </Grid>
-        </Border>
+        <!-- 状态栏和按钮区 -->
+        <Grid Grid.Row="2" RowDefinitions="Auto,Auto">
+            <Border Grid.Row="0" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" 
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+                    BorderThickness="0,1,0,0" Padding="10,5">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <TextBlock Grid.Column="0" Text="状态:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding StatusMessage}" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="{Binding ConnectedDevices.Count, StringFormat='已连接设备: {0} 个'}" 
+                              VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            
+            <!-- 底部按钮 -->
+            <Border Grid.Row="1" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" 
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" 
+                    BorderThickness="0,1,0,0" Padding="10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+                    <Button Content="确定" 
+                            Width="80" Height="32"
+                            Command="{Binding ConfirmSelectionCommand}"
+                            IsEnabled="{Binding SelectedDevice, Converter={x:Static converters:ObjectConverters.IsNotNull}}"
+                            Background="{DynamicResource SystemAccentColor}"
+                            Foreground="White"/>
+                    <Button Content="取消" 
+                            Width="80" Height="32"
+                            Command="{Binding CancelCommand}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

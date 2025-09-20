@@ -117,6 +117,11 @@ namespace AuroraUI.Framework
         public virtual double PreferredHeight => 200.0;
         
         /// <summary>
+        /// 是否默认折叠
+        /// </summary>
+        public virtual bool DefaultCollapsed => false;
+        
+        /// <summary>
         /// 加载状态
         /// </summary>
         /// <param name="reader">二进制读取器</param>

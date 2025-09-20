@@ -17,6 +17,7 @@ namespace SCSA
             // 禁用项目管理模块
             ModuleFilterService.DisabledModules.Clear();
             ModuleFilterService.DisabledModules.Add("ProjectManagementModule");
+            ModuleFilterService.DisabledModules.Add("PropertiesModule");
             
             // 添加SCSA模块（使用统一的方式）
             AddModule<SCSAModule>();
@@ -33,7 +34,7 @@ namespace SCSA
             var mainWindow = await base.StartAsync();
             
             // 设置主窗口标题
-            mainWindow.Title = "SCSA - 智能状态感知与分析系统";
+            mainWindow.Title = "SCSA - 数据采集分析系统";
             
             LogManager.Info("SCSABootstrapper", "SCSA应用程序启动完成");
             return mainWindow;

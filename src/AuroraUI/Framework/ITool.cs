@@ -23,6 +23,11 @@ namespace AuroraUI.Framework
         double PreferredHeight { get; }
         
         /// <summary>
+        /// 是否默认折叠
+        /// </summary>
+        bool DefaultCollapsed { get; }
+        
+        /// <summary>
     /// 是否可见
     /// </summary>
     bool IsVisible { get; set; }

@@ -235,13 +235,14 @@ namespace AuroraUI.Framework.Services
         /// </summary>
         /// <param name="tool">工具实例</param>
         /// <returns>停靠位置</returns>
-        private DockAlignment GetDockAlignmentForTool(ITool tool)
+        public DockAlignment GetDockAlignmentForTool(ITool tool)
         {
-            return tool.GetType().Name switch
+            // 使用工具自身定义的首选位置
+            return tool.PreferredLocation switch
             {
-                "ProjectExplorerToolViewModel" => DockAlignment.Left,
-                "PropertiesToolViewModel" => DockAlignment.Right,
-                "OutputToolViewModel" => DockAlignment.Bottom,
+                PaneLocation.Left => DockAlignment.Left,
+                PaneLocation.Right => DockAlignment.Right,
+                PaneLocation.Bottom => DockAlignment.Bottom,
                 _ => DockAlignment.Left // 默认左侧
             };
         }

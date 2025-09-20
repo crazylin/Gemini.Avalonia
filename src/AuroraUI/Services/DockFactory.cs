@@ -366,8 +366,8 @@ public class DockFactory : Factory
     {
         if (horizontalLayout?.VisibleDockables == null || _centerDock == null) return;
         
-        bool hasLeftPanel = horizontalLayout.VisibleDockables.Contains(_leftDock);
-        bool hasRightPanel = horizontalLayout.VisibleDockables.Contains(_rightDock);
+        bool hasLeftPanel = _leftDock != null && horizontalLayout.VisibleDockables.Contains(_leftDock);
+        bool hasRightPanel = _rightDock != null && horizontalLayout.VisibleDockables.Contains(_rightDock);
         
         // 设置最小宽度以确保面板可见，但允许调整大小
         const double minPanelWidth = 150.0; // 最小面板宽度

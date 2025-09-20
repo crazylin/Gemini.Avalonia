@@ -37,14 +37,35 @@ public class ShowDeviceConnectionCommandHandler : CommandHandlerBase<ShowDeviceC
     {
         try
         {
+            var logger = AuroraUI.Framework.Logging.LogManager.GetLogger("SCSA.Commands");
+            logger.Info("打开设备连接对话框");
+
             // 创建设备连接对话框
-            var viewModel = new ViewModels.DeviceConnectionViewModel();
+            var connectionManager = AuroraUI.Framework.IoC.Get<Services.IConnectionManager>();
+            var deviceManager = AuroraUI.Framework.IoC.Get<Services.IDeviceManager>();
+            var viewModel = new ViewModels.DeviceConnectionViewModel(connectionManager, deviceManager);
             var dialog = new Views.DeviceConnectionDialog(viewModel);
 
             // 使用主窗口作为父窗口显示模态对话框
             if (_shell.MainWindow != null)
             {
                 await dialog.ShowDialog(_shell.MainWindow);
+                
+                // 如果选择了设备，设备管理器已经自动连接
+                if (dialog.DialogResult && dialog.SelectedDevice != null)
+                {
+                    try
+                    {
+                        // 设备已经通过DeviceManager自动连接，无需额外操作
+                        logger.Info($"设备已通过设备管理器连接: {dialog.SelectedDevice.DisplayName}");
+                        
+                        logger.Info($"设备 {dialog.SelectedDevice.DeviceId} 已设置到参数配置工具");
+                    }
+                    catch (Exception toolEx)
+                    {
+                        logger.Error($"设置参数配置工具设备失败: {toolEx.Message}");
+                    }
+                }
             }
             else
             {

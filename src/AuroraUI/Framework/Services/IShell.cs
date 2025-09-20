@@ -135,5 +135,12 @@ namespace AuroraUI.Framework.Services
         /// 停靠布局
         /// </summary>
         IDock? Layout { get; set; }
+        
+        /// <summary>
+        /// 根据工具类型获取停靠位置
+        /// </summary>
+        /// <param name="tool">工具实例</param>
+        /// <returns>停靠位置</returns>
+        DockAlignment GetDockAlignmentForTool(ITool tool);
     }
 }

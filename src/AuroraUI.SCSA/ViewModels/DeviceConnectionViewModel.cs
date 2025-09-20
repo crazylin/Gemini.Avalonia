@@ -1,28 +1,28 @@
-using System.Buffers;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Reactive;
 using System.Reactive.Linq;
+using Avalonia.Threading;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SCSA.Models;
+using SCSA.Services;
 using AuroraUI.Framework.Logging;
-using AuroraUI.IO.Net.TCP;
 
 namespace SCSA.ViewModels;
 
 /// <summary>
-/// 设备连接管理ViewModel
+/// 设备连接管理ViewModel - 使用统一的设备管理器
 /// </summary>
 [Export(typeof(DeviceConnectionViewModel))]
 [PartCreationPolicy(CreationPolicy.NonShared)]
-public class DeviceConnectionViewModel : ReactiveObject
+public class DeviceConnectionViewModel : ReactiveObject, IDisposable
 {
     private static readonly ILogger Logger = LogManager.GetLogger("AuroraUI.SCSA.DeviceConnection");
-    private PipelineTcpServer<TestDataPackage>? _tcpServer;
+    private readonly IConnectionManager _connectionManager;
+    private readonly IDeviceManager _deviceManager;
+    private bool _disposed;
 
     /// <summary>
     /// 监听端口
@@ -40,7 +40,7 @@ public class DeviceConnectionViewModel : ReactiveObject
     /// 选中的设备
     /// </summary>
     [Reactive]
-    public DeviceConnection? SelectedDevice { get; set; }
+    public EnhancedDeviceConnection? SelectedDevice { get; set; }
 
     /// <summary>
     /// 服务器是否运行中
@@ -62,7 +62,7 @@ public class DeviceConnectionViewModel : ReactiveObject
     /// <summary>
     /// 连接的设备列表
     /// </summary>
-    public ObservableCollection<DeviceConnection> ConnectedDevices { get; } = new();
+    public ObservableCollection<EnhancedDeviceConnection> ConnectedDevices { get; } = new();
 
     /// <summary>
     /// 启动服务器命令
@@ -77,15 +77,49 @@ public class DeviceConnectionViewModel : ReactiveObject
     /// <summary>
     /// 断开设备命令
     /// </summary>
-    public ReactiveCommand<DeviceConnection, Unit> DisconnectDeviceCommand { get; }
+    public ReactiveCommand<EnhancedDeviceConnection, Unit> DisconnectDeviceCommand { get; }
 
     /// <summary>
     /// 刷新网络接口命令
     /// </summary>
     public ReactiveCommand<Unit, Unit> RefreshInterfacesCommand { get; }
 
-    public DeviceConnectionViewModel()
+    /// <summary>
+    /// 选择设备命令
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> SelectDeviceCommand { get; }
+
+    /// <summary>
+    /// 确认选择命令
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> ConfirmSelectionCommand { get; }
+
+    /// <summary>
+    /// 取消命令
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> CancelCommand { get; }
+
+    /// <summary>
+    /// 设备选择事件
+    /// </summary>
+    public event EventHandler<EnhancedDeviceConnection>? DeviceSelected;
+
+    /// <summary>
+    /// 对话框关闭事件
+    /// </summary>
+    public event EventHandler? DialogClosed;
+
+    [ImportingConstructor]
+    public DeviceConnectionViewModel(IConnectionManager connectionManager, IDeviceManager deviceManager)
     {
+        _connectionManager = connectionManager ?? throw new ArgumentNullException(nameof(connectionManager));
+        _deviceManager = deviceManager ?? throw new ArgumentNullException(nameof(deviceManager));
+        
+        // 订阅连接管理器事件
+        _connectionManager.DeviceConnected += OnDeviceConnected;
+        _connectionManager.DeviceDisconnected += OnDeviceDisconnected;
+        _connectionManager.StatusChanged += OnStatusChanged;
+
         // 初始化网络接口
         InitializeNetworkInterfaces();
 
@@ -95,24 +129,33 @@ public class DeviceConnectionViewModel : ReactiveObject
 
         var canStop = this.WhenAnyValue(x => x.IsServerRunning);
 
-        // 创建命令
-        StartServerCommand = ReactiveCommand.Create(StartServer, canStart);
-        StopServerCommand = ReactiveCommand.Create(StopServer, canStop);
-        DisconnectDeviceCommand = ReactiveCommand.Create<DeviceConnection>(DisconnectDevice);
-        RefreshInterfacesCommand = ReactiveCommand.Create(InitializeNetworkInterfaces);
+        var hasSelectedDevice = this.WhenAnyValue(x => x.SelectedDevice)
+            .Select(device => device != null);
 
-        // 监听属性变化
+        // 创建命令
+        StartServerCommand = ReactiveCommand.CreateFromTask(StartServer, canStart);
+        StopServerCommand = ReactiveCommand.CreateFromTask(StopServer, canStop);
+        DisconnectDeviceCommand = ReactiveCommand.CreateFromTask<EnhancedDeviceConnection>(DisconnectDevice);
+        RefreshInterfacesCommand = ReactiveCommand.Create(InitializeNetworkInterfaces);
+        SelectDeviceCommand = ReactiveCommand.Create(SelectDevice, hasSelectedDevice);
+        ConfirmSelectionCommand = ReactiveCommand.Create(ConfirmSelection, hasSelectedDevice);
+        CancelCommand = ReactiveCommand.Create(Cancel);
+
+        // 监听服务器运行状态变化
         this.WhenAnyValue(x => x.IsServerRunning)
             .Subscribe(running =>
             {
-                StatusMessage = running ? $"正在监听端口 {Port}" : "已停止";
+                if (!running && _connectionManager.IsRunning)
+                {
+                    IsServerRunning = _connectionManager.IsRunning;
+                }
             });
     }
 
     /// <summary>
     /// 启动TCP服务器
     /// </summary>
-    private void StartServer()
+    private async Task StartServer()
     {
         try
         {
@@ -122,35 +165,37 @@ public class DeviceConnectionViewModel : ReactiveObject
                 return;
             }
 
-            var endPoint = GetEndPoint(SelectedInterface, Port);
-            _tcpServer = new PipelineTcpServer<TestDataPackage>();
+            var endPoint = NetworkHelper.CreateEndPoint(SelectedInterface, Port);
+            var success = await _connectionManager.StartAsync(endPoint);
             
-            // 订阅事件
-            _tcpServer.ClientConnected += OnClientConnected;
-            _tcpServer.ClientDisconnected += OnClientDisconnected;
+            IsServerRunning = success;
             
-            _tcpServer.Start(endPoint);
-            IsServerRunning = true;
-            StatusMessage = $"正在监听 {SelectedInterface.Name}:{Port}";
-            
-            Logger.Info($"TCP服务器已启动，监听地址: {endPoint}");
+            if (success)
+            {
+                StatusMessage = $"正在监听 {SelectedInterface.Name}:{Port}";
+                Logger.Info($"TCP服务器已启动，监听地址: {endPoint}");
+            }
+            else
+            {
+                StatusMessage = "启动失败，请检查网络设置";
+            }
         }
         catch (Exception ex)
         {
-            Logger.Error($"启动TCP服务器失败: {ex.Message}");
+            Logger.Error($"启动TCP服务器失败: {ex.Message}", ex);
             StatusMessage = $"启动失败: {ex.Message}";
+            IsServerRunning = false;
         }
     }
 
     /// <summary>
     /// 停止TCP服务器
     /// </summary>
-    private void StopServer()
+    private async Task StopServer()
     {
         try
         {
-            _tcpServer?.Stop();
-            _tcpServer = null;
+            await _connectionManager.StopAsync();
             IsServerRunning = false;
             StatusMessage = "已停止";
             
@@ -162,7 +207,7 @@ public class DeviceConnectionViewModel : ReactiveObject
         }
         catch (Exception ex)
         {
-            Logger.Error($"停止TCP服务器失败: {ex.Message}");
+            Logger.Error($"停止TCP服务器失败: {ex.Message}", ex);
             StatusMessage = $"停止失败: {ex.Message}";
         }
     }
@@ -170,73 +215,115 @@ public class DeviceConnectionViewModel : ReactiveObject
     /// <summary>
     /// 断开设备连接
     /// </summary>
-    /// <param name="device">要断开的设备</param>
-    private void DisconnectDevice(DeviceConnection device)
+    private async Task DisconnectDevice(EnhancedDeviceConnection device)
     {
         try
         {
-            ConnectedDevices.Remove(device);
-            if (SelectedDevice == device)
-            {
-                SelectedDevice = null;
-            }
-            
+            await _connectionManager.DisconnectDeviceAsync(device);
             StatusMessage = $"已断开设备: {device.DeviceId}";
-            Logger.Info($"设备已断开: {device.DeviceId} ({device.EndPoint})");
         }
         catch (Exception ex)
         {
-            Logger.Error($"断开设备失败: {ex.Message}");
+            Logger.Error($"断开设备失败: {ex.Message}", ex);
             StatusMessage = $"断开失败: {ex.Message}";
         }
     }
 
     /// <summary>
-    /// 客户端连接事件处理
+    /// 选择当前设备
     /// </summary>
-    private void OnClientConnected(object? sender, PipelineTcpClient<TestDataPackage> client)
+    private void SelectDevice()
     {
-        var device = new DeviceConnection
+        if (SelectedDevice != null)
         {
-            DeviceId = $"Device_{ConnectedDevices.Count + 1:D3}",
-            DeviceName = "未知设备",
-            EndPoint = client.RemoteEndPoint,
-            ConnectTime = DateTime.Now,
-            IsConnected = true,
-            DeviceType = "TCP设备"
-        };
-
-        ConnectedDevices.Add(device);
-        StatusMessage = $"新设备已连接: {device.EndPoint}";
-        
-        Logger.Info($"新设备连接: {device.DeviceId} ({device.EndPoint})");
-        
-        // 如果没有选中设备，自动选中新连接的设备
-        if (SelectedDevice == null)
-        {
-            SelectedDevice = device;
+            DeviceSelected?.Invoke(this, SelectedDevice);
+            Logger.Info($"用户选择设备: {SelectedDevice.DeviceId}");
         }
     }
 
     /// <summary>
-    /// 客户端断开事件处理
+    /// 确认选择并关闭对话框 - 连接到设备管理器
     /// </summary>
-    private void OnClientDisconnected(object? sender, PipelineTcpClient<TestDataPackage> client)
+    private async void ConfirmSelection()
     {
-        var device = ConnectedDevices.FirstOrDefault(d => Equals(d.EndPoint, client.RemoteEndPoint));
-        if (device != null)
+        if (SelectedDevice != null)
         {
-            device.IsConnected = false;
-            ConnectedDevices.Remove(device);
+            Logger.Info($"正在连接到设备: {SelectedDevice.DeviceId}");
             
-            if (SelectedDevice == device)
+            // 通过设备管理器连接设备
+            var success = await _deviceManager.ConnectToDeviceAsync(SelectedDevice);
+            
+            if (success)
             {
-                SelectedDevice = null;
+                DeviceSelected?.Invoke(this, SelectedDevice);
+                Logger.Info($"设备连接成功: {SelectedDevice.DeviceId}");
+            }
+            else
+            {
+                Logger.Warning($"设备连接失败: {SelectedDevice.DeviceId}");
+                // 这里可以显示错误消息
+                return; // 连接失败时不关闭对话框
+            }
+        }
+        
+        DialogClosed?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// 取消并关闭对话框
+    /// </summary>
+    private void Cancel()
+    {
+        Logger.Info("用户取消设备选择");
+        DialogClosed?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// 设备连接事件处理
+    /// </summary>
+    private void OnDeviceConnected(object? sender, DeviceConnectionEventArgs e)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            ConnectedDevices.Add(e.Device);
+            StatusMessage = $"新设备已连接: {e.Device.EndPoint}";
+            
+            // 如果没有选中设备，自动选中新连接的设备
+            if (SelectedDevice == null)
+            {
+                SelectedDevice = e.Device;
+            }
+        });
+    }
+
+    /// <summary>
+    /// 设备断开事件处理
+    /// </summary>
+    private void OnDeviceDisconnected(object? sender, DeviceConnectionEventArgs e)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            ConnectedDevices.Remove(e.Device);
+            
+            if (SelectedDevice == e.Device)
+            {
+                SelectedDevice = ConnectedDevices.FirstOrDefault();
             }
             
-            StatusMessage = $"设备已断开: {device.DeviceId}";
-            Logger.Info($"设备断开: {device.DeviceId} ({device.EndPoint})");
-        }
+            StatusMessage = $"设备已断开: {e.Device.DeviceId}";
+        });
+    }
+
+    /// <summary>
+    /// 状态变化事件处理
+    /// </summary>
+    private void OnStatusChanged(object? sender, string message)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            StatusMessage = message;
+            IsServerRunning = _connectionManager.IsRunning;
+        });
     }
 
     /// <summary>
@@ -248,20 +335,7 @@ public class DeviceConnectionViewModel : ReactiveObject
         {
             NetworkInterfaces.Clear();
             
-            var interfaces = NetworkInterface.GetAllNetworkInterfaces()
-                .Where(ni => ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet ||
-                           ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211)
-                .Where(ni => ni.OperationalStatus == OperationalStatus.Up)
-                .Select(ni => new NetworkInterfaceInfo
-                {
-                    Name = ni.Name,
-                    Description = ni.Description,
-                    IPAddress = GetIpAddress(ni),
-                    IsAvailable = true
-                })
-                .Where(ni => !string.IsNullOrEmpty(ni.IPAddress) && ni.IPAddress != "无 IP 地址")
-                .OrderBy(ni => ni.Name);
-
+            var interfaces = NetworkHelper.GetAvailableNetworkInterfaces();
             foreach (var networkInterface in interfaces)
             {
                 NetworkInterfaces.Add(networkInterface);
@@ -277,59 +351,25 @@ public class DeviceConnectionViewModel : ReactiveObject
         }
         catch (Exception ex)
         {
-            Logger.Error($"初始化网络接口失败: {ex.Message}");
+            Logger.Error($"初始化网络接口失败: {ex.Message}", ex);
             StatusMessage = "获取网络接口失败";
         }
     }
 
-    /// <summary>
-    /// 获取网络接口的IP地址
-    /// </summary>
-    private static string GetIpAddress(NetworkInterface networkInterface)
+    public void Dispose()
     {
-        return networkInterface.GetIPProperties().UnicastAddresses
-                   .FirstOrDefault(addr => addr.Address.AddressFamily == AddressFamily.InterNetwork)?.Address
-                   ?.ToString() ?? "无 IP 地址";
-    }
-
-    /// <summary>
-    /// 根据网络接口和端口获取EndPoint
-    /// </summary>
-    private static IPEndPoint GetEndPoint(NetworkInterfaceInfo networkInterface, int port)
-    {
-        if (!IPAddress.TryParse(networkInterface.IPAddress, out var ipAddress))
-        {
-            throw new InvalidOperationException($"无效的IP地址: {networkInterface.IPAddress}");
-        }
-        return new IPEndPoint(ipAddress, port);
-    }
-}
-
-/// <summary>
-/// 测试数据包（临时实现）
-/// </summary>
-public class TestDataPackage : IPipelineDataPackage<TestDataPackage>, IPacketWritable
-{
-    public byte[] Data { get; set; } = Array.Empty<byte>();
-
-    public bool TryParse(ReadOnlySequence<byte> buffer, out TestDataPackage packet, out SequencePosition frameEnd)
-    {
-        packet = new TestDataPackage();
-        frameEnd = buffer.Start;
+        if (_disposed) return;
         
-        // 简单实现：如果有数据就认为是一个完整包
-        if (buffer.Length > 0)
+        try
         {
-            packet.Data = buffer.ToArray();
-            frameEnd = buffer.End;
-            return true;
+            _connectionManager?.Dispose();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("释放连接管理器资源时出错", ex);
         }
         
-        return false;
-    }
-
-    public byte[] GetBytes()
-    {
-        return Data;
+        _disposed = true;
+        GC.SuppressFinalize(this);
     }
 }
