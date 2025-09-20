@@ -115,10 +115,10 @@
             Margin="8,8,8,4">
       <StackPanel Orientation="Horizontal" Spacing="4">
         <Ellipse Width="10" Height="10" 
-                 Fill="Green" 
+                 Fill="{DynamicResource SuccessColorBrush}" 
                  IsVisible="{Binding HasDevice}"/>
         <Ellipse Width="10" Height="10" 
-                 Fill="Red" 
+                 Fill="{DynamicResource ErrorColorBrush}" 
                  IsVisible="{Binding !HasDevice}"/>
         <TextBlock Text="{Binding HasDevice, Converter={x:Static converters:BoolConverters.ToConnectedDisconnected}}" 
                    VerticalAlignment="Center" 
@@ -146,7 +146,7 @@
                   HorizontalContentAlignment="Center"
                   VerticalContentAlignment="Center">
             <Path Width="32" Height="32" 
-                  Fill="#4CAF50"
+                  Fill="{DynamicResource SystemControlForegroundAccentBrush}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Stretch="Uniform"
@@ -162,7 +162,7 @@
                   HorizontalContentAlignment="Center"
                   VerticalContentAlignment="Center">
             <Path Width="32" Height="32" 
-                  Fill="#2196F3"
+                  Fill="{DynamicResource SystemControlForegroundAccentBrush}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Stretch="Uniform"
@@ -177,7 +177,7 @@
                   HorizontalContentAlignment="Center"
                   VerticalContentAlignment="Center">
             <Path Width="32" Height="32" 
-                  Fill="#FF9800"
+                  Fill="{DynamicResource SystemControlForegroundAccentBrush}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Stretch="Uniform"
@@ -192,7 +192,7 @@
                   HorizontalContentAlignment="Center"
                   VerticalContentAlignment="Center">
             <Path Width="32" Height="32" 
-                  Fill="#9C27B0"
+                  Fill="{DynamicResource SystemControlForegroundAccentBrush}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Stretch="Uniform"
@@ -207,7 +207,7 @@
                   HorizontalContentAlignment="Center"
                   VerticalContentAlignment="Center">
             <Path Width="32" Height="32" 
-                  Fill="#E91E63"
+                  Fill="{DynamicResource SystemControlForegroundAccentBrush}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Stretch="Uniform"
@@ -222,7 +222,7 @@
                   HorizontalContentAlignment="Center"
                   VerticalContentAlignment="Center">
             <Path Width="32" Height="32" 
-                  Fill="#607D8B"
+                  Fill="{DynamicResource SystemControlForegroundAccentBrush}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Stretch="Uniform"
@@ -238,14 +238,14 @@
       <Border BorderThickness="1" 
               CornerRadius="4" 
               Padding="10" 
-              Background="#F8F9FA"
+              Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
               Margin="8,0,8,4">
         <StackPanel Spacing="5">
-          <TextBlock Text="参数说明" FontWeight="Bold" FontSize="12" Foreground="#333"/>
+          <TextBlock Text="参数说明" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
           <TextBlock Text="{Binding SelectedParameter.Desc, FallbackValue='请选择一个参数查看详细说明'}" 
                      FontSize="11" 
                      TextWrapping="Wrap" 
-                     Foreground="#666"
+                     Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
                      LineHeight="18"/>
         </StackPanel>
       </Border>

@@ -7,6 +7,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using AuroraUI.Modules.Theme.Models;
 using AuroraUI.Framework.Logging;
+using AuroraUI.Modules.Theme.Services;
 
 namespace AuroraUI.Modules.Theme.Services
 {
@@ -17,7 +18,10 @@ namespace AuroraUI.Modules.Theme.Services
     public class ThemeResourceManager : IThemeResourceManager
     {
         private static readonly ILogger Logger = LogManager.GetLogger();
-        private IResourceDictionary? _currentThemeResources;
+        private ResourceDictionary? _currentThemeResources;
+        
+        [Import]
+        private IThemeManager? _themeManager;
         
         public void LoadThemeResources(ThemeType themeType)
         {
@@ -32,7 +36,7 @@ namespace AuroraUI.Modules.Theme.Services
                 var resourceUri = GetThemeResourceUri(themeType);
                 if (resourceUri != null)
                 {
-                    _currentThemeResources = AvaloniaXamlLoader.Load(resourceUri) as IResourceDictionary;
+                    _currentThemeResources = AvaloniaXamlLoader.Load(resourceUri) as ResourceDictionary;
                     
                     if (_currentThemeResources != null && Application.Current != null)
                     {
@@ -82,12 +86,28 @@ namespace AuroraUI.Modules.Theme.Services
         
         private Uri? GetThemeResourceUri(ThemeType themeType)
         {
-            return themeType switch
+            // 首先检查基础主题
+            switch (themeType)
             {
-                ThemeType.Light => new Uri("avares://AuroraUI/Modules/Theme/Resources/LightTheme.axaml"),
-                ThemeType.Dark => new Uri("avares://AuroraUI/Modules/Theme/Resources/DarkTheme.axaml"),
-                _ => null
-            };
+                case ThemeType.Light:
+                    return new Uri("avares://AuroraUI/Modules/Theme/Resources/LightTheme.axaml");
+                case ThemeType.Dark:
+                    return new Uri("avares://AuroraUI/Modules/Theme/Resources/DarkTheme.axaml");
+            }
+            
+            // 检查扩展主题
+            if (_themeManager != null)
+            {
+                var themeInfo = _themeManager.GetThemeInfo(themeType);
+                if (themeInfo != null && !string.IsNullOrEmpty(themeInfo.ResourcePath))
+                {
+                    Logger.Debug("找到扩展主题资源: {0} -> {1}", themeType, themeInfo.ResourcePath);
+                    return new Uri(themeInfo.ResourcePath);
+                }
+            }
+            
+            Logger.Warning("未找到主题资源: {0}", themeType);
+            return null;
         }
     }
 }

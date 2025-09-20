@@ -4,6 +4,7 @@ using AuroraUI.Framework.Modules;
 using AuroraUI.Framework.Logging;
 using AuroraUI.Framework.Services;
 using SCSA.ViewModels;
+using SCSA.Services;
 
 namespace SCSA;
 
@@ -62,6 +63,25 @@ public class SCSAModule : ModuleBase
             Logger.Error($"注册参数配置工具时发生错误: {ex.Message}", ex);
             Logger.Error($"异常详细信息: {ex}");
         }
+        
+        // // 初始化 SCSA 主题资源管理器
+        // try
+        // {
+        //     var scsaThemeManager = AuroraUI.Framework.IoC.Get<SCSAThemeResourceManager>();
+        //     if (scsaThemeManager != null)
+        //     {
+        //         scsaThemeManager.Initialize();
+        //         Logger.Info("SCSA 主题资源管理器已初始化");
+        //     }
+        //     else
+        //     {
+        //         Logger.Warning("无法获取 SCSAThemeResourceManager 实例");
+        //     }
+        // }
+        // catch (Exception ex)
+        // {
+        //     Logger.Error($"初始化 SCSA 主题资源管理器时发生错误: {ex.Message}", ex);
+        // }
         
         Logger.Info("SCSA模块后初始化完成");
     }

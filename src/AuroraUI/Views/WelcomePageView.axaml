@@ -15,8 +15,8 @@
                    FontSize="14"
                    LineHeight="24"
                    TextWrapping="Wrap"
-                   Foreground="#333333"
-                   Background="White"
+                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                   Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
                    MaxWidth="800"
                    HorizontalAlignment="Left" />
     </ScrollViewer>

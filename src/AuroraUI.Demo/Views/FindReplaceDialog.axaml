@@ -6,7 +6,7 @@
         Height="200"
         CanResize="False"
         WindowStartupLocation="CenterOwner"
-        Background="White">
+        Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
     
     <Grid Margin="16">
         <Grid.RowDefinitions>

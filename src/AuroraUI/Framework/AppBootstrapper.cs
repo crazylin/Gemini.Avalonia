@@ -199,6 +199,16 @@ namespace AuroraUI.Framework
                     }
                 });
                 
+                // 先加载UI模块以获取主题资源
+                if (_moduleManager != null)
+                {
+                    await PerformanceMonitor.MeasureAsync("加载UI模块", 
+                        () => _moduleManager.LoadModulesByCategoryAsync(ModuleCategory.UI));
+                }
+                
+                // 加载MEF模块的全局资源（必须在创建主窗口之前）
+                PerformanceMonitor.Measure("加载MEF模块全局资源", LoadMefModuleGlobalResources);
+                
                 // 创建主窗口
                 PerformanceMonitor.Measure("创建主窗口", () =>
                 {
@@ -216,13 +226,6 @@ namespace AuroraUI.Framework
                 
                 // 注册所有MEF导出的工具
                 PerformanceMonitor.Measure("注册MEF工具", RegisterTools);
-                
-                // 加载UI模块
-                if (_moduleManager != null)
-                {
-                    await PerformanceMonitor.MeasureAsync("加载UI模块", 
-                        () => _moduleManager.LoadModulesByCategoryAsync(ModuleCategory.UI));
-                }
                 
                 // 后初始化遗留模块
                 await PerformanceMonitor.MeasureAsync("遗留模块后初始化", PostInitializeLegacyModulesAsync);
@@ -792,6 +795,59 @@ namespace AuroraUI.Framework
             RegisterViewModelBindings();
             
             LogManager.Info("AppBootstrapper", "全局资源加载完成");
+        }
+        
+        /// <summary>
+        /// 加载MEF模块的全局资源
+        /// </summary>
+        private void LoadMefModuleGlobalResources()
+        {
+            var app = Application.Current;
+            if (app == null)
+            {
+                LogManager.Warning("AppBootstrapper", "Application.Current为null，无法加载MEF模块全局资源");
+                return;
+            }
+            
+            if (_moduleManager == null)
+            {
+                LogManager.Warning("AppBootstrapper", "ModuleManager为null，无法加载MEF模块全局资源");
+                return;
+            }
+            
+            LogManager.Info("AppBootstrapper", "开始加载MEF模块全局资源");
+            
+            // 尝试获取主题模块
+            try
+            {
+                var themeModule = _moduleManager.GetModule<IModule>("ThemeModule");
+                if (themeModule != null)
+                {
+                    LogManager.Debug("AppBootstrapper", "找到主题模块，开始加载其全局资源");
+                    foreach (var resourceDictionary in themeModule.GlobalResourceDictionaries)
+                    {
+                        try
+                        {
+                            app.Styles.Add(resourceDictionary);
+                            LogManager.Debug("AppBootstrapper", "成功添加主题模块全局资源到应用程序样式集合");
+                        }
+                        catch (Exception ex)
+                        {
+                            LogManager.Error("AppBootstrapper", $"加载主题模块全局资源失败: {ex.Message}", ex);
+                        }
+                    }
+                }
+                else
+                {
+                    LogManager.Warning("AppBootstrapper", "未找到主题模块");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Error("AppBootstrapper", $"获取主题模块时发生错误: {ex.Message}", ex);
+            }
+            
+            LogManager.Info("AppBootstrapper", "MEF模块全局资源加载完成");
         }
         
         /// <summary>

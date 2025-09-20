@@ -69,4 +69,11 @@
   <!-- 停靠面板样式 -->
   <SolidColorBrush x:Key="DockPanelBackgroundBrush" Color="#F5F5F5" />
   
+  <!-- 状态颜色 -->
+  <SolidColorBrush x:Key="SuccessColorBrush" Color="#4CAF50" />
+  <SolidColorBrush x:Key="ErrorColorBrush" Color="#F44336" />
+  <SolidColorBrush x:Key="WarningColorBrush" Color="#FF9800" />
+  <SolidColorBrush x:Key="InfoColorBrush" Color="#2196F3" />
+
+
 </ResourceDictionary>

@@ -19,8 +19,8 @@
         
         <!-- 文档信息栏 -->
         <Border Grid.Row="0" 
-                Background="LightGray"
-                BorderBrush="Gray"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
                 BorderThickness="0,0,0,1"
                 Padding="8,4">
             <TextBlock Text="{Binding FilePath, StringFormat='路径: {0}'}"
@@ -29,21 +29,21 @@
         
         <!-- 文本编辑器 -->
         <Border Grid.Row="1" 
-                Background="White"
-                BorderBrush="Gray"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
                 BorderThickness="1">
             <controls:EnhancedTextEditor Name="TextEditor"
                                        Document="{Binding}"
                                        Text="{Binding Content, Mode=TwoWay}"
                                        Watermark="在此输入文档内容..."
-                                       Background="White"
+                                       Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
                                        BorderThickness="0" />
         </Border>
         
         <!-- 状态栏 -->
         <Border Grid.Row="2" 
-                Background="LightGray"
-                BorderBrush="Gray"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
                 BorderThickness="0,1,0,0"
                 Padding="8,4">
             <Grid>

@@ -1,0 +1,23 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dock="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
+
+
+  <!-- 重新定义 Dock 相关的主题资源，使其跟随当前主题 -->
+  <Style>
+    <Style.Resources>
+      <!-- 低亮度重点色：用于文档分隔线等 - 使其与背景色一致，视觉上隐藏 -->
+      <SolidColorBrush x:Key="DockApplicationAccentBrushLow" Color="{DynamicResource SystemAccentColor}" />
+      
+      <!-- 中等亮度重点色：用于选中状态 -->
+      <SolidColorBrush x:Key="DockApplicationAccentBrushMed" Color="{DynamicResource SystemAccentColor}" />
+      
+      <!-- 高亮度重点色：用于悬停状态 -->
+      <SolidColorBrush x:Key="DockApplicationAccentBrushHigh" Color="{DynamicResource SystemAccentColor}" />
+      
+      <!-- 指示器重点色：用于拖拽指示器等 -->
+      <SolidColorBrush x:Key="DockApplicationAccentBrushIndicator" Color="{DynamicResource SystemAccentColor}" />
+    </Style.Resources>
+  </Style>
+
+</Styles>

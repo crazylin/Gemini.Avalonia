@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCSA 主题预览器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        
+        .theme-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-selector h3 {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .theme-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .theme-category {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .category-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 2px;
+            padding: 0 4px;
+        }
+        
+        .theme-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .theme-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .theme-btn.active {
+            transform: scale(0.98);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar {
+            width: 260px;
+            padding: 20px;
+            border-right: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            transform: translateX(4px);
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-primary {
+            color: white;
+        }
+        
+        .btn-secondary {
+            border: 1px solid var(--border-color);
+        }
+        
+        .card {
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-color-alpha);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: var(--surface-color);
+            transition: all 0.2s;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-connected {
+            background-color: var(--success-color);
+            box-shadow: 0 0 8px var(--success-color-alpha);
+        }
+        
+        .status-disconnected {
+            background-color: var(--error-color);
+        }
+        
+        .status-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .metric-card {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+        
+        .alert-info {
+            border-left-color: var(--info-color);
+            background-color: var(--info-bg);
+            color: var(--info-text);
+        }
+        
+        .alert-success {
+            border-left-color: var(--success-color);
+            background-color: var(--success-bg);
+            color: var(--success-text);
+        }
+        
+        .alert-warning {
+            border-left-color: var(--warning-color);
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+        }
+        
+        .alert-error {
+            border-left-color: var(--error-color);
+            background-color: var(--error-bg);
+            color: var(--error-text);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .data-table th {
+            font-weight: 600;
+            background-color: var(--surface-color);
+        }
+        
+        .data-table tr:hover {
+            background-color: var(--hover-color);
+        }
+        
+        /* Avalonia 控件样式 */
+        .demo-section {
+            margin-bottom: 25px;
+        }
+        
+        .demo-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        
+        /* 标签页控件 */
+        .tab-control {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .tab-headers {
+            display: flex;
+            background: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tab-header {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-right: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        
+        .tab-header:hover {
+            background: var(--hover-color);
+            color: var(--text-primary);
+        }
+        
+        .tab-header.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-panel {
+            padding: 20px;
+            display: none;
+            background: var(--background-color);
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        /* 按钮组 */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        /* 切换按钮 */
+        .toggle-group {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .toggle-btn {
+            padding: 8px 16px;
+            border: none;
+            background: var(--surface-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .toggle-btn:last-child {
+            border-right: none;
+        }
+        
+        .toggle-btn:hover {
+            background: var(--hover-color);
+        }
+        
+        .toggle-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* 单选框样式 */
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .radio {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+        
+        /* 滑块样式 */
+        .slider-group {
+            margin-bottom: 15px;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            background: var(--border-color);
+            appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 数值输入 */
+        .numeric-input {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .numeric-input input {
+            border: none;
+            flex: 1;
+        }
+        
+        .numeric-buttons {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .numeric-btn {
+            width: 30px;
+            height: 20px;
+            border: none;
+            background: var(--surface-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 10px;
+            border-left: 1px solid var(--border-color);
+        }
+        
+        .numeric-btn:hover {
+            background: var(--hover-color);
+        }
+        
+        /* 展开器 */
+        .expander {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .expander-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--surface-color);
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .expander-header:hover {
+            background: var(--hover-color);
+        }
+        
+        .expander-arrow {
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+        
+        .expander-content {
+            padding: 16px;
+            background: var(--background-color);
+        }
+        
+        /* 分组框 */
+        .group-box {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 16px;
+            position: relative;
+            background: var(--background-color);
+        }
+        
+        .group-box legend {
+            background: var(--background-color);
+            padding: 0 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* 分割面板 */
+        .split-container {
+            display: flex;
+            height: 200px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .split-left, .split-right {
+            flex: 1;
+            padding: 16px;
+            background: var(--background-color);
+        }
+        
+        .split-left h5, .split-right h5 {
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .splitter {
+            width: 4px;
+            background: var(--border-color);
+            cursor: col-resize;
+        }
+        
+        .splitter:hover {
+            background: var(--primary-color);
+        }
+        
+        /* 列表视图 */
+        .list-view {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--surface-color);
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .list-item:hover {
+            background: var(--hover-color);
+        }
+        
+        .list-item.selected {
+            background: var(--primary-color-alpha);
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .list-item-icon {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        
+        .list-item-content {
+            flex: 1;
+        }
+        
+        .list-item-title {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        
+        .list-item-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .list-item-actions {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .btn-icon:hover {
+            background: var(--hover-color);
+        }
+        
+        /* 树视图 */
+        .tree-view {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--surface-color);
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 8px;
+        }
+        
+        .tree-item {
+            margin-bottom: 2px;
+        }
+        
+        .tree-item > span {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .tree-item > span:hover {
+            background: var(--hover-color);
+        }
+        
+        .tree-expander {
+            width: 16px;
+            font-size: 10px;
+            margin-right: 4px;
+        }
+        
+        .tree-icon {
+            margin-right: 6px;
+        }
+        
+        .tree-label {
+            color: var(--text-primary);
+        }
+        
+        .tree-children {
+            margin-left: 20px;
+            border-left: 1px dotted var(--border-color);
+            padding-left: 8px;
+        }
+        
+        /* 数据网格增强 */
+        .data-grid {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .data-table tr.selected {
+            background: var(--primary-color-alpha);
+        }
+        
+        .sort-indicator {
+            margin-left: 4px;
+            color: var(--primary-color);
+        }
+        
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .status-success {
+            background: var(--success-bg);
+            color: var(--success-text);
+        }
+        
+        .status-warning {
+            background: var(--warning-bg);
+            color: var(--warning-text);
+        }
+        
+        .status-error {
+            background: var(--error-bg);
+            color: var(--error-text);
+        }
+        
+        /* 组合框 */
+        .combo-box {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .combo-box input {
+            border: none;
+            flex: 1;
+        }
+        
+        .combo-btn {
+            width: 32px;
+            border: none;
+            background: var(--surface-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            border-left: 1px solid var(--border-color);
+        }
+        
+        .combo-btn:hover {
+            background: var(--hover-color);
+        }
+        
+        /* 文件选择器 */
+        .file-picker {
+            margin-bottom: 10px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border: 2px dashed var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--surface-color);
+        }
+        
+        .file-label:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-color-alpha);
+        }
+        
+        .file-icon {
+            font-size: 18px;
+        }
+        
+        .file-text {
+            color: var(--text-primary);
+        }
+        
+        /* 进度条演示 */
+        .progress-demo {
+            margin-bottom: 15px;
+        }
+        
+        .progress-demo label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        /* 工具提示 */
+        .tooltip {
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+            max-width: 200px;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        
+        .tooltip-demo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* 上下文菜单 */
+        .context-demo {
+            position: relative;
+        }
+        
+        .context-area {
+            padding: 40px;
+            border: 2px dashed var(--border-color);
+            border-radius: 6px;
+            text-align: center;
+            color: var(--text-muted);
+            cursor: context-menu;
+            background: var(--surface-color);
+        }
+        
+        .context-menu {
+            position: absolute;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            min-width: 150px;
+            display: none;
+        }
+        
+        .context-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+        
+        .context-item:hover {
+            background: var(--hover-color);
+        }
+        
+        .context-separator {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4px 0;
+        }
+        
+        /* 主题样式将在这里动态插入 */
+    </style>
+</head>
+<body>
+    <div class="theme-selector">
+        <h3>主题选择器</h3>
+        <div class="theme-buttons">
+            <!-- 基础主题 -->
+            <div class="theme-category">
+                <span class="category-title">✨ 基础主题</span>
+                <button class="theme-btn" onclick="applyTheme('modern-blue')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">现代蓝色</button>
+                <button class="theme-btn" onclick="applyTheme('dark-professional')" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white;">专业深色</button>
+                <button class="theme-btn" onclick="applyTheme('nature-green')" style="background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%); color: white;">自然绿色</button>
+            </div>
+            
+            <!-- 专业主题 -->
+            <div class="theme-category">
+                <span class="category-title">🏢 专业主题</span>
+                <button class="theme-btn" onclick="applyTheme('ocean-blue')" style="background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%); color: white;">深海蓝色</button>
+                <button class="theme-btn" onclick="applyTheme('corporate-gold')" style="background: linear-gradient(135deg, #2c2416 0%, #b8860b 100%); color: white;">企业金色</button>
+                <button class="theme-btn" onclick="applyTheme('medical-clean')" style="background: linear-gradient(135deg, #eceff1 0%, #0277bd 100%); color: white;">医疗洁净</button>
+            </div>
+            
+            <!-- 特色主题 -->
+            <div class="theme-category">
+                <span class="category-title">🎨 特色主题</span>
+                <button class="theme-btn" onclick="applyTheme('cyberpunk-neon')" style="background: linear-gradient(135deg, #0f0f23 0%, #00ffff 100%); color: white;">赛博朋克</button>
+                <button class="theme-btn" onclick="applyTheme('forest-dark')" style="background: linear-gradient(135deg, #1b5e20 0%, #4caf50 100%); color: white;">深林主题</button>
+                <button class="theme-btn" onclick="applyTheme('retro-terminal')" style="background: linear-gradient(135deg, #000000 0%, #00ff41 100%); color: white;">复古终端</button>
+            </div>
+            
+            <!-- 高级主题 -->
+            <div class="theme-category">
+                <span class="category-title">💎 高级主题</span>
+                <button class="theme-btn" onclick="applyTheme('royal-purple')" style="background: linear-gradient(135deg, #4a148c 0%, #9c27b0 100%); color: white;">皇家紫色</button>
+                <button class="theme-btn" onclick="applyTheme('sunset-orange')" style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%); color: white;">夕阳橙色</button>
+                <button class="theme-btn" onclick="applyTheme('arctic-white')" style="background: linear-gradient(135deg, #fafafa 0%, #2196f3 100%); color: white;">极地白色</button>
+            </div>
+            
+            <!-- 无障碍主题 -->
+            <div class="theme-category">
+                <span class="category-title">♿ 无障碍</span>
+                <button class="theme-btn" onclick="applyTheme('high-contrast')" style="background: linear-gradient(135deg, #000000 0%, #ffffff 100%); color: white;">高对比度</button>
+                <button class="theme-btn" onclick="applyTheme('minimal-grey')" style="background: linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%); color: white;">极简灰色</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <nav class="sidebar">
+            <div class="logo">SCSA 系统</div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <span class="status-indicator status-connected"></span>
+                        仪表盘
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="status-indicator status-warning"></span>
+                        设备管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="status-indicator status-connected"></span>
+                        数据采集
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="status-indicator status-disconnected"></span>
+                        参数配置
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="status-indicator status-connected"></span>
+                        分析报告
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="status-indicator status-warning"></span>
+                        系统设置
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="header">
+                <h1>数据采集分析系统</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary">导出数据</button>
+                    <button class="btn btn-primary">开始采集</button>
+                </div>
+            </header>
+
+            <div class="alert alert-info">
+                <strong>系统状态：</strong> 设备连接正常，数据采集服务运行中。
+            </div>
+
+            <div class="grid">
+                <div class="card metric-card">
+                    <div class="metric-value" style="color: var(--primary-color);">1,234</div>
+                    <div class="metric-label">今日采集样本</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+                
+                <div class="card metric-card">
+                    <div class="metric-value" style="color: var(--success-color);">98.5%</div>
+                    <div class="metric-label">设备可用率</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 98.5%; background-color: var(--success-color);"></div>
+                    </div>
+                </div>
+                
+                <div class="card metric-card">
+                    <div class="metric-value" style="color: var(--warning-color);">23.4GB</div>
+                    <div class="metric-label">数据存储量</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%; background-color: var(--warning-color);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>设备配置</h3>
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">设备名称</label>
+                        <input type="text" class="form-input" value="SCSA-M300" placeholder="请输入设备名称">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">采样频率</label>
+                        <select class="form-select">
+                            <option>1000 Hz</option>
+                            <option>2000 Hz</option>
+                            <option>5000 Hz</option>
+                            <option>10000 Hz</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="checkbox" id="auto-save" checked>
+                            <label for="auto-save" class="form-label">自动保存数据</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" class="checkbox" id="real-time">
+                            <label for="real-time" class="form-label">实时数据监控</label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">保存配置</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>最近采集数据</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>设备</th>
+                            <th>频率</th>
+                            <th>振幅</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>14:30:25</td>
+                            <td>传感器-01</td>
+                            <td>1200 Hz</td>
+                            <td>2.45 mm/s</td>
+                            <td><span class="status-indicator status-connected"></span>正常</td>
+                        </tr>
+                        <tr>
+                            <td>14:30:20</td>
+                            <td>传感器-02</td>
+                            <td>1180 Hz</td>
+                            <td>1.98 mm/s</td>
+                            <td><span class="status-indicator status-warning"></span>警告</td>
+                        </tr>
+                        <tr>
+                            <td>14:30:15</td>
+                            <td>传感器-03</td>
+                            <td>1150 Hz</td>
+                            <td>3.21 mm/s</td>
+                            <td><span class="status-indicator status-connected"></span>正常</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-success">
+                <strong>配置已保存：</strong> 设备参数配置已成功更新。
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>注意：</strong> 传感器-02 检测到异常振动，建议检查设备状态。
+            </div>
+
+            <!-- Avalonia 控件演示区域 -->
+            <div class="card">
+                <h3>Avalonia 控件演示</h3>
+                
+                <!-- 标签页控件 TabView -->
+                <div class="tab-control" style="margin-bottom: 30px;">
+                    <div class="tab-headers">
+                        <button class="tab-header active" onclick="switchDemo('basic')">基础控件</button>
+                        <button class="tab-header" onclick="switchDemo('layout')">布局控件</button>
+                        <button class="tab-header" onclick="switchDemo('data')">数据控件</button>
+                        <button class="tab-header" onclick="switchDemo('advanced')">高级控件</button>
+                    </div>
+                    
+                    <!-- 基础控件演示 -->
+                    <div id="basic-demo" class="tab-panel active">
+                        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                            <!-- 按钮组合 -->
+                            <div class="demo-section">
+                                <h4>按钮 (Button)</h4>
+                                <div class="button-group">
+                                    <button class="btn btn-primary">主要按钮</button>
+                                    <button class="btn btn-secondary">次要按钮</button>
+                                    <button class="btn" style="background: var(--success-color); color: white;">成功</button>
+                                    <button class="btn" style="background: var(--warning-color); color: white;">警告</button>
+                                    <button class="btn" style="background: var(--error-color); color: white;">错误</button>
+                                    <button class="btn btn-secondary" disabled>禁用</button>
+                                </div>
+                            </div>
+
+                            <!-- 切换按钮 -->
+                            <div class="demo-section">
+                                <h4>切换按钮 (ToggleButton)</h4>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn active">开启</button>
+                                    <button class="toggle-btn">关闭</button>
+                                    <button class="toggle-btn">自动</button>
+                                </div>
+                            </div>
+
+                            <!-- 复选框和单选框 -->
+                            <div class="demo-section">
+                                <h4>选择控件 (CheckBox / RadioButton)</h4>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" class="checkbox" id="check1" checked>
+                                    <label for="check1">启用日志记录</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" class="checkbox" id="check2">
+                                    <label for="check2">自动备份</label>
+                                </div>
+                                <div class="radio-group">
+                                    <input type="radio" class="radio" name="mode" id="radio1" checked>
+                                    <label for="radio1">生产模式</label>
+                                </div>
+                                <div class="radio-group">
+                                    <input type="radio" class="radio" name="mode" id="radio2">
+                                    <label for="radio2">调试模式</label>
+                                </div>
+                            </div>
+
+                            <!-- 文本控件 -->
+                            <div class="demo-section">
+                                <h4>文本控件 (TextBox / PasswordBox)</h4>
+                                <input type="text" class="form-input" placeholder="普通文本框" style="margin-bottom: 10px;">
+                                <input type="password" class="form-input" placeholder="密码框" style="margin-bottom: 10px;">
+                                <textarea class="form-input" rows="3" placeholder="多行文本框 (TextBox.AcceptsReturn=True)"></textarea>
+                            </div>
+
+                            <!-- 滑块控件 -->
+                            <div class="demo-section">
+                                <h4>滑块 (Slider)</h4>
+                                <div class="slider-group">
+                                    <label>音量: <span id="volume-value">50</span>%</label>
+                                    <input type="range" class="slider" min="0" max="100" value="50" oninput="document.getElementById('volume-value').textContent = this.value">
+                                </div>
+                                <div class="slider-group">
+                                    <label>透明度: <span id="opacity-value">75</span>%</label>
+                                    <input type="range" class="slider" min="0" max="100" value="75" oninput="document.getElementById('opacity-value').textContent = this.value">
+                                </div>
+                            </div>
+
+                            <!-- 数值输入 -->
+                            <div class="demo-section">
+                                <h4>数值输入 (NumericUpDown)</h4>
+                                <div class="numeric-input">
+                                    <input type="number" class="form-input" value="1000" min="0" max="10000" step="100">
+                                    <div class="numeric-buttons">
+                                        <button class="numeric-btn">▲</button>
+                                        <button class="numeric-btn">▼</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 布局控件演示 -->
+                    <div id="layout-demo" class="tab-panel">
+                        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                            <!-- 展开器 -->
+                            <div class="demo-section">
+                                <h4>展开器 (Expander)</h4>
+                                <div class="expander">
+                                    <div class="expander-header" onclick="toggleExpander(this)">
+                                        <span class="expander-arrow">▼</span>
+                                        <span>高级设置</span>
+                                    </div>
+                                    <div class="expander-content">
+                                        <div class="form-group">
+                                            <label class="form-label">缓存大小</label>
+                                            <input type="text" class="form-input" value="256MB">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">超时时间</label>
+                                            <input type="text" class="form-input" value="30秒">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 分组框 -->
+                            <div class="demo-section">
+                                <h4>分组框 (GroupBox)</h4>
+                                <div class="group-box">
+                                    <legend>连接设置</legend>
+                                    <div class="form-group">
+                                        <label class="form-label">主机地址</label>
+                                        <input type="text" class="form-input" value="192.168.1.100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">端口</label>
+                                        <input type="text" class="form-input" value="8080">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 分割器 -->
+                            <div class="demo-section" style="grid-column: 1 / -1;">
+                                <h4>分割面板 (SplitView)</h4>
+                                <div class="split-container">
+                                    <div class="split-left">
+                                        <h5>左侧面板</h5>
+                                        <p>这是左侧面板的内容。在 Avalonia 中，这对应 SplitView 控件。</p>
+                                    </div>
+                                    <div class="splitter"></div>
+                                    <div class="split-right">
+                                        <h5>右侧面板</h5>
+                                        <p>这是右侧面板的内容。可以通过拖拽中间的分割线来调整面板大小。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数据控件演示 -->
+                    <div id="data-demo" class="tab-panel">
+                        <div class="grid" style="grid-template-columns: 1fr;">
+                            <!-- 列表视图 -->
+                            <div class="demo-section">
+                                <h4>列表视图 (ListView)</h4>
+                                <div class="list-view">
+                                    <div class="list-item">
+                                        <div class="list-item-icon">📄</div>
+                                        <div class="list-item-content">
+                                            <div class="list-item-title">数据文件 001.csv</div>
+                                            <div class="list-item-subtitle">大小: 2.3 MB | 修改时间: 2024-01-15</div>
+                                        </div>
+                                        <div class="list-item-actions">
+                                            <button class="btn-icon">📂</button>
+                                            <button class="btn-icon">🗑️</button>
+                                        </div>
+                                    </div>
+                                    <div class="list-item selected">
+                                        <div class="list-item-icon">📊</div>
+                                        <div class="list-item-content">
+                                            <div class="list-item-title">分析报告 002.pdf</div>
+                                            <div class="list-item-subtitle">大小: 1.8 MB | 修改时间: 2024-01-14</div>
+                                        </div>
+                                        <div class="list-item-actions">
+                                            <button class="btn-icon">📂</button>
+                                            <button class="btn-icon">🗑️</button>
+                                        </div>
+                                    </div>
+                                    <div class="list-item">
+                                        <div class="list-item-icon">⚙️</div>
+                                        <div class="list-item-content">
+                                            <div class="list-item-title">配置文件 config.json</div>
+                                            <div class="list-item-subtitle">大小: 0.5 KB | 修改时间: 2024-01-13</div>
+                                        </div>
+                                        <div class="list-item-actions">
+                                            <button class="btn-icon">📂</button>
+                                            <button class="btn-icon">🗑️</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 树视图 -->
+                            <div class="demo-section">
+                                <h4>树视图 (TreeView)</h4>
+                                <div class="tree-view">
+                                    <div class="tree-item expanded">
+                                        <span class="tree-expander" onclick="toggleTreeItem(this)">▼</span>
+                                        <span class="tree-icon">📁</span>
+                                        <span class="tree-label">项目根目录</span>
+                                        <div class="tree-children">
+                                            <div class="tree-item">
+                                                <span class="tree-expander"></span>
+                                                <span class="tree-icon">📄</span>
+                                                <span class="tree-label">配置文件.json</span>
+                                            </div>
+                                            <div class="tree-item expanded">
+                                                <span class="tree-expander" onclick="toggleTreeItem(this)">▼</span>
+                                                <span class="tree-icon">📁</span>
+                                                <span class="tree-label">数据文件夹</span>
+                                                <div class="tree-children">
+                                                    <div class="tree-item">
+                                                        <span class="tree-expander"></span>
+                                                        <span class="tree-icon">📊</span>
+                                                        <span class="tree-label">采集数据.csv</span>
+                                                    </div>
+                                                    <div class="tree-item">
+                                                        <span class="tree-expander"></span>
+                                                        <span class="tree-icon">📈</span>
+                                                        <span class="tree-label">分析结果.xlsx</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tree-item">
+                                                <span class="tree-expander" onclick="toggleTreeItem(this)">▶</span>
+                                                <span class="tree-icon">📁</span>
+                                                <span class="tree-label">日志文件夹</span>
+                                                <div class="tree-children" style="display: none;">
+                                                    <div class="tree-item">
+                                                        <span class="tree-expander"></span>
+                                                        <span class="tree-icon">📝</span>
+                                                        <span class="tree-label">系统日志.log</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 数据网格 -->
+                            <div class="demo-section">
+                                <h4>数据网格 (DataGrid)</h4>
+                                <div class="data-grid">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" class="checkbox"></th>
+                                                <th>ID <span class="sort-indicator">↑</span></th>
+                                                <th>设备名称</th>
+                                                <th>状态</th>
+                                                <th>温度 (°C)</th>
+                                                <th>湿度 (%)</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="selected">
+                                                <td><input type="checkbox" class="checkbox" checked></td>
+                                                <td>001</td>
+                                                <td>温度传感器-A1</td>
+                                                <td><span class="status-badge status-success">在线</span></td>
+                                                <td>23.5</td>
+                                                <td>45.2</td>
+                                                <td>
+                                                    <button class="btn-icon" title="编辑">✏️</button>
+                                                    <button class="btn-icon" title="删除">🗑️</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox" class="checkbox"></td>
+                                                <td>002</td>
+                                                <td>湿度传感器-B2</td>
+                                                <td><span class="status-badge status-warning">警告</span></td>
+                                                <td>25.1</td>
+                                                <td>78.9</td>
+                                                <td>
+                                                    <button class="btn-icon" title="编辑">✏️</button>
+                                                    <button class="btn-icon" title="删除">🗑️</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox" class="checkbox"></td>
+                                                <td>003</td>
+                                                <td>压力传感器-C3</td>
+                                                <td><span class="status-badge status-error">离线</span></td>
+                                                <td>--</td>
+                                                <td>--</td>
+                                                <td>
+                                                    <button class="btn-icon" title="编辑">✏️</button>
+                                                    <button class="btn-icon" title="删除">🗑️</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 高级控件演示 -->
+                    <div id="advanced-demo" class="tab-panel">
+                        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                            <!-- 日期时间选择器 -->
+                            <div class="demo-section">
+                                <h4>日期时间 (DatePicker / TimePicker)</h4>
+                                <div class="form-group">
+                                    <label class="form-label">开始日期</label>
+                                    <input type="date" class="form-input" value="2024-01-15">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">开始时间</label>
+                                    <input type="time" class="form-input" value="14:30">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">结束日期时间</label>
+                                    <input type="datetime-local" class="form-input" value="2024-01-15T16:30">
+                                </div>
+                            </div>
+
+                            <!-- 组合框 -->
+                            <div class="demo-section">
+                                <h4>组合框 (ComboBox)</h4>
+                                <div class="form-group">
+                                    <label class="form-label">设备类型</label>
+                                    <select class="form-select">
+                                        <option>温度传感器</option>
+                                        <option>湿度传感器</option>
+                                        <option selected>压力传感器</option>
+                                        <option>振动传感器</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">可编辑组合框</label>
+                                    <div class="combo-box">
+                                        <input type="text" class="form-input" value="自定义选项" list="options">
+                                        <datalist id="options">
+                                            <option value="选项1">
+                                            <option value="选项2">
+                                            <option value="选项3">
+                                        </datalist>
+                                        <button class="combo-btn">▼</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 文件选择器 -->
+                            <div class="demo-section">
+                                <h4>文件选择 (OpenFileDialog / SaveFileDialog)</h4>
+                                <div class="file-picker">
+                                    <input type="file" class="file-input" id="file1">
+                                    <label for="file1" class="file-label">
+                                        <span class="file-icon">📁</span>
+                                        <span class="file-text">选择文件</span>
+                                    </label>
+                                </div>
+                                <div class="file-picker">
+                                    <input type="file" class="file-input" id="file2" multiple>
+                                    <label for="file2" class="file-label">
+                                        <span class="file-icon">📁</span>
+                                        <span class="file-text">选择多个文件</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- 进度条 -->
+                            <div class="demo-section">
+                                <h4>进度条 (ProgressBar)</h4>
+                                <div class="progress-demo">
+                                    <label>下载进度: <span id="download-progress">65</span>%</label>
+                                    <div class="progress-bar" style="height: 12px;">
+                                        <div class="progress-fill" style="width: 65%;" id="download-bar"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-demo">
+                                    <label>处理进度: <span id="process-progress">30</span>%</label>
+                                    <div class="progress-bar" style="height: 12px;">
+                                        <div class="progress-fill" style="width: 30%; background: var(--warning-color);" id="process-bar"></div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" onclick="animateProgress()">开始处理</button>
+                            </div>
+
+                            <!-- 工具提示 -->
+                            <div class="demo-section">
+                                <h4>工具提示 (ToolTip)</h4>
+                                <div class="tooltip-demo">
+                                    <button class="btn btn-secondary tooltip-trigger" data-tooltip="这是一个工具提示信息">悬停查看提示</button>
+                                    <button class="btn btn-primary tooltip-trigger" data-tooltip="执行数据采集操作，这个过程可能需要几分钟时间">开始采集</button>
+                                    <span class="status-indicator status-warning tooltip-trigger" data-tooltip="设备温度过高，建议检查散热系统"></span>
+                                </div>
+                            </div>
+
+                            <!-- 上下文菜单 -->
+                            <div class="demo-section">
+                                <h4>上下文菜单 (ContextMenu)</h4>
+                                <div class="context-demo">
+                                    <div class="context-area" oncontextmenu="showContextMenu(event)">
+                                        右键点击此区域显示上下文菜单
+                                    </div>
+                                    <div id="contextMenu" class="context-menu">
+                                        <div class="context-item">📋 复制</div>
+                                        <div class="context-item">📄 粘贴</div>
+                                        <div class="context-separator"></div>
+                                        <div class="context-item">✏️ 编辑</div>
+                                        <div class="context-item">🗑️ 删除</div>
+                                        <div class="context-separator"></div>
+                                        <div class="context-item">⚙️ 属性</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="themes.js"></script>
+    <script>
+        // 标签页切换
+        function switchDemo(demo) {
+            // 隐藏所有标签页
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-header').forEach(header => {
+                header.classList.remove('active');
+            });
+            
+            // 显示选中的标签页
+            document.getElementById(demo + '-demo').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // 展开器切换
+        function toggleExpander(header) {
+            const expander = header.parentElement;
+            const content = expander.querySelector('.expander-content');
+            const arrow = header.querySelector('.expander-arrow');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                arrow.textContent = '▼';
+                expander.classList.add('expanded');
+            } else {
+                content.style.display = 'none';
+                arrow.textContent = '▶';
+                expander.classList.remove('expanded');
+            }
+        }
+
+        // 树视图切换
+        function toggleTreeItem(expander) {
+            const item = expander.parentElement;
+            const children = item.querySelector('.tree-children');
+            
+            if (children.style.display === 'none') {
+                children.style.display = 'block';
+                expander.textContent = '▼';
+                item.classList.add('expanded');
+            } else {
+                children.style.display = 'none';
+                expander.textContent = '▶';
+                item.classList.remove('expanded');
+            }
+        }
+
+        // 进度条动画
+        function animateProgress() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 2;
+                document.getElementById('download-progress').textContent = progress;
+                document.getElementById('download-bar').style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progress = 0;
+                        document.getElementById('download-progress').textContent = '0';
+                        document.getElementById('download-bar').style.width = '0%';
+                    }, 1000);
+                }
+            }, 100);
+        }
+
+        // 工具提示
+        document.addEventListener('DOMContentLoaded', function() {
+            const triggers = document.querySelectorAll('.tooltip-trigger');
+            triggers.forEach(trigger => {
+                let tooltip = null;
+                
+                trigger.addEventListener('mouseenter', function(e) {
+                    tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = this.getAttribute('data-tooltip');
+                    document.body.appendChild(tooltip);
+                    
+                    const rect = this.getBoundingClientRect();
+                    tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+                    tooltip.style.top = rect.top - tooltip.offsetHeight - 8 + 'px';
+                });
+                
+                trigger.addEventListener('mouseleave', function() {
+                    if (tooltip) {
+                        tooltip.remove();
+                        tooltip = null;
+                    }
+                });
+            });
+        });
+
+        // 上下文菜单
+        function showContextMenu(e) {
+            e.preventDefault();
+            const menu = document.getElementById('contextMenu');
+            menu.style.display = 'block';
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+            
+            // 点击其他地方隐藏菜单
+            document.addEventListener('click', function hideMenu() {
+                menu.style.display = 'none';
+                document.removeEventListener('click', hideMenu);
+            });
+        }
+
+        // 切换按钮
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除同组其他按钮的激活状态
+                    this.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                    // 激活当前按钮
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

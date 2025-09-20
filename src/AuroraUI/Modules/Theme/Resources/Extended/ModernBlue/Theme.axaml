@@ -1,0 +1,155 @@
+<!-- 现代蓝色 - 完整主题文件 -->
+<!-- 专业、清新的蓝色主题，适合长时间工作 -->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- 合并基础主题和颜色 -->
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://AuroraUI/Modules/Theme/Resources/LightTheme.axaml"/>
+    <ResourceInclude Source="avares://AuroraUI/Modules/Theme/Resources/Extended/ModernBlue/Colors.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <!-- =========================== -->
+  <!-- 核心系统背景色覆盖 -->
+  <!-- =========================== -->
+  
+  <!-- 应用程序主背景 -->
+  <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="{StaticResource BackgroundColor}"/>
+  <SolidColorBrush x:Key="SystemControlPageBackgroundAltHighBrush" Color="{StaticResource BackgroundColor}"/>
+  <SolidColorBrush x:Key="SystemControlPageBackgroundChromeLowBrush" Color="{StaticResource BackgroundColor}"/>
+  
+  <!-- 控件表面背景 -->
+  <SolidColorBrush x:Key="SystemControlBackgroundChromeMediumBrush" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="SystemControlBackgroundChromeMediumLowBrush" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="SystemControlBackgroundChromeHighBrush" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="SystemControlBackgroundBaseHighBrush" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="SystemControlBackgroundBaseLowBrush" Color="{StaticResource CardBackground}"/>
+  <SolidColorBrush x:Key="SystemControlBackgroundBaseMediumBrush" Color="{StaticResource CardBackground}"/>
+  
+  <!-- =========================== -->
+  <!-- 主题色和强调色覆盖 -->
+  <!-- =========================== -->
+  
+  <!-- 系统强调色 -->
+  <Color x:Key="SystemAccentColor">#4F7CFF</Color>
+  <Color x:Key="SystemAccentColorLight1">#6C7CE7</Color>
+  <Color x:Key="SystemAccentColorLight2">#00D4FF</Color>
+  <Color x:Key="SystemAccentColorLight3">#00D4FF</Color>
+  <Color x:Key="SystemAccentColorDark1">#4F7CFF</Color>
+  <Color x:Key="SystemAccentColorDark2">#4F7CFF</Color>
+  <Color x:Key="SystemAccentColorDark3">#4F7CFF</Color>
+  
+  <!-- 控件强调色 -->
+  <SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="{StaticResource PrimaryColor}"/>
+  <SolidColorBrush x:Key="SystemControlHighlightAltAccentBrush" Color="{StaticResource SecondaryColor}"/>
+  <SolidColorBrush x:Key="SystemControlBackgroundAccentBrush" Color="{StaticResource PrimaryColor}"/>
+  
+  <!-- =========================== -->
+  <!-- 文本和前景色覆盖 -->
+  <!-- =========================== -->
+  
+  <!-- 主要文本颜色 -->
+  <SolidColorBrush x:Key="SystemControlForegroundBaseHighBrush" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="SystemControlForegroundBaseMediumHighBrush" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="SystemControlForegroundBaseMediumBrush" Color="{StaticResource TextSecondary}"/>
+  <SolidColorBrush x:Key="SystemControlForegroundBaseLowBrush" Color="{StaticResource TextMuted}"/>
+  <SolidColorBrush x:Key="SystemControlForegroundBaseDisabledBrush" Color="{StaticResource TextMuted}"/>
+  
+  <!-- 强调文本颜色 -->
+  <SolidColorBrush x:Key="SystemControlForegroundAccentBrush" Color="{StaticResource PrimaryColor}"/>
+  <SolidColorBrush x:Key="SystemControlHighlightAltBaseHighBrush" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="SystemControlHighlightBaseHighBrush" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="SystemControlHighlightBaseMediumBrush" Color="{StaticResource SurfaceColor}"/>
+  
+  <!-- =========================== -->
+  <!-- 边框和分隔线覆盖 -->
+  <!-- =========================== -->
+  
+  <!-- 控件边框 -->
+  <SolidColorBrush x:Key="SystemControlForegroundBaseMediumLowBrush" Color="{StaticResource BorderColor}"/>
+  <SolidColorBrush x:Key="SystemControlForegroundChromeDisabledLowBrush" Color="{StaticResource BorderColor}"/>
+  <SolidColorBrush x:Key="SystemControlForegroundChromeHighBrush" Color="{StaticResource BorderColor}"/>
+  <SolidColorBrush x:Key="SystemControlForegroundChromeMediumBrush" Color="{StaticResource BorderColor}"/>
+  
+  <!-- =========================== -->
+  <!-- 按钮控件样式覆盖 -->
+  <!-- =========================== -->
+  
+  <!-- 按钮背景 -->
+  <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource HoverColor}"/>
+  <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource PrimaryColorAlpha}"/>
+  <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{StaticResource BorderColor}"/>
+  
+  <!-- 按钮前景 -->
+  <SolidColorBrush x:Key="ButtonForeground" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="ButtonForegroundPressed" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{StaticResource TextMuted}"/>
+  
+  <!-- 按钮边框 -->
+  <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource BorderColor}"/>
+  <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource PrimaryColor}"/>
+  <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource PrimaryColor}"/>
+  <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="{StaticResource BorderColor}"/>
+  
+  <!-- =========================== -->
+  <!-- 文本框控件样式覆盖 -->
+  <!-- =========================== -->
+  
+  <!-- 文本框背景 -->
+  <SolidColorBrush x:Key="TextControlBackground" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="{StaticResource BorderColor}"/>
+  
+  <!-- 文本框前景 -->
+  <SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="TextControlForegroundDisabled" Color="{StaticResource TextMuted}"/>
+  
+  <!-- 文本框边框 -->
+  <SolidColorBrush x:Key="TextControlBorderBrush" Color="{StaticResource BorderColor}"/>
+  <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="{StaticResource PrimaryColor}"/>
+  <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="{StaticResource PrimaryColor}"/>
+  <SolidColorBrush x:Key="TextControlBorderBrushDisabled" Color="{StaticResource BorderColor}"/>
+  
+  <!-- 占位符文本 -->
+  <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{StaticResource TextMuted}"/>
+  <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="{StaticResource TextSecondary}"/>
+  <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="{StaticResource TextSecondary}"/>
+  
+  <!-- =========================== -->
+  <!-- 菜单和上下文菜单覆盖 -->
+  <!-- =========================== -->
+  
+  <!-- 菜单背景 -->
+  <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="MenuFlyoutItemBackground" Color="Transparent"/>
+  <SolidColorBrush x:Key="MenuFlyoutItemBackgroundPointerOver" Color="{StaticResource HoverColor}"/>
+  <SolidColorBrush x:Key="MenuFlyoutItemBackgroundPressed" Color="{StaticResource PrimaryColorAlpha}"/>
+  
+  <!-- 菜单前景 -->
+  <SolidColorBrush x:Key="MenuFlyoutItemForeground" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="MenuFlyoutItemForegroundPointerOver" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="MenuFlyoutItemForegroundPressed" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="MenuFlyoutItemForegroundDisabled" Color="{StaticResource TextMuted}"/>
+  
+  <!-- =========================== -->
+  <!-- 列表和网格控件覆盖 -->
+  <!-- =========================== -->
+  
+  <!-- 列表项背景 -->
+  <SolidColorBrush x:Key="ListViewItemBackground" Color="Transparent"/>
+  <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="{StaticResource HoverColor}"/>
+  <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="{StaticResource PrimaryColorAlpha}"/>
+  <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{StaticResource PrimaryColorAlpha}"/>
+  <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{StaticResource PrimaryColorAlpha}"/>
+  
+  <!-- 列表项前景 -->
+  <SolidColorBrush x:Key="ListViewItemForeground" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="ListViewItemForegroundPointerOver" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="ListViewItemForegroundPressed" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="ListViewItemForegroundSelected" Color="{StaticResource TextPrimary}"/>
+</ResourceDictionary>

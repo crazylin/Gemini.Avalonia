@@ -125,7 +125,7 @@
                             <Button Content="选择此设备" 
                                     HorizontalAlignment="Stretch" 
                                     Background="{DynamicResource SystemAccentColor}"
-                                    Foreground="White"
+                                    Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
                                     FontWeight="Bold"
                                     Command="{Binding SelectDeviceCommand}"/>
                             <Button Content="读取设备信息" HorizontalAlignment="Stretch" IsEnabled="False"/>
@@ -159,7 +159,7 @@
                             Command="{Binding ConfirmSelectionCommand}"
                             IsEnabled="{Binding SelectedDevice, Converter={x:Static converters:ObjectConverters.IsNotNull}}"
                             Background="{DynamicResource SystemAccentColor}"
-                            Foreground="White"/>
+                            Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
                     <Button Content="取消" 
                             Width="80" Height="32"
                             Command="{Binding CancelCommand}"/>

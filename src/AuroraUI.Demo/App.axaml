@@ -16,7 +16,6 @@
 
     <Application.Styles>
         <FluentTheme />
-         <DockFluentTheme />
         <!-- 自定义样式 -->
         <Style Selector="Window">
             <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />

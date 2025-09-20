@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using AuroraUI.Framework;
 using AuroraUI.Framework.Services;
+using AuroraUI.Framework.Logging;
 using AuroraUI.Services;
 
 namespace AuroraUI.Modules.Settings.ViewModels
@@ -54,8 +55,68 @@ namespace AuroraUI.Modules.Settings.ViewModels
             // 语言切换改为重启模式，不再订阅CultureChanged事件
 
             // 使用IoC容器获取所有设置编辑器
+            LogManager.Info("SettingsViewModel", "开始获取设置编辑器...");
+            
+            // 先尝试手动创建 ApplicationSettingsViewModel 来检查依赖项
+            try
+            {
+                var appSettings = IoC.Get<ApplicationSettingsViewModel>();
+                LogManager.Info("SettingsViewModel", $"手动创建 ApplicationSettingsViewModel 成功: {appSettings?.GetType().Name}");
+            }
+            catch (Exception ex)
+            {
+                LogManager.Error("SettingsViewModel", $"手动创建 ApplicationSettingsViewModel 失败: {ex.Message}");
+                LogManager.Error("SettingsViewModel", $"异常详情: {ex}");
+            }
+            
             var syncEditors = IoC.GetAll<ISettingsEditor>();
             var asyncEditors = IoC.GetAll<ISettingsEditorAsync>();
+            
+            // 调试信息：输出找到的设置编辑器
+            LogManager.Info("SettingsViewModel", $"找到 {syncEditors.Count()} 个同步设置编辑器");
+            LogManager.Info("SettingsViewModel", $"找到 {asyncEditors.Count()} 个异步设置编辑器");
+            
+            foreach (var editor in syncEditors)
+            {
+                LogManager.Info("SettingsViewModel", $"同步设置编辑器: {editor.GetType().Name} - {editor.SettingsPageName}");
+            }
+            
+            foreach (var editor in asyncEditors)
+            {
+                LogManager.Info("SettingsViewModel", $"异步设置编辑器: {editor.GetType().Name} - {editor.SettingsPageName}");
+            }
+            
+            // 额外调试：检查MEF容器中的所有导出
+            try
+            {
+                // 使用反射访问私有字段
+                var iocType = typeof(IoC);
+                var containerField = iocType.GetField("_container", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                var container = containerField?.GetValue(null) as System.ComponentModel.Composition.Hosting.CompositionContainer;
+                
+                if (container != null)
+                {
+                    var exports = container.Catalog.Parts;
+                    LogManager.Info("SettingsViewModel", $"MEF容器中总共有 {exports.Count()} 个部件");
+                    
+                    var settingsExports = exports.Where(p => 
+                        p.ExportDefinitions.Any(e => e.ContractName.Contains("ISettingsEditor")));
+                    LogManager.Info("SettingsViewModel", $"其中 {settingsExports.Count()} 个部件导出 ISettingsEditor");
+                    
+                    foreach (var part in settingsExports)
+                    {
+                        LogManager.Info("SettingsViewModel", $"设置编辑器部件: {part.ToString()}");
+                        foreach (var export in part.ExportDefinitions)
+                        {
+                            LogManager.Info("SettingsViewModel", $"  导出: {export.ContractName}");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Error("SettingsViewModel", $"调试MEF容器失败: {ex.Message}");
+            }
             
             _settingsEditors = asyncEditors.Concat(syncEditors.Select(e => new SettingsEditorWrapper(e)))
                 .OrderBy(e => e.SortOrder)

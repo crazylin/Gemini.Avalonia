@@ -1,0 +1,60 @@
+<!-- 自然绿色 - 颜色定义 -->
+<!-- 清新自然的绿色主题，营造宁静专注的工作环境 -->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- 颜色定义 -->
+  <Color x:Key="PrimaryColor">#27AE60</Color>
+  <Color x:Key="PrimaryColorAlpha">#2627AE60</Color>
+  <Color x:Key="SecondaryColor">#2ECC71</Color>
+  <Color x:Key="AccentColor">#F39C12</Color>
+  <Color x:Key="BackgroundColor">#F8FFFE</Color>
+  <Color x:Key="SurfaceColor">#FFFFFF</Color>
+  <Color x:Key="CardBackground">#FFFFFF</Color>
+  <Color x:Key="TextPrimary">#2C3E50</Color>
+  <Color x:Key="TextSecondary">#34495E</Color>
+  <Color x:Key="TextMuted">#7F8C8D</Color>
+  <Color x:Key="BorderColor">#E8F5E8</Color>
+  <Color x:Key="HoverColor">#0C27AE60</Color>
+  <Color x:Key="SuccessColor">#27AE60</Color>
+  <Color x:Key="SuccessColorAlpha">#3327AE60</Color>
+  <Color x:Key="WarningColor">#F39C12</Color>
+  <Color x:Key="ErrorColor">#E74C3C</Color>
+  <Color x:Key="InfoColor">#3498DB</Color>
+  <Color x:Key="SuccessBg">#1927AE60</Color>
+  <Color x:Key="SuccessText">#229954</Color>
+  <Color x:Key="WarningBg">#19F39C12</Color>
+  <Color x:Key="WarningText">#D68910</Color>
+  <Color x:Key="ErrorBg">#19E74C3C</Color>
+  <Color x:Key="ErrorText">#CB4335</Color>
+  <Color x:Key="InfoBg">#193498DB</Color>
+  <Color x:Key="InfoText">#2E86C1</Color>
+
+  <!-- 画刷定义 -->
+  <SolidColorBrush x:Key="PrimaryColorBrush" Color="{StaticResource PrimaryColor}"/>
+  <SolidColorBrush x:Key="PrimaryColorAlphaBrush" Color="{StaticResource PrimaryColorAlpha}"/>
+  <SolidColorBrush x:Key="SecondaryColorBrush" Color="{StaticResource SecondaryColor}"/>
+  <SolidColorBrush x:Key="AccentColorBrush" Color="{StaticResource AccentColor}"/>
+  <SolidColorBrush x:Key="BackgroundColorBrush" Color="{StaticResource BackgroundColor}"/>
+  <SolidColorBrush x:Key="SurfaceColorBrush" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBackground}"/>
+  <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
+  <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
+  <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMuted}"/>
+  <SolidColorBrush x:Key="BorderColorBrush" Color="{StaticResource BorderColor}"/>
+  <SolidColorBrush x:Key="HoverColorBrush" Color="{StaticResource HoverColor}"/>
+  <SolidColorBrush x:Key="SuccessColorBrush" Color="{StaticResource SuccessColor}"/>
+  <SolidColorBrush x:Key="SuccessColorAlphaBrush" Color="{StaticResource SuccessColorAlpha}"/>
+  <SolidColorBrush x:Key="WarningColorBrush" Color="{StaticResource WarningColor}"/>
+  <SolidColorBrush x:Key="ErrorColorBrush" Color="{StaticResource ErrorColor}"/>
+  <SolidColorBrush x:Key="InfoColorBrush" Color="{StaticResource InfoColor}"/>
+  <SolidColorBrush x:Key="SuccessBgBrush" Color="{StaticResource SuccessBg}"/>
+  <SolidColorBrush x:Key="SuccessTextBrush" Color="{StaticResource SuccessText}"/>
+  <SolidColorBrush x:Key="WarningBgBrush" Color="{StaticResource WarningBg}"/>
+  <SolidColorBrush x:Key="WarningTextBrush" Color="{StaticResource WarningText}"/>
+  <SolidColorBrush x:Key="ErrorBgBrush" Color="{StaticResource ErrorBg}"/>
+  <SolidColorBrush x:Key="ErrorTextBrush" Color="{StaticResource ErrorText}"/>
+  <SolidColorBrush x:Key="InfoBgBrush" Color="{StaticResource InfoBg}"/>
+  <SolidColorBrush x:Key="InfoTextBrush" Color="{StaticResource InfoText}"/>
+
+</ResourceDictionary>

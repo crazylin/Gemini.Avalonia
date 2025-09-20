@@ -33,7 +33,7 @@
                  FontFamily="Consolas,Monaco,monospace"
                  FontSize="14"
                  BorderThickness="0"
-                 Background="Transparent"
+                 Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
                  Padding="8"/>
       </ScrollViewer>
     </Border>

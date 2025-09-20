@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Styling;
 using AuroraUI.Modules.Theme.Models;
 using AuroraUI.Framework.Logging;
+using AuroraUI.Modules.Theme.Services;
 
 namespace AuroraUI.Modules.Theme.Services
 {
@@ -18,6 +19,9 @@ namespace AuroraUI.Modules.Theme.Services
         
         [Import]
         private IThemeResourceManager? _themeResourceManager;
+        
+        [Import]
+        private IThemeManager? _themeManager;
         
         public ThemeType CurrentTheme => _currentTheme;
         
@@ -78,15 +82,38 @@ namespace AuroraUI.Modules.Theme.Services
             // 加载主题资源
             _themeResourceManager?.LoadThemeResources(actualTheme);
             
-            var themeVariant = actualTheme switch
-            {
-                ThemeType.Light => ThemeVariant.Light,
-                ThemeType.Dark => ThemeVariant.Dark,
-                _ => ThemeVariant.Default
-            };
+            // 确定基础主题变体
+            var themeVariant = GetBaseThemeVariant(actualTheme);
             
             Application.Current.RequestedThemeVariant = themeVariant;
-            Logger.Debug("应用主题变体: {ThemeVariant}", themeVariant);
+            Logger.Debug("应用主题: {0}, 基础变体: {1}", actualTheme, themeVariant);
+        }
+        
+        private ThemeVariant GetBaseThemeVariant(ThemeType themeType)
+        {
+            // 对于基础主题，直接映射
+            switch (themeType)
+            {
+                case ThemeType.Light:
+                    return ThemeVariant.Light;
+                case ThemeType.Dark:
+                    return ThemeVariant.Dark;
+            }
+            
+            // 对于扩展主题，根据其是否为深色主题来确定基础变体
+            if (_themeManager != null)
+            {
+                var themeInfo = _themeManager.GetThemeInfo(themeType);
+                if (themeInfo != null)
+                {
+                    Logger.Debug("扩展主题 {0} 是否为深色: {1}", themeType, themeInfo.IsDark);
+                    return themeInfo.IsDark ? ThemeVariant.Dark : ThemeVariant.Light;
+                }
+            }
+            
+            // 默认使用浅色主题
+            Logger.Debug("未知主题 {0}，使用默认浅色变体", themeType);
+            return ThemeVariant.Light;
         }
     }
 }

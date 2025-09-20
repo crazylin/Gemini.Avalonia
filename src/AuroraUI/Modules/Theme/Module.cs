@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using Avalonia.Markup.Xaml;
+using Avalonia.Styling;
 using AuroraUI.Framework;
 using AuroraUI.Framework.Modules;
 using AuroraUI.Framework.Logging;
@@ -12,6 +16,46 @@ namespace AuroraUI.Modules.Theme
     public class Module : LazyModuleBase
     {
         private static readonly ILogger Logger = LogManager.GetLogger();
+        
+        /// <summary>
+        /// 全局资源字典集合 - 包含框架必需的 Dock 样式
+        /// </summary>
+        public override IEnumerable<IStyle> GlobalResourceDictionaries
+        {
+            get
+            {
+                var styles = new List<IStyle>();
+                
+                try
+                {
+                    // 添加 DockFluentTheme
+                    Logger.Debug("加载 DockFluentTheme 到主题模块");
+                    var dockTheme = new Dock.Avalonia.Themes.Fluent.DockFluentTheme();
+                    styles.Add(dockTheme);
+                    
+                    // 添加 DocumentStyles.axaml - 通过 AvaloniaXamlLoader 加载
+                    Logger.Debug("加载 DocumentStyles 到主题模块");
+                    var documentStylesUri = new Uri("avares://AuroraUI/Modules/Theme/Resources/DocumentStyles.axaml");
+                    var documentStyles = Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(documentStylesUri) as IStyle;
+                    if (documentStyles != null)
+                    {
+                        styles.Add(documentStyles);
+                    }
+                    else
+                    {
+                        Logger.Warning("DocumentStyles.axaml 加载失败或不是有效的样式");
+                    }
+                    
+                    Logger.Info("主题模块全局资源加载完成");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"加载主题模块全局资源失败: {ex.Message}", ex);
+                }
+                
+                return styles;
+            }
+        }
         
         /// <summary>
         /// 创建模块元数据
