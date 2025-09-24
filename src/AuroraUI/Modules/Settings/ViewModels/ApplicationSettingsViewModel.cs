@@ -120,11 +120,11 @@ namespace AuroraUI.Modules.Settings.ViewModels
         {
             if (e.PropertyName == nameof(SelectedThemeCategory))
             {
-                UpdateFilteredThemes();
+                UpdateFilteredThemes(autoSelectFirst: true);
             }
         }
 
-        private void UpdateFilteredThemes()
+        private void UpdateFilteredThemes(bool autoSelectFirst = false)
         {
             FilteredThemes.Clear();
             
@@ -144,13 +144,14 @@ namespace AuroraUI.Modules.Settings.ViewModels
                     FilteredThemes.Add(theme);
                 }
             }
+            
+            // 只有在指定时才自动选择第一个主题
+            if (autoSelectFirst && FilteredThemes.Count > 0)
+            {
+                SelectedTheme = FilteredThemes[0];
+            }
         }
 
-        [RelayCommand]
-        private void SelectTheme(ThemeInfo theme)
-        {
-            SelectedTheme = theme;
-        }
 
         private void LoadSettings()
         {
@@ -159,20 +160,32 @@ namespace AuroraUI.Modules.Settings.ViewModels
             // 加载主题设置
             var savedThemeType = _configurationService.GetValue("Application.Theme", "Light");
             
+            ThemeInfo? savedTheme = null;
             // 尝试解析保存的主题类型
             if (Enum.TryParse<ThemeType>(savedThemeType, out var themeType))
             {
-                SelectedTheme = _themeManager.GetThemeInfo(themeType);
+                savedTheme = _themeManager.GetThemeInfo(themeType);
             }
             else
             {
                 // 如果解析失败，使用默认主题
-                SelectedTheme = _themeManager.GetThemeInfo(ThemeType.Light);
+                savedTheme = _themeManager.GetThemeInfo(ThemeType.Light);
             }
 
-            // 设置默认分类为系统主题
-            SelectedThemeCategory = ThemeCategories.FirstOrDefault(c => c.Category == ThemeCategory.System);
-            UpdateFilteredThemes();
+            // 根据保存的主题设置对应的分类
+            if (savedTheme != null)
+            {
+                SelectedThemeCategory = ThemeCategories.FirstOrDefault(c => c.Category == savedTheme.Category);
+                UpdateFilteredThemes();
+                // 在过滤完成后，设置保存的主题（而不是自动选择第一个）
+                SelectedTheme = savedTheme;
+            }
+            else
+            {
+                // 如果没有保存的主题，使用默认设置
+                SelectedThemeCategory = ThemeCategories.FirstOrDefault(c => c.Category == ThemeCategory.System);
+                UpdateFilteredThemes();
+            }
         }
 
         private async Task SaveSettingsAsync()

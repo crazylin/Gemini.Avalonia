@@ -43,90 +43,35 @@
                     </ComboBox>
                 </StackPanel>
                 
-                <!-- 主题选择网格 -->
+                <!-- 主题选择 -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="选择主题" FontWeight="Medium" FontSize="13"/>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" MaxHeight="300">
-                        <ItemsControl ItemsSource="{Binding FilteredThemes}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Button Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                                            BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                                            BorderThickness="1"
-                                            CornerRadius="8"
-                                            Padding="12"
-                                            Margin="6"
-                                            Width="180"
-                                            Height="100"
-                                            Command="{Binding $parent[UserControl].DataContext.SelectThemeCommand}"
-                                            CommandParameter="{Binding}">
-                                        
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-                                            
-                                            <!-- 主题图标和名称 -->
-                                            <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="6">
-                                                <TextBlock Text="{Binding Icon}" FontSize="16" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                            
-                                            <!-- 主题描述 -->
-                                            <TextBlock Grid.Row="1" 
-                                                       Text="{Binding Description}" 
-                                                       FontSize="11" 
-                                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                                       TextWrapping="Wrap"
-                                                       VerticalAlignment="Center"
-                                                       MaxLines="2"/>
-                                            
-                                            <!-- 主题预览色 -->
-                                            <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right">
-                                                <Ellipse Width="12" Height="12">
-                                                    <Ellipse.Fill>
-                                                        <SolidColorBrush Color="{Binding PreviewColor}"/>
-                                                    </Ellipse.Fill>
-                                                </Ellipse>
-                                                <TextBlock Text="{Binding IsDark}" 
-                                                           FontSize="10" 
-                                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                                                           VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Button>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
+                    <ComboBox ItemsSource="{Binding FilteredThemes}"
+                              SelectedItem="{Binding SelectedTheme}"
+                              Width="350"
+                              HorizontalAlignment="Left">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Text="{Binding Icon}" FontSize="16" VerticalAlignment="Center"/>
+                                    <StackPanel Spacing="2">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="13"/>
+                                        <TextBlock Text="{Binding Description}" 
+                                                   FontSize="11" 
+                                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                                   MaxWidth="280"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                    <Ellipse Width="16" Height="16" VerticalAlignment="Center" Margin="8,0,0,0">
+                                        <Ellipse.Fill>
+                                            <SolidColorBrush Color="{Binding PreviewColor}"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
-                
-                <!-- 当前选中主题信息 -->
-                <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
-                        BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
-                        BorderThickness="1"
-                        CornerRadius="6"
-                        Padding="12"
-                        IsVisible="True">
-                    <StackPanel Spacing="4">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <TextBlock Text="{Binding SelectedTheme.Icon}" FontSize="16"/>
-                            <TextBlock Text="当前选择:" FontWeight="Medium" FontSize="13"/>
-                            <TextBlock Text="{Binding SelectedTheme.Name}" FontWeight="SemiBold" FontSize="13"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding SelectedTheme.Description}" 
-                                   FontSize="12" 
-                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                    </StackPanel>
-                </Border>
             </StackPanel>
             
             
